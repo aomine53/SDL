@@ -1,0 +1,23 @@
+{
+    "name": "django-dashboard-adminator",
+    "mastertemplate": "boilerplate-code-django-dashboard",
+    "version": "1.0.0",
+    "description": "Template project - Django Boilerplate Code",
+    "scripts": {},
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/app-generator/django-dashboard-adminator"
+    },
+    "bugs": {
+        "url": "https://github.com/app-generator/django-dashboard-adminator/issues",
+        "email": "support@appseed.us"
+    },
+    "author": "AppSeed App Generator <support@appseed.us> (https://appseed.us)",
+    "engines": {
+        "node": ">=10.0.0"
+    },
+    "dependencies": {
+        "jquery-datetimepicker": "^2.5.21"
+    },
+    "devDependencies": {}
+}
