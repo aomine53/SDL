@@ -23,10 +23,10 @@ def get_live_data(request):
     datalist = getlivedata()
     dataobj = []
     for data in datalist:
-        rno, vin, vbat, edt, spdk, lat, lng, appd, tp = data
+        rno, vin, vbat, edt, spdk, lat, lng, appd, tp, celv, ect, es = data
         data1 = {"rno": rno, "vbat": vbat, "vin": vin, "spdk": spdk, "time": edt.strftime("%Y-%m-%d %H:%M:%S%z"),
                  "lat": lat,
-                 "lng": lng, "appd": appd, "tp": tp}
+                 "lng": lng, "appd": appd, "tp": tp, "celv": celv, "ect": ect, "es": es}
         dataobj.append(data1)
 
     cont = {"data": dataobj}
@@ -43,9 +43,12 @@ def get_archive_data(request):
         newVbat = []
         newAppt = []
         newTp = []
+        newCelv = []
+        newEct = []
+        newEs = []
         fromData = (datetime.strptime(request.POST["from"], '%Y-%m-%d %H:%M:%S'))
         toData = (datetime.strptime(request.POST["to"], '%Y-%m-%d %H:%M:%S'))
-        edt, vin, vbat, appt, tp = searchdata(fromData, toData)
+        edt, vin, vbat, appt, tp, spdk, celv, ect, es = searchdata(fromData, toData)
         for i in range(0, len(edt) - 2):
             # if appt[i] is None or tp[i] is None:
             #     appt[i] = "None"
@@ -56,6 +59,9 @@ def get_archive_data(request):
                 newVbat.append(vbat[i])
                 newAppt.append(appt[i])
                 newTp.append(tp[i])
+                newCelv.append(celv[i])
+                newEct.append(ect[i])
+                newEs.append(es[i])
                 if (edt[i + 1] - edt[i]) > timedelta(seconds=2):
                     difference = int(edt[i + 1].timestamp() - edt[i].timestamp())
                     # print(difference)
@@ -66,6 +72,9 @@ def get_archive_data(request):
                         newVbat.append(None)
                         newAppt.append(None)
                         newTp.append(None)
+                        newCelv.append(None)
+                        newEct.append(None)
+                        newEs.append(None)
 
             # while True:
             #     if(fromData > toData):
@@ -79,7 +88,7 @@ def get_archive_data(request):
             #         fromData += timedelta(seconds=1)
 
         context = {"fromData": fromData, "toData": toData, "labels": newtime, "Vin": newVin,
-                   "Vbat": newVbat, "Appd": newAppt, "Tp": newTp}
+                   "Vbat": newVbat, "Appd": newAppt, "Tp": newTp, "Celv": newCelv, "Ect": newEct, "Es": newEs}
         # print(context.get("Vin"))
         return JsonResponse(context)
     else:
@@ -89,7 +98,7 @@ def get_archive_data(request):
 
 @login_required(login_url="/login/")
 def pages(request):
-    context = {"1":[1,2,3,4,5,6,7,8,9,10]}
+    context = {"1": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
     # All resource paths end in .html.
     # Pick out the html file name from the url. And load that template.
     try:
