@@ -1,8 +1,8 @@
 import mysql.connector
 
-config = {"user": 'root',
-          "password": '1234',
-          "host": '127.0.0.1',
+config = {"user": 'mmlink',
+          "password": 'Mmlink@271020',
+          "host": '143.110.187.187',
           "database": 'mytestdb'
           }
 

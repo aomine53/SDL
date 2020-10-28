@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app'  # Enable the inner app 
+    'app'  # Enable the inner app
 ]
 
 MIDDLEWARE = [
@@ -74,10 +74,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mytestdb',
-        'USER': 'root',
-        'PASSWORD': '1234',
+        'USER': 'mmlink',
+        'PASSWORD': 'Mmlink@271020',
         'PORT': 3306,
-        'HOST': 'localhost',
+        'HOST': '143.110.187.187',
     }
 }
 
