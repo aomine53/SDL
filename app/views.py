@@ -18,7 +18,7 @@ from app.operations import searchdata, getlivedata, getdevicedata
 def index(request):
     return render(request, "index.html")
 
-
+@login_required(login_url="/login/")
 def get_live_data(request):
     datalist = getlivedata()
     dataobj = []
@@ -32,7 +32,7 @@ def get_live_data(request):
     cont = {"data": dataobj}
     return JsonResponse(cont)
 
-
+@login_required(login_url="/login/")
 def get_archive_data(request):
     context = {}
     utc = pytz.UTC

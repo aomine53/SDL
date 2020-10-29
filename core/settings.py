@@ -19,8 +19,8 @@ SECRET_KEY = config('SECRET_KEY', default='S#perS3crEt_1122')
 DEBUG = config('DEBUG', default=False)
 
 # load production server from .env
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', config('SERVER', default='127.0.0.1')]
-
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1','143.110.187.187', config('SERVER', default='127.0.0.1')]
+ALLOWED_HOSTS = ['143.110.187.187']
 # Application definition
 
 INSTALLED_APPS = [
@@ -104,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 

@@ -2,7 +2,7 @@ import mysql.connector
 
 config = {"user": 'mmlink',
           "password": 'Mmlink@271020',
-          "host": '143.110.187.187',
+          "host": 'localhost',
           "database": 'mytestdb'
           }
 
@@ -28,7 +28,7 @@ def getlivedata():
     datalist = []
     slulist = getdevicedata()
     for slu in slulist:
-        query = "SELECT RNO,VIN,VBAT,EDT,SPDK,LAT,LNG,APPD,TP,CELV,ECT,ES FROM $slu355000082004871 ORDER BY EDT DESC LIMIT 1"
+        query = "SELECT RNO,VIN,VBAT,EDT,SPDK,LAT,LNG,APPD,TP,CELV,ECT,ES FROM $SLU355000082004871 ORDER BY EDT DESC LIMIT 1"
         cursor.execute(query)
         datalist.append(cursor.fetchone())
 
@@ -52,7 +52,7 @@ def searchdata(start, end):
     celv = []
     ect = []
     es = []
-    query = "SELECT EDT,VIN,VBAT,APPD,TP,SPDK,CELV,ECT,ES FROM $slu355000082004871 WHERE EDT BETWEEN %s AND %s"
+    query = "SELECT EDT,VIN,VBAT,APPD,TP,SPDK,CELV,ECT,ES FROM $SLU355000082004871 WHERE EDT BETWEEN %s AND %s"
     cursor.execute(query, (start, end))
     for EDT, VIN, VBAT, APPD, TP,SPDK,CELV,ECT,ES in cursor:
         edt.append(EDT)
