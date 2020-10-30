@@ -10,159 +10,159 @@
 {% block content %}
 
     <div class="row gap-20 masonry pos-r">
-    <div class="masonry-item  col-md-12">
-        <div class="p-20 mx-auto row" style="background-color: #313131;">
-            <div class=" col-sm-5 d-inline-block">
-                <div class=" input-group date" id="datetimepicker1" data-target-input="nearest">
-                    <input type="text" id="fromdata" class="form-control datetimepicker-input"
-                           data-target="#datetimepicker1">
-                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+        <div class="masonry-item  col-md-12">
+            <div class="p-20 mx-auto row" style="background-color: #313131;">
+                <div class=" col-sm-5 d-inline-block">
+                    <div class=" input-group date" id="datetimepicker1" data-target-input="nearest">
+                        <input type="text" id="fromdata" class="form-control datetimepicker-input"
+                               data-target="#datetimepicker1">
+                        <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-5 d-inline-block">
-                <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                    <input type="text" id="todata" class="form-control datetimepicker-input"
-                           data-target="#datetimepicker2">
-                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                <div class="col-sm-5 d-inline-block">
+                    <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                        <input type="text" id="todata" class="form-control datetimepicker-input"
+                               data-target="#datetimepicker2">
+                        <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="d-inline-block p-0 m-0">
-                <button type="button" class="btn btn-primary mb-1 mr-2" onclick="get_archive_data()"><i
-                        class="fa fa-search"></i></button>
-                <button type="button" class="btn btn-primary mb-1 " onclick="refreshdata()"><i
-                        class="fa fa-refresh"></i></button>
-                <button type="button" class="btn btn-primary mb-1 " onclick="addDataset()"><i
-                        class="fa fa-plus"></i></button>
-                {#                    <button type="button" class="btn btn-secondary mb-1 mr-2" onclick="chart.destroy()">Destroy!!#}
-                {#                    </button>#}
+                <div class="d-inline-block p-0 m-0">
+                    <button type="button" class="btn btn-primary mb-1 mr-2" onclick="get_archive_data()"><i
+                            class="fa fa-search"></i></button>
+                    <button type="button" class="btn btn-primary mb-1 " onclick="refreshdata()"><i
+                            class="fa fa-refresh"></i></button>
+                    <button type="button" class="btn btn-primary mb-1 " onclick="addDataset()"><i
+                            class="fa fa-plus"></i></button>
+                    {#                    <button type="button" class="btn btn-secondary mb-1 mr-2" onclick="chart.destroy()">Destroy!!#}
+                    {#                    </button>#}
+                </div>
             </div>
         </div>
-    </div>
-    <div class="masonry-sizer col-md-6"></div>
-    <div class="masonry-item w-100">
-    <div class="row gap-20">
-        <!-- #Toatl Visits ==================== -->
-        <div class="col-md-2">
-            <div class="layers bd p-20" style="background-color: #313131;">
-                <div class="layer w-100 mB-10">
-                    <h6 class="lh-1" style="color: white;">Consumption</h6>
-                </div>
-                <div class="layer w-100">
-                    <div class="peers ai-sb fxw-nw">
-                        <div class="peer peer-greed">
-                            <span id="sparklinedash"></span>
+        <div class="masonry-sizer col-md-6"></div>
+        <div class="masonry-item w-100">
+            <div class="row gap-20">
+                <!-- #Toatl Visits ==================== -->
+                <div class="col-md-2">
+                    <div class="layers bd p-20" style="background-color: #313131;">
+                        <div class="layer w-100 mB-10">
+                            <h6 class="lh-1" style="color: white;">Consumption</h6>
                         </div>
-                        <div class="peer">
+                        <div class="layer w-100">
+                            <div class="peers ai-sb fxw-nw">
+                                <div class="peer peer-greed">
+                                    <span id="sparklinedash"></span>
+                                </div>
+                                <div class="peer">
                                     <span id="rno"
                                           class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50 c-green-500">00</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- #Total Page Views ==================== -->
-        <div class="col-md-2">
-            <div class="layers bd p-20" style="background-color: #313131;">
-                <div class="layer w-100 mB-10">
-                    <h6 class="lh-1">Solar Generation</h6>
-                </div>
-                <div class="layer w-100">
-                    <div class="peers ai-sb fxw-nw">
-                        <div class="peer peer-greed">
-                            <span id="sparklinedash2"></span>
+                <!-- #Total Page Views ==================== -->
+                <div class="col-md-2">
+                    <div class="layers bd p-20" style="background-color: #313131;">
+                        <div class="layer w-100 mB-10">
+                            <h6 class="lh-1">Solar Generation</h6>
                         </div>
-                        <div class="peer">
+                        <div class="layer w-100">
+                            <div class="peers ai-sb fxw-nw">
+                                <div class="peer peer-greed">
+                                    <span id="sparklinedash2"></span>
+                                </div>
+                                <div class="peer">
                                     <span id="vbat"
                                           class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500">-7%</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- #Unique Visitors ==================== -->
-        <div class="col-md-2">
-            <div class="layers bd p-20" style="background-color: #313131;">
-                <div class="layer w-100 mB-10">
-                    <h6 class="lh-1">Export to grid</h6>
-                </div>
-                <div class="layer w-100">
-                    <div class="peers ai-sb fxw-nw">
-                        <div class="peer peer-greed">
-                            <span id="sparklinedash3"></span>
+                <!-- #Unique Visitors ==================== -->
+                <div class="col-md-2">
+                    <div class="layers bd p-20" style="background-color: #313131;">
+                        <div class="layer w-100 mB-10">
+                            <h6 class="lh-1">Export to grid</h6>
                         </div>
-                        <div class="peer">
+                        <div class="layer w-100">
+                            <div class="peers ai-sb fxw-nw">
+                                <div class="peer peer-greed">
+                                    <span id="sparklinedash3"></span>
+                                </div>
+                                <div class="peer">
                                     <span id="vin"
                                           class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-purple-50 c-purple-500">~12%</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- #Bounce Rate ==================== -->
-        <div class="col-md-2">
-            <div class="layers bd p-20" style="background-color: #313131;">
-                <div class="layer w-100 mB-10">
-                    <h6 class="lh-1">Import From Grid</h6>
-                </div>
-                <div class="layer w-100">
-                    <div class="peers ai-sb fxw-nw">
-                        <div class="peer peer-greed">
-                            <span id="sparklinedash4"></span>
+                <!-- #Bounce Rate ==================== -->
+                <div class="col-md-2">
+                    <div class="layers bd p-20" style="background-color: #313131;">
+                        <div class="layer w-100 mB-10">
+                            <h6 class="lh-1">Import From Grid</h6>
                         </div>
-                        <div class="peer">
+                        <div class="layer w-100">
+                            <div class="peers ai-sb fxw-nw">
+                                <div class="peer peer-greed">
+                                    <span id="sparklinedash4"></span>
+                                </div>
+                                <div class="peer">
                                     <span id="spdk"
                                           class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-50 c-blue-500">33%</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="layers bd p-20" style="background-color: #313131;">
-                <div class="layer w-100 mB-10">
-                    <h6 class="lh-1">Battery</h6>
-                </div>
-                <div class="layer w-100">
-                    <div class="peers ai-sb fxw-nw">
-                        <div class="peer peer-greed">
-                            <span id="sparklinedash4"></span>
+                <div class="col-md-2">
+                    <div class="layers bd p-20" style="background-color: #313131;">
+                        <div class="layer w-100 mB-10">
+                            <h6 class="lh-1">Battery</h6>
                         </div>
-                        <div class="peer">
-                            <large><strong>±</strong></large>
-                            <span id="spdk"
-                                  class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-50 c-blue-500">33</span>
+                        <div class="layer w-100">
+                            <div class="peers ai-sb fxw-nw">
+                                <div class="peer peer-greed">
+                                    <span id="sparklinedash4"></span>
+                                </div>
+                                <div class="peer">
+                                    <large><strong>±</strong></large>
+                                    <span id="spdk"
+                                          class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-50 c-blue-500">33</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-        </div>
-        <div class="col-md-2">
-            <div class="layers bd p-20" style="background-color: #313131;">
-                <div class="layer w-100 mB-10">
-                    <h6 class="lh-1">Import From DG</h6>
                 </div>
-                <div class="layer w-100">
-                    <div class="peers ai-sb fxw-nw">
-                        <div class="peer peer-greed">
-                            <span id="sparklinedash4"></span>
+                <div class="col-md-2">
+                    <div class="layers bd p-20" style="background-color: #313131;">
+                        <div class="layer w-100 mB-10">
+                            <h6 class="lh-1">Import From DG</h6>
                         </div>
-                        <div class="peer">
+                        <div class="layer w-100">
+                            <div class="peers ai-sb fxw-nw">
+                                <div class="peer peer-greed">
+                                    <span id="sparklinedash4"></span>
+                                </div>
+                                <div class="peer">
                                     <span id="spdk"
                                           class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-50 c-blue-500">33%</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        </div>
         </div>
 
         <div class="masonry-item col-12">
@@ -483,11 +483,28 @@
                 </div>
             </div>
         </div>
-        <div class="masonry-item col-md-6">
-            <div class="bd" style="background-color: #313131;">
-                <h6 class="c-grey-900">Heatmap</h6>
-                    <canvas id="heatmap" height="338" width="560" ></canvas>
-            </div>
+        <div id="heatmap" style="height: 500px;" class="masonry-item col-md-6">
+            {#            <div class="bd" style="background-color: #313131;">#}
+            {#                <h6 class="c-grey-900">Heatmap</h6>#}
+            {#                <canvas id="heatmap" height="338" width="560"></canvas>#}
+            {#            </div>#}
+            {#            <div class="bd" style="background-color: #313131;">#}
+            {#                <div class="peers fxw-nw@lg+ ai-s">#}
+            {#                    <div class="peer peer-greed w-70p@lg+ w-100@lg- p-20">#}
+            {#                        <div class="layers">#}
+            {#                            <div class="layer w-100">#}
+            {#                                <div id="heatmap" style="#}
+            {#                                     height:500px ;#}
+            {#                                     position: sticky;#}
+            {#                                     overflow: hidden;#}
+            {#                                     background-color: transparent;#}
+            {#                                ">#}
+            {#                                </div>#}
+            {#                            </div>#}
+            {#                        </div>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#            </div>#}
         </div>
         <div class="masonry-item col-md-6">
             <!-- #Sales Report ==================== -->
@@ -785,95 +802,128 @@
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <script src="/static/assets/Chart.HeatMap-0.0.1-alpha/dst/Chart.HeatMap.S.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@0.1.3/dist/chartjs-chart-matrix.min.js"></script>
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
     <script>
-        var ctx = document.getElementById('heatmap').getContext('2d');
-        var data = {
-            labels : ['0h', '1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', '10h', '11h','12h','13h', '14h', '15h', '16h', '17h', '18h', '19h', '20h', '21h', '22h', '23h'],
-            datasets : [
-                {
-                    label: 'Mon',
-                    data: [0,0,0,0,0,0,0,1732.6,8143.9,16921.8,23218.6,26280.2,28497.7,22716.3,18702.1,13586.9,4480.5,852.5,1.7,0,0,0,0,0]
+        var xValues = ['0h', '1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', '10h', '11h', '12h', '13h', '14h', '15h', '16h', '17h', '18h', '19h', '20h', '21h', '22h', '23h'];
+
+        var yValues = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday','Monday1', 'Tuesday1', 'Wednesday1', 'Thursday1', 'Friday1', 'Saturday1', 'Sunday1','Monday2', 'Tuesday2', 'Wednesday2', 'Thursday2', 'Friday3', 'Saturday3', 'Sunday3','Monday4', 'Tuesday4', 'Wednesday4', 'Thursday4', 'Friday4', 'Saturday4', 'Sunday4'];
+
+        var zValues = [
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 5, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 8, 10, 12, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 6, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+             [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 5, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 8, 10, 12, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 6, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 5, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 8, 10, 12, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 6, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 5, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 8, 10, 12, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 6, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+        ];
+
+        var colorscaleValue = [
+            [0, '#ffffff'],
+            [0.1, '#e6ffe6'],
+            [0.2, '#b3ffb3'],
+            [0.3, '#80ff80'],
+            [0.4, '#66ff66'],
+            [0.5, '#33ff33'],
+            [0.6, '#00ff00'],
+            [0.7, '#00cc00'],
+            [0.8, '#009900'],
+            [0.9, '#006600'],
+            [1, '#003300'],
+
+
+        ];
+
+        var data = [{
+            x: xValues,
+            y: yValues,
+            z: zValues,
+            type: 'heatmap',
+            colorscale: colorscaleValue,
+            showscale: true,
+            xgap: 3,
+            ygap: 3
+        }];
+
+        var layout = {
+            paper_bgcolor: '#313131',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            title: 'Heatmap',
+            titlefont: {
+                family: 'Old Standard TT, serif',
+                size: 14,
+                color: 'white'
+            },
+            annotations: [],
+            xaxis: {
+                ticks: '',
+                side: 'bottom',
+                tickfont: {
+                    family: 'Old Standard TT, serif',
+                    size: 14,
+                    color: 'white'
                 },
-                {
-                    label: 'Tue',
-                    data: [0,0,0,0,0,0,0,1732.6,8143.9,16921.8,23218.6,26280.2,28497.7,22716.3,18702.1,13586.9,4480.5,852.5,1.7,0,0,0,0,0]
+            },
+            yaxis: {
+                ticks: '',
+                ticksuffix: ' ',
+                width: 700,
+                height: 700,
+                autosize: false,
+                showgrid: true,
+                tickfont: {
+                    family: 'Old Standard TT, serif',
+                    size: 14,
+                    color: 'white'
                 },
-                {
-                    label: ' Wed',
-                    data: [0,0,0,0,0,0,0,1732.6,8143.9,16921.8,23218.6,26280.2,28497.7,22716.3,18702.1,13586.9,4480.5,852.5,1.7,0,0,0,0,0]
-                },
-                {
-                    label: 'Thu',
-                    data: [0,0,0,0,0,0,0,1732.6,8143.9,16921.8,23218.6,26280.2,28497.7,22716.3,18702.1,13586.9,4480.5,852.5,1.7,0,0,0,0,0]
-                },
-                {
-                    label: 'Fri',
-                    data: [0,0,0,0,0,0,0,1732.6,8143.9,16921.8,23218.6,26280.2,28497.7,22716.3,18702.1,13586.9,4480.5,852.5,1.7,0,0,0,0,0]
-                },
-                {
-                    label: 'Sat',
-                    data: [0,0,0,0,0,0,0,1732.6,8143.9,16921.8,23218.6,26280.2,28497.7,22716.3,18702.1,13586.9,4480.5,852.5,1.7,0,0,0,0,0]
-                },
-                {
-                    label: 'Sun',
-                    data: [0,0,0,0,0,0,0,1732.6,8143.9,16921.8,23218.6,26280.2,28497.7,22716.3,18702.1,13586.9,4480.5,852.5,1.7,0,0,0,0,0]
-                }
-            ]
+            },
+
         };
-        var options = {
-            backgroundColor: '#fff',
 
-// Boolean - whether each box in the dataset is outlined
-stroke: false,
+        for (var i = 0; i < yValues.length; i++) {
+            for (var j = 0; j < xValues.length; j++) {
+                var currentValue = zValues[i][j];
 
-// Number - width of the outline stroke.
-strokePerc: 0.05,
-
-// String - the outline stroke color.
-strokeColor: "rgb(128,128,128)",
-
-// String - the outline stroke highlight color.
-highlightStrokeColor: "rgb(192,192,192)",
-
-// Boolean - whether to draw the heat map boxes with rounded corners
-rounded: false,
-
-// Number - the radius (as a percentage of size) of the rounded corners
-roundedRadius: 0.1,
-
-// Number - padding between heat map boxes (as a percentage of box size)
-paddingScale: 0,
-
-// String - "gradient", "palette"
-colorInterpolation: "gradient",
-
-// Array[String] - the colors used for the active color scheme.
-// Any number of colors is allowed.
-colors: [ "rgb(255, 255, 255)", "rgb(0, 51, 0)"],
-
-// Boolean - whether boxes change color on hover.
-colorHighlight: true,
-
-// Number - a floating point value which specifies how much lighter or
-// darker a color becomes when hovered, where 1 is no change,
-// 0.9 is slightly darker, and 1.1 is slightly lighter.
-colorHighlightMultiplier: 0.92,
-
-// Boolean - Whether to draw labels on the boxes
-showLabels: true,
-
-// Number - the font size of the label as percentage of box height
-labelScale: 0.2,
-// String - label font family
-labelFontFamily: '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif',
-
-// String - label font style
-labelFontStyle: "normal",
-
-// String - label font color
-labelFontColor: "rgba(0,0,0,0.5)",
+                var result = {
+                    xref: 'x1',
+                    yref: 'y1',
+                    x: xValues[j],
+                    y: yValues[i],
+                    text: zValues[i][j],
+                    font: {
+                        family: 'Arial',
+                        size: 12,
+                        color: 'rgb(50, 171, 96)'
+                    },
+                    showarrow: false,
+                    font: {
+                        color: 'white'
+                    }
+                };
+              //  layout.annotations.push(result);
+            }
         }
-        var newChart = new Chart(ctx).HeatMap(data, options);
+
+        Plotly.newPlot('heatmap', data, layout);
     </script>
 {% endblock javascripts %}

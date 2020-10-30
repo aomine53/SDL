@@ -20,6 +20,7 @@
     <orderEntry type="library" name="leaflet" level="application" />
     <orderEntry type="library" name="font-awesome" level="application" />
     <orderEntry type="library" name="chartjs-plugin-crosshair" level="application" />
+    <orderEntry type="library" name="plotly-latest" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />

@@ -1,10 +1,11 @@
 import mysql.connector
 
-config = {"user": 'mmlink',
-          "password": 'Mmlink@271020',
-          "host": 'localhost',
-          "database": 'mytestdb'
-          }
+config = {
+    "user": 'mmlink',
+    "password": 'Mmlink@271020',
+    "host": '143.110.187.187',
+    "database": 'mytestdb'
+}
 
 
 def getdevicedata():
@@ -54,7 +55,7 @@ def searchdata(start, end):
     es = []
     query = "SELECT EDT,VIN,VBAT,APPD,TP,SPDK,CELV,ECT,ES FROM $SLU355000082004871 WHERE EDT BETWEEN %s AND %s"
     cursor.execute(query, (start, end))
-    for EDT, VIN, VBAT, APPD, TP,SPDK,CELV,ECT,ES in cursor:
+    for EDT, VIN, VBAT, APPD, TP, SPDK, CELV, ECT, ES in cursor:
         edt.append(EDT)
         vin.append(VIN)
         vbat.append(VBAT)
