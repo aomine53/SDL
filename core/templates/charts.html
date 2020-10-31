@@ -74,10 +74,9 @@
             display: inline-block;
             font: inherit;
             line-height: 1.5em;
-            padding-right:3.5em;
+            padding-right: 3.5em;
             padding-left: 1em;
             padding-top: 0.1em;
-
             /* reset */
 
             margin: 0;
@@ -216,6 +215,8 @@
                             class="fa fa-refresh"></i></button>
                     <button type="button" class="btn btn-primary mb-1 " onclick="addDataset()"><i
                             class="fa fa-plus"></i></button>
+{#                    <button type="button" class="btn btn-primary mb-1 " onclick="showcanvas()"><i#}
+{#                            class="fa fa-plus"></i></button>#}
                     {#                    <button type="button" class="btn btn-secondary mb-1 mr-2" onclick="chart.destroy()">Destroy!!#}
                     {#                    </button>#}
                 </div>
@@ -224,9 +225,20 @@
         <div class="masonry-sizer col-md-6 pos-a"></div>
         <div class="masonry-item col-md-12">
             <div class="p-20 bd" style="background-color: #313131;">
-                <h6 class="" style="color: white;">Input Source Voltage</h6>
+                <select id="myFilter" class="multiple_select minimal" multiple>
+                    <option>VIN</option>
+                    <option>VBAT</option>
+                    <option>SPDK</option>
+                    <option>TP</option>
+                    <option>APPD</option>
+                    <option>CELV</option>
+                    <option>ES</option>
+                    <option>ECT</option>
+                </select>
                 <div class="mT-30">
-                    <canvas id="area-chart" height="100"></canvas>
+                    <canvas id="area-chart" height="100" style="display: none; margin-top: 10px;"></canvas>
+                    <canvas id="scatter-chart" height="100" style="display: block;margin-top: 10px;">
+                    </canvas>
                 </div>
             </div>
         </div>
@@ -241,30 +253,30 @@
         {#            </div>#}
         {#        </div>#}
 
-        <div class="masonry-item col-md-12">
-            <div class="p-20 bd" style="background-color: #313131;">
-                <p>
-{#                    <button id="addDataset" onclick="addDatasets1()">Add Dataset</button>#}
-{#                    <button id="removeDataset" onclick="removeDatasets()">Remove Dataset</button>#}
-                    <select id="myFilter" class="multiple_select minimal" multiple>
-                        <option>VIN</option>
-                        <option>VBAT</option>
-                        <option>SPDK</option>
-                        <option>TP</option>
-                        <option>APPD</option>
-                        <option>CELV</option>
-                        <option>ES</option>
-                        <option>ECT</option>
-                    </select>
-                </p>
-
-                <h6 class="c-grey-900">Scatter Chart</h6>
-                <div class="mT-30">
-                    <canvas id="scatter-chart" height="100">
-                    </canvas>
-                </div>
-            </div>
-        </div>
+        {#        <div class="masonry-item col-md-12">#}
+        {#            <div class="p-20 bd" style="background-color: #313131;">#}
+        {#                <p>#}
+        {#                                        <button id="addDataset" onclick="addDatasets1()">Add Dataset</button>#}
+        {#                                        <button id="removeDataset" onclick="removeDatasets()">Remove Dataset</button>#}
+        {#                    <select id="myFilter" class="multiple_select minimal" multiple>#}
+        {#                        <option>VIN</option>#}
+        {#                        <option>VBAT</option>#}
+        {#                        <option>SPDK</option>#}
+        {#                        <option>TP</option>#}
+        {#                        <option>APPD</option>#}
+        {#                        <option>CELV</option>#}
+        {#                        <option>ES</option>#}
+        {#                        <option>ECT</option>#}
+        {#                    </select>#}
+        {#                </p>#}
+        {##}
+        {#                <h6 class="c-grey-900">Scatter Chart</h6>#}
+        {#                <div class="mT-30">#}
+        {#                    <canvas id="scatter-chart" height="100">#}
+        {#                    </canvas>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
         <div class="masonry-item col-md-6">
             <div class="p-20 bd" style="background-color: #313131;">
                 <h6 class="c-grey-900">Bar Chart</h6>
@@ -369,18 +381,6 @@
     </div>
 {% endblock content %}
 {% block javascripts %}
-    <script>
-        var archive = false
-
-        function refreshdata() {
-            archive = false
-            live()
-            {#live1()#}
-            start()
-
-        }
-    </script>
-
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-crosshair@1"></script>
     <script>
@@ -460,10 +460,9 @@
                                 return true;
                             },
                             afterZoom: function (start, end) {
-                                if (archive) {
+
                                     chart.data.datasets[0].data = Zoomobj.Vin
                                     chart.data.datasets[1].data = Zoomobj.Vbat
-                                }
 
                             }
 
@@ -506,6 +505,31 @@
             },
         }
         var chart = new Chart(ctx, searchchart);
+
+        function refreshdata() {
+            archive = false
+            var x = document.getElementById("scatter-chart");
+            var y = document.getElementById("area-chart");
+            if (x.style.display === "none") {
+                x.style.display = "block"
+                y.style.display = "none"
+            } else {
+                x.style.display = "block"
+            }
+        }
+        {##}
+        {#function showcanvas() {#}
+        {#    console.log('clicked')#}
+        {#    var x = document.getElementById("scatter-chart");#}
+        {#    var y = document.getElementById("area-chart");#}
+        {#    if (x.style.display === "none" && y.style.display === "block") {#}
+        {#        x.style.display = "block";#}
+        {#        y.style.display = "none";#}
+        {#    } else {#}
+        {#        x.style.display = "none";#}
+        {#        y.style.display = "block";#}
+        {#    }#}
+        {#}#}
 
         function addDataset() {
             var newDataset = {
@@ -578,7 +602,7 @@
                 url: 'api/data/live',
                 success: function (data) {
                     if (data.data[1].rno !== oldrno) {
-                        addData(data.data[1]);
+                        //  addData(data.data[1]);
                         {#addData1(data.data[1]);#}
                         VIN = data.data[1].vin
                         VBAT = data.data[1].vbat
@@ -591,10 +615,10 @@
                         TIME = data.data[1].time
                         oldrno = data.data[1].rno;
                     }
-                    if (chart.data.labels.length >= 30) {
-                        removedata();
-                        {#removedata1()#}
-                    }
+                    //if (chart.data.labels.length >= 30) {
+                    //removedata();
+                    {#removedata1()#}
+                    //}
                 },
                 error: function (error_data) {
                     console.log("error")
@@ -613,9 +637,15 @@
                 async: true,
                 data: {'csrfmiddlewaretoken': csrftoken, 'from': $("#fromdata").val(), 'to': $("#todata").val()},
                 success: function (result, status, xhr) {
-                    clearInterval(clr)
-                    archive = true
+                    //clearInterval(clr)
+                    //archive = true
                     search(result)
+                    if (x.style.display === "block") {
+                        x.style.display = "none"
+                        y.style.display = "block"
+                    } else {
+                        y.style.display = "block"
+                    }
                     //search1(result)
                     Zoomobj = result
 
@@ -626,6 +656,8 @@
                     console.log(error_data)
                 }
             })
+            var x = document.getElementById("scatter-chart");
+            var y = document.getElementById("area-chart");
             {#config.destroy()#}
             {#var ctx = document.getElementById('scatter-chart').getContext('2d');#}
             {#newchart = new Chart(ctx, searchchart);#}
