@@ -5,10 +5,188 @@
 <!-- Specific CSS goes HERE  -->
 {% block stylesheets %}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css"
+          integrity="sha512-PMjWzHVtwxdq7m7GIxBot5vdxUY+5aKP9wpKtvnNBZrVv1srI8tU6xvFMzG8crLNcMj/8Xl/WWmo/oAP/40p1g=="
+          crossorigin="anonymous"/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <style>
+        .btn:hover {
+            background-color: RoyalBlue;
+        }
+    </style>
+    <style>
+        :root {
+            --text: "Select values";
+        }
+
+        .multiple_select {
+            height: 31.4px;
+            width: auto;
+            overflow: hidden;
+            -webkit-appearance: menulist;
+            position: absolute;
+            margin-left: 5px;
+        }
+
+        .multiple_select::before {
+            content: var(--text);
+            display: block;
+            margin-left: 5px;
+            margin-bottom: 2px;
+            margin-right: 5px;
+        }
+
+        .multiple_select_active {
+            overflow: visible !important;
+        }
+
+        .multiple_select option {
+            display: none;
+            height: 30px;
+            background-color: white;
+        }
+
+        .multiple_select_active option {
+            display: block;
+        }
+
+        .multiple_select option::before {
+            content: "\2610";
+        }
+
+        .multiple_select option:checked::before {
+            content: "\2611";
+        }
+    </style>
+    <style>
+        select {
+
+            /* styling */
+            background-color: white;
+            border: thin solid blue;
+            border-radius: 4px;
+            display: inline-block;
+            font: inherit;
+            line-height: 1.5em;
+            padding-right: 3.5em;
+            padding-left: 1em;
+            padding-top: 0.1em;
+            /* reset */
+
+            margin: 0;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+
+        /* arrows */
+
+        select.classic {
+            background-image: linear-gradient(45deg, transparent 50%, blue 50%),
+            linear-gradient(135deg, blue 50%, transparent 50%),
+            linear-gradient(to right, skyblue, skyblue);
+            background-position: calc(100% - 20px) calc(1em + 2px),
+            calc(100% - 15px) calc(1em + 2px),
+            100% 0;
+            background-size: 5px 5px,
+            5px 5px,
+            2.5em 2.5em;
+            background-repeat: no-repeat;
+        }
+
+        select.classic:focus {
+            background-image: linear-gradient(45deg, white 50%, transparent 50%),
+            linear-gradient(135deg, transparent 50%, white 50%),
+            linear-gradient(to right, gray, gray);
+            background-position: calc(100% - 15px) 1em,
+            calc(100% - 20px) 1em,
+            100% 0;
+            background-size: 5px 5px,
+            5px 5px,
+            2.5em 2.5em;
+            background-repeat: no-repeat;
+            border-color: grey;
+            outline: 0;
+        }
+
+
+        select.round {
+            background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+            linear-gradient(135deg, gray 50%, transparent 50%),
+            radial-gradient(#ddd 70%, transparent 72%);
+            background-position: calc(100% - 20px) calc(1em + 2px),
+            calc(100% - 15px) calc(1em + 2px),
+            calc(100% - .5em) .5em;
+            background-size: 5px 5px,
+            5px 5px,
+            1.5em 1.5em;
+            background-repeat: no-repeat;
+        }
+
+        select.round:focus {
+            background-image: linear-gradient(45deg, white 50%, transparent 50%),
+            linear-gradient(135deg, transparent 50%, white 50%),
+            radial-gradient(gray 70%, transparent 72%);
+            background-position: calc(100% - 15px) 1em,
+            calc(100% - 20px) 1em,
+            calc(100% - .5em) .5em;
+            background-size: 5px 5px,
+            5px 5px,
+            1.5em 1.5em;
+            background-repeat: no-repeat;
+            border-color: green;
+            outline: 0;
+        }
+
+
+        select.minimal {
+            background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+            linear-gradient(135deg, gray 50%, transparent 50%),
+            linear-gradient(to right, #ccc, #ccc);
+            background-position: calc(100% - 20px) calc(1em + 2px),
+            calc(100% - 15px) calc(1em + 2px),
+            calc(100% - 2.5em) 0.5em;
+            background-size: 5px 5px,
+            5px 5px,
+            1px 1.5em;
+            background-repeat: no-repeat;
+        }
+
+        select.minimal:focus {
+            background-image: linear-gradient(45deg, green 50%, transparent 50%),
+            linear-gradient(135deg, transparent 50%, green 50%),
+            linear-gradient(to right, #ccc, #ccc);
+            background-position: calc(100% - 15px) 1em,
+            calc(100% - 20px) 1em,
+            calc(100% - 2.5em) 0.5em;
+            background-size: 5px 5px,
+            5px 5px,
+            1px 1.5em;
+            background-repeat: no-repeat;
+            border-color: green;
+            outline: 0;
+        }
+
+
+        select:-moz-focusring {
+            color: transparent;
+            text-shadow: 0 0 0 #000;
+        }
+    </style>
 {% endblock stylesheets %}
 
 {% block content %}
-
     <div class="row gap-20 masonry pos-r">
         <div class="masonry-item  col-md-12">
             <div class="p-20 mx-auto row" style="background-color: #313131;">
@@ -35,8 +213,6 @@
                             class="fa fa-search"></i></button>
                     <button type="button" class="btn btn-primary mb-1 " onclick="refreshdata()"><i
                             class="fa fa-refresh"></i></button>
-                    <button type="button" class="btn btn-primary mb-1 " onclick="addDataset()"><i
-                            class="fa fa-plus"></i></button>
                     {#                    <button type="button" class="btn btn-secondary mb-1 mr-2" onclick="chart.destroy()">Destroy!!#}
                     {#                    </button>#}
                 </div>
@@ -456,223 +632,248 @@
             </div>
         </div>
         <div class="masonry-item col-md-6">
-            <div id="heatmap" style="align-content: center; height: 500px; width: 590px">
-            </div>
-            {#            <div class="bd" style="background-color: #313131;">#}
-            {#                <h6 class="c-grey-900">Heatmap</h6>#}
-            {#                <canvas id="heatmap" height="338" width="560"></canvas>#}
-            {#            </div>#}
-            {#            <div class="bd" style="background-color: #313131;">#}
-            {#                <div class="peers fxw-nw@lg+ ai-s">#}
-            {#                    <div class="peer peer-greed w-70p@lg+ w-100@lg- p-20">#}
-            {#                        <div class="layers">#}
-            {#                            <div class="layer w-100">#}
-            {#                                <div id="heatmap" style="#}
-            {#                                     height:500px ;#}
-            {#                                     position: sticky;#}
-            {#                                     overflow: hidden;#}
-            {#                                     background-color: transparent;#}
-            {#                                ">#}
-            {#                                </div>#}
-            {#                            </div>#}
-            {#                        </div>#}
-            {#                    </div>#}
-            {#                </div>#}
-            {#            </div>#}
-        </div>
-        <div class="masonry-item col-md-6">
-            <!-- #Sales Report ==================== -->
             <div class="bd" style="background-color: #313131;">
                 <div class="layers">
-                    <div class="layer w-100 p-20">
-                        <h6 class="lh-1">Sales Report</h6>
+                    <div id="heatmap" class="layer w-90 h-10">
                     </div>
-                    <div class="layer w-100">
-                        <div class="bgc-light-blue-500 c-white p-20">
-                            <div class="peers ai-c jc-sb gap-40">
-                                <div class="peer peer-greed">
-                                    <h5>November 2017</h5>
-                                    <p class="mB-0">Sales Report</p>
-                                </div>
-                                <div class="peer">
-                                    <h3 class="text-right">$6,000</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="table-responsive p-20">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th class="bdwT-0">Name</th>
-                                    <th class="bdwT-0">Status</th>
-                                    <th class="bdwT-0">Date</th>
-                                    <th class="bdwT-0">Price</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td class="fw-600">Item #1 Name</td>
-                                    <td><span
-                                            class="badge bgc-red-50 c-red-700 p-10 lh-0 tt-c badge-pill">Unavailable</span>
-                                    </td>
-                                    <td>Nov 18</td>
-                                    <td><span class="text-success">$12</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-600">Item #2 Name</td>
-                                    <td><span
-                                            class="badge bgc-deep-purple-50 c-deep-purple-700 p-10 lh-0 tt-c badge-pill">New</span>
-                                    </td>
-                                    <td>Nov 19</td>
-                                    <td><span class="text-info">$34</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-600">Item #3 Name</td>
-                                    <td><span class="badge bgc-pink-50 c-pink-700 p-10 lh-0 tt-c badge-pill">New</span>
-                                    </td>
-                                    <td>Nov 20</td>
-                                    <td><span class="text-danger">-$45</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-600">Item #4 Name</td>
-                                    <td><span
-                                            class="badge bgc-green-50 c-green-700 p-10 lh-0 tt-c badge-pill">Unavailable</span>
-                                    </td>
-                                    <td>Nov 21</td>
-                                    <td><span class="text-success">$65</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-600">Item #5 Name</td>
-                                    <td><span class="badge bgc-red-50 c-red-700 p-10 lh-0 tt-c badge-pill">Used</span>
-                                    </td>
-                                    <td>Nov 22</td>
-                                    <td><span class="text-success">$78</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-600">Item #6 Name</td>
-                                    <td><span
-                                            class="badge bgc-orange-50 c-orange-700 p-10 lh-0 tt-c badge-pill">Used</span>
-                                    </td>
-                                    <td>Nov 23</td>
-                                    <td><span class="text-danger">-$88</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-600">Item #7 Name</td>
-                                    <td><span
-                                            class="badge bgc-yellow-50 c-yellow-700 p-10 lh-0 tt-c badge-pill">Old</span>
-                                    </td>
-                                    <td>Nov 22</td>
-                                    <td><span class="text-success">$56</span></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="ta-c bdT w-100 p-20">
-                    <a href="#">Check all the sales</a>
                 </div>
             </div>
+            {#            <div id="heatmap" style="align-content: center; height: 500px; width: 590px">#}
         </div>
-
-        <div class="masonry-item col-md-6">
-            <!-- #Chat ==================== -->
-            <div class="bd" style="background-color: #313131;">
-                <div class="layers">
-                    <div class="layer w-100 p-20">
-                        <h6 class="lh-1">Quick Chat</h6>
-                    </div>
-                    <div class="layer w-100">
-                        <!-- Chat Box -->
-                        <div class="bgc-grey-200 p-20 gapY-15">
-                            <!-- Chat Conversation -->
-                            <div class="peers fxw-nw">
-                                <div class="peer mR-20">
-                                    <img class="w-2r bdrs-50p" src="https://randomuser.me/api/portraits/men/11.jpg"
-                                         alt="">
-                                </div>
-                                <div class="peer peer-greed">
-                                    <div class="layers ai-fs gapY-5">
-                                        <div class="layer">
-                                            <div class="peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">
-                                                <div class="peer mR-10">
-                                                    <small>10:00 AM</small>
-                                                </div>
-                                                <div class="peer-greed">
-                                                    <span>Lorem Ipsum is simply dummy text of</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="layer">
-                                            <div class="peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">
-                                                <div class="peer mR-10">
-                                                    <small>10:00 AM</small>
-                                                </div>
-                                                <div class="peer-greed">
-                                                    <span>the printing and typesetting industry.</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="layer">
-                                            <div class="peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">
-                                                <div class="peer mR-10">
-                                                    <small>10:00 AM</small>
-                                                </div>
-                                                <div class="peer-greed">
-                                                    <span>Lorem Ipsum has been the industry's</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Chat Conversation -->
-                            <div class="peers fxw-nw ai-fe">
-                                <div class="peer ord-1 mL-20">
-                                    <img class="w-2r bdrs-50p" src="https://randomuser.me/api/portraits/men/12.jpg"
-                                         alt="">
-                                </div>
-                                <div class="peer peer-greed ord-0">
-                                    <div class="layers ai-fe gapY-10">
-                                        <div class="layer">
-                                            <div class="peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">
-                                                <div class="peer mL-10 ord-1">
-                                                    <small>10:00 AM</small>
-                                                </div>
-                                                <div class="peer-greed ord-0">
-                                                    <span>Heloo</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="layer">
-                                            <div class="peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">
-                                                <div class="peer mL-10 ord-1">
-                                                    <small>10:00 AM</small>
-                                                </div>
-                                                <div class="peer-greed ord-0">
-                                                    <span>??</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Chat Send -->
-                        <div class="p-20 bdT bgc-white">
-                            <div class="pos-r">
-                                <input type="text" class="form-control bdrs-10em m-0" placeholder="Say something...">
-                                <button type="button" class="btn btn-primary bdrs-50p w-2r p-0 h-2r pos-a r-1 t-1">
-                                    <i class="fa fa-paper-plane-o"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+        {#            <div class="bd" style="background-color: #313131;">#}
+        {#                <h6 class="c-grey-900">Heatmap</h6>#}
+        {#                <canvas id="heatmap" height="338" width="560"></canvas>#}
+        {#            </div>#}
+        {#            <div class="bd" style="background-color: #313131;">#}
+        {#                <div class="peers fxw-nw@lg+ ai-s">#}
+        {#                    <div class="peer peer-greed w-70p@lg+ w-100@lg- p-20">#}
+        {#                        <div class="layers">#}
+        {#                            <div class="layer w-100">#}
+        {#                                <div id="heatmap" style="#}
+        {#                                     height:500px ;#}
+        {#                                     position: sticky;#}
+        {#                                     overflow: hidden;#}
+        {#                                     background-color: transparent;#}
+        {#                                ">#}
+        {#                                </div>#}
+        {#                            </div>#}
+        {#                        </div>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        <div class="masonry-item col-md-12">
+            <div class="p-20 bd" style="background-color: #313131;">
+                <select id="myFilter" class="multiple_select minimal" multiple>
+                    <option>VIN</option>
+                    <option>VBAT</option>
+                    <option>SPDK</option>
+                    <option>TP</option>
+                    <option>APPD</option>
+                    <option>CELV</option>
+                    <option>ES</option>
+                    <option>ECT</option>
+                </select>
+                <div class="mT-30">
+                    <canvas id="area-chart" height="100" style="display: none; margin-top: 10px;"></canvas>
+                    <canvas id="scatter-chart" height="100" style="display: block;margin-top: 10px;">
+                    </canvas>
                 </div>
             </div>
         </div>
     </div>
+    {#        <div class="masonry-item col-md-6">#}
+    {#            <!-- #Sales Report ==================== -->#}
+    {#            <div class="bd" style="background-color: #313131;">#}
+    {#                <div class="layers">#}
+    {#                    <div class="layer w-100 p-20">#}
+    {#                        <h6 class="lh-1">Sales Report</h6>#}
+    {#                    </div>#}
+    {#                    <div class="layer w-100">#}
+    {#                        <div class="bgc-light-blue-500 c-white p-20">#}
+    {#                            <div class="peers ai-c jc-sb gap-40">#}
+    {#                                <div class="peer peer-greed">#}
+    {#                                    <h5>November 2017</h5>#}
+    {#                                    <p class="mB-0">Sales Report</p>#}
+    {#                                </div>#}
+    {#                                <div class="peer">#}
+    {#                                    <h3 class="text-right">$6,000</h3>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                        <div class="table-responsive p-20">#}
+    {#                            <table class="table">#}
+    {#                                <thead>#}
+    {#                                <tr>#}
+    {#                                    <th class="bdwT-0">Name</th>#}
+    {#                                    <th class="bdwT-0">Status</th>#}
+    {#                                    <th class="bdwT-0">Date</th>#}
+    {#                                    <th class="bdwT-0">Price</th>#}
+    {#                                </tr>#}
+    {#                                </thead>#}
+    {#                                <tbody>#}
+    {#                                <tr>#}
+    {#                                    <td class="fw-600">Item #1 Name</td>#}
+    {#                                    <td><span#}
+    {#                                            class="badge bgc-red-50 c-red-700 p-10 lh-0 tt-c badge-pill">Unavailable</span>#}
+    {#                                    </td>#}
+    {#                                    <td>Nov 18</td>#}
+    {#                                    <td><span class="text-success">$12</span></td>#}
+    {#                                </tr>#}
+    {#                                <tr>#}
+    {#                                    <td class="fw-600">Item #2 Name</td>#}
+    {#                                    <td><span#}
+    {#                                            class="badge bgc-deep-purple-50 c-deep-purple-700 p-10 lh-0 tt-c badge-pill">New</span>#}
+    {#                                    </td>#}
+    {#                                    <td>Nov 19</td>#}
+    {#                                    <td><span class="text-info">$34</span></td>#}
+    {#                                </tr>#}
+    {#                                <tr>#}
+    {#                                    <td class="fw-600">Item #3 Name</td>#}
+    {#                                    <td><span class="badge bgc-pink-50 c-pink-700 p-10 lh-0 tt-c badge-pill">New</span>#}
+    {#                                    </td>#}
+    {#                                    <td>Nov 20</td>#}
+    {#                                    <td><span class="text-danger">-$45</span></td>#}
+    {#                                </tr>#}
+    {#                                <tr>#}
+    {#                                    <td class="fw-600">Item #4 Name</td>#}
+    {#                                    <td><span#}
+    {#                                            class="badge bgc-green-50 c-green-700 p-10 lh-0 tt-c badge-pill">Unavailable</span>#}
+    {#                                    </td>#}
+    {#                                    <td>Nov 21</td>#}
+    {#                                    <td><span class="text-success">$65</span></td>#}
+    {#                                </tr>#}
+    {#                                <tr>#}
+    {#                                    <td class="fw-600">Item #5 Name</td>#}
+    {#                                    <td><span class="badge bgc-red-50 c-red-700 p-10 lh-0 tt-c badge-pill">Used</span>#}
+    {#                                    </td>#}
+    {#                                    <td>Nov 22</td>#}
+    {#                                    <td><span class="text-success">$78</span></td>#}
+    {#                                </tr>#}
+    {#                                <tr>#}
+    {#                                    <td class="fw-600">Item #6 Name</td>#}
+    {#                                    <td><span#}
+    {#                                            class="badge bgc-orange-50 c-orange-700 p-10 lh-0 tt-c badge-pill">Used</span>#}
+    {#                                    </td>#}
+    {#                                    <td>Nov 23</td>#}
+    {#                                    <td><span class="text-danger">-$88</span></td>#}
+    {#                                </tr>#}
+    {#                                <tr>#}
+    {#                                    <td class="fw-600">Item #7 Name</td>#}
+    {#                                    <td><span#}
+    {#                                            class="badge bgc-yellow-50 c-yellow-700 p-10 lh-0 tt-c badge-pill">Old</span>#}
+    {#                                    </td>#}
+    {#                                    <td>Nov 22</td>#}
+    {#                                    <td><span class="text-success">$56</span></td>#}
+    {#                                </tr>#}
+    {#                                </tbody>#}
+    {#                            </table>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#                <div class="ta-c bdT w-100 p-20">#}
+    {#                    <a href="#">Check all the sales</a>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {##}
+    {#        <div class="masonry-item col-md-6">#}
+    {#            <!-- #Chat ==================== -->#}
+    {#            <div class="bd" style="background-color: #313131;">#}
+    {#                <div class="layers">#}
+    {#                    <div class="layer w-100 p-20">#}
+    {#                        <h6 class="lh-1">Quick Chat</h6>#}
+    {#                    </div>#}
+    {#                    <div class="layer w-100">#}
+    {#                        <!-- Chat Box -->#}
+    {#                        <div class="bgc-grey-200 p-20 gapY-15">#}
+    {#                            <!-- Chat Conversation -->#}
+    {#                            <div class="peers fxw-nw">#}
+    {#                                <div class="peer mR-20">#}
+    {#                                    <img class="w-2r bdrs-50p" src="https://randomuser.me/api/portraits/men/11.jpg"#}
+    {#                                         alt="">#}
+    {#                                </div>#}
+    {#                                <div class="peer peer-greed">#}
+    {#                                    <div class="layers ai-fs gapY-5">#}
+    {#                                        <div class="layer">#}
+    {#                                            <div class="peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">#}
+    {#                                                <div class="peer mR-10">#}
+    {#                                                    <small>10:00 AM</small>#}
+    {#                                                </div>#}
+    {#                                                <div class="peer-greed">#}
+    {#                                                    <span>Lorem Ipsum is simply dummy text of</span>#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <div class="layer">#}
+    {#                                            <div class="peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">#}
+    {#                                                <div class="peer mR-10">#}
+    {#                                                    <small>10:00 AM</small>#}
+    {#                                                </div>#}
+    {#                                                <div class="peer-greed">#}
+    {#                                                    <span>the printing and typesetting industry.</span>#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <div class="layer">#}
+    {#                                            <div class="peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">#}
+    {#                                                <div class="peer mR-10">#}
+    {#                                                    <small>10:00 AM</small>#}
+    {#                                                </div>#}
+    {#                                                <div class="peer-greed">#}
+    {#                                                    <span>Lorem Ipsum has been the industry's</span>#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {##}
+    {#                            <!-- Chat Conversation -->#}
+    {#                            <div class="peers fxw-nw ai-fe">#}
+    {#                                <div class="peer ord-1 mL-20">#}
+    {#                                    <img class="w-2r bdrs-50p" src="https://randomuser.me/api/portraits/men/12.jpg"#}
+    {#                                         alt="">#}
+    {#                                </div>#}
+    {#                                <div class="peer peer-greed ord-0">#}
+    {#                                    <div class="layers ai-fe gapY-10">#}
+    {#                                        <div class="layer">#}
+    {#                                            <div class="peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">#}
+    {#                                                <div class="peer mL-10 ord-1">#}
+    {#                                                    <small>10:00 AM</small>#}
+    {#                                                </div>#}
+    {#                                                <div class="peer-greed ord-0">#}
+    {#                                                    <span>Heloo</span>#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <div class="layer">#}
+    {#                                            <div class="peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">#}
+    {#                                                <div class="peer mL-10 ord-1">#}
+    {#                                                    <small>10:00 AM</small>#}
+    {#                                                </div>#}
+    {#                                                <div class="peer-greed ord-0">#}
+    {#                                                    <span>??</span>#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                        <!-- Chat Send -->#}
+    {#                        <div class="p-20 bdT bgc-white">#}
+    {#                            <div class="pos-r">#}
+    {#                                <input type="text" class="form-control bdrs-10em m-0" placeholder="Say something...">#}
+    {#                                <button type="button" class="btn btn-primary bdrs-50p w-2r p-0 h-2r pos-a r-1 t-1">#}
+    {#                                    <i class="fa fa-paper-plane-o"></i>#}
+    {#                                </button>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+
 
 {% endblock content %}
 
@@ -849,6 +1050,8 @@
             paper_bgcolor: '#313131',
             plot_bgcolor: 'rgba(0,0,0,0)',
             title: 'Heatmap',
+            width: 590,
+            height: 500,
             titlefont: {
                 family: 'Old Standard TT, serif',
                 size: 14,
@@ -867,8 +1070,6 @@
             yaxis: {
                 ticks: '',
                 ticksuffix: ' ',
-                width: 700,
-                height: 700,
                 autosize: false,
                 showgrid: true,
                 tickfont: {
@@ -946,9 +1147,518 @@
                 font: {
                     size: 10
                 },
+                paper_bgcolor: '#313131',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                titlefont: {
+                    family: 'Old Standard TT, serif',
+                    size: 14,
+                    color: 'white'
+                },
             }
             Plotly.newPlot('sankey', data, layout)
         });
 
+    </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-crosshair@1"></script>
+    <script>
+        var ctx = document.getElementById('area-chart').getContext('2d');
+        var searchchart = {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: 'Vin',
+                        borderWidth: 1.5,
+                        //backgroundColor:"rgba(255,79,0,0.5)",
+                        borderColor: "rgb(255,103,0)",
+                        yAxisID: 'yaxis1',
+                        data: [],
+                        fill: "false",
+                        pointStyle: 'line'
+                    },
+                    {
+                        label: 'VBat',
+                        //backgroundColor:"rgba(191,0,255,0.5)",
+                        borderColor: "rgb(57,255,20)",
+                        pointBackgroundColor: "#880085",
+                        borderWidth: 1.5,
+                        yAxisID: 'yaxis2',
+                        data: [],
+                        fill: "false",
+                        pointStyle: 'line'
+                    }
+                ]
+            },
+            options: {
+                legend: {
+                    display: true,
+                    align: 'center',
+                    labels: {
+                        usePointStyle: true,
+                        boxWidth: 10,
+                        fontColor: '#fff',
+                        lineCap: 'butt',
+                    }
+                },
+                responsive: true,
+                elements: {
+                    point: {
+                        radius: 1
+                    }
+                },
+                tooltips: {
+                    mode: 'interpolate',
+                    intersect: false
+                },
+                plugins: {
+                    crosshair: {
+                        line: {
+                            color: '#F66',        // crosshair line color
+                            width: 1,             // crosshair line width
+                            dashPattern: [5, 5]   // crosshair line dash pattern
+                        },
+                        sync: {
+                            enabled: false,            // enable trace line syncing with other charts
+                            group: 1,                 // chart group
+                            suppressTooltips: false   // suppress tooltips when showing a synced tracer
+                        },
+                        zoom: {
+                            enabled: true,                                      // enable zooming
+                            zoomboxBackgroundColor: 'rgba(66,133,244,0.2)',     // background color of zoom box
+                            zoomboxBorderColor: '#48F',                         // border color of zoom box
+                            zoomButtonText: 'Reset Zoom',                       // reset zoom button text
+                            zoomButtonClass: 'reset-zoom',                      // reset zoom button class
+                        },
+                        callbacks: {
+                            beforeZoom: function (start, end) {
+
+                                console.log(start + " " + end)// called before zoom, return false to prevent zoom
+                                return true;
+                            },
+                            afterZoom: function (start, end) {
+
+                                chart.data.datasets[0].data = Zoomobj.Vin
+                                chart.data.datasets[1].data = Zoomobj.Vbat
+
+                            }
+
+                        }
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        gridLines: {color: "#696969"},
+                        type: 'time',
+                        distribution: 'linear',
+                        time: {
+                            displayFormats: {
+                                hour: "MMM D ha"
+
+                            }
+                        },
+                        ticks: {
+                            fontColor: "white",
+                            maxTicksLimit: 12,
+                        }
+                    }],
+                    yAxes: [
+                        {
+                            id: 'yaxis1',
+                            gridLines: {color: "#696969"},
+                            ticks: {
+                                fontColor: "white"
+                            }
+                        },
+                        {
+                            id: 'yaxis2',
+                            position: 'right',
+                            gridLines: {color: "#696969"},
+                            ticks: {
+                                fontColor: "white"
+                            }
+                        }]
+                }
+            },
+        }
+        var chart = new Chart(ctx, searchchart);
+
+        function refreshdata() {
+            archive = false
+            var x = document.getElementById("scatter-chart");
+            var y = document.getElementById("area-chart");
+            if (x.style.display === "none") {
+                x.style.display = "block"
+                y.style.display = "none"
+            } else {
+                x.style.display = "block"
+            }
+        }
+
+        function search(Result) {
+            chart.data.datasets[0].data = Result.Vin
+            chart.data.datasets[1].data = Result.Vbat
+            chart.data.labels = Result.labels
+            chart.update()
+        }
+
+        var oldrno = -1;
+        var clr = 0
+        var VIN, VBAT, TIME, TP, APPD, CELV, ES, ECT, SPDK
+
+        function livedata() {
+            $.ajax({
+                method: "GET",
+                url: 'api/data/live',
+                success: function (data) {
+                    if (data.data[1].rno !== oldrno) {
+                        //  addData(data.data[1]);
+                        {#addData1(data.data[1]);#}
+                        VIN = data.data[1].vin
+                        VBAT = data.data[1].vbat
+                        TP = data.data[1].tp
+                        APPD = data.data[1].appd
+                        CELV = data.data[1].celv
+                        ES = data.data[1].es
+                        ECT = data.data[1].ect
+                        SPDK = data.data[1].spdk
+                        TIME = data.data[1].time
+                        oldrno = data.data[1].rno;
+                    }
+                    //if (chart.data.labels.length >= 30) {
+                    //removedata();
+                    {#removedata1()#}
+                    //}
+                },
+                error: function (error_data) {
+                    console.log("error")
+                    console.log(error_data)
+                }
+            })
+        }
+
+        var Zoomobj = undefined
+
+        function get_archive_data() {
+            console.log($("#fromdata").val() + " " + $("#todata").val())
+            $.ajax({
+                method: "POST",
+                url: "api/data/archive",
+                async: true,
+                data: {'csrfmiddlewaretoken': csrftoken, 'from': $("#fromdata").val(), 'to': $("#todata").val()},
+                success: function (result, status, xhr) {
+                    //clearInterval(clr)
+                    //archive = true
+                    search(result)
+                    if (x.style.display === "block") {
+                        x.style.display = "none"
+                        y.style.display = "block"
+                    } else {
+                        y.style.display = "block"
+                    }
+                    //search1(result)
+                    Zoomobj = result
+
+                },
+                error: function (error_data) {
+                    console.log("error")
+                    alert("error")
+                    console.log(error_data)
+                }
+            })
+            var x = document.getElementById("scatter-chart");
+            var y = document.getElementById("area-chart");
+            {#config.destroy()#}
+            {#var ctx = document.getElementById('scatter-chart').getContext('2d');#}
+            {#newchart = new Chart(ctx, searchchart);#}
+        }
+
+
+        function start() {
+            console.log("start")
+            var currentTime = new Date();
+            console.log(currentTime)
+            for (var i = 30; i >= 0; i--) {
+                var time = new Date(currentTime - i * 1000);
+                chart.data.labels.push(time)
+                {#chart1.data.labels.push(time)#}
+                console.log(chart.data.datasets.length)
+                chart.data.datasets.forEach(function (dataset) {
+                    dataset.data.push({
+                        y: undefined,
+                        x: time
+                    })
+                })
+
+            }
+            chart.update();
+            {#chart1.update();#}
+            clr = setInterval(livedata, 500);
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+            integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js"
+            integrity="sha512-2JBCbWoMJPH+Uj7Wq5OLub8E5edWHlTM4ar/YJkZh3plwB2INhhOC3eDoqHm1Za/ZOSksrLlURLoyXVdfQXqwg=="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm:ss',
+            });
+        });
+        $(function () {
+            $('#datetimepicker2').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm:ss',
+            });
+        });
+    </script>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
+    </script>
+    <script>
+        start()
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>
+
+    <script>
+        var chartColors = {
+            red: 'rgb(255, 99, 132)',
+            orange: 'rgb(255, 159, 64)',
+            yellow: 'rgb(255, 205, 86)',
+            green: 'rgb(75, 192, 192)',
+            blue: 'rgb(54, 162, 235)',
+            purple: 'rgb(153, 102, 255)',
+            grey: 'rgb(201, 203, 207)'
+        };
+
+        function randomScalingFactor() {
+            return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
+        }
+
+
+        function datavar() {
+            return [VIN, VBAT, SPDK, TP, APPD, CELV, ES, ECT]
+        }
+
+        function onRefresh(chart) {
+            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]
+            let i = 0
+            let dat = datavar()
+            chart.config.data.datasets.forEach(function (dataset) {
+                dataset.data.push({
+                    x: TIME,
+                    y: dat[lab.indexOf(dataset.label)]
+                })
+            })
+        }
+
+        var color = Chart.helpers.color;
+        var ctx = document.getElementById('scatter-chart').getContext('2d');
+        var config = {
+            type: 'line',
+            data: {
+                datasets: []
+            },
+            options: {
+                legend: {
+                    display: true,
+                    align: 'center',
+                    labels: {
+                        usePointStyle: true,
+                        boxWidth: 10,
+                        fontColor: '#fff',
+                        lineCap: 'butt',
+                    }
+                },
+                elements: {
+                    point: {
+                        radius: 1
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'realtime',
+                        realtime: {
+                            duration: 20000,
+                            refresh: 1000,
+                            delay: 3000,
+                            onRefresh: onRefresh
+                        },
+                        gridLines: {color: "#696969"},
+                        ticks: {
+                            fontColor: "white",
+
+                        }
+                    }],
+                    yAxes: []
+                },
+                tooltips: {
+                    mode: 'nearest',
+                    intersect: false
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: false
+                }
+            }
+        };
+        var chart1 = new Chart(ctx, config)
+        console.log(chart1)
+        let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]
+        let unit = ["Volt", "Volt", "Kmph", "", "", "", "", ""]
+        var colorNames = Object.keys(chartColors);
+
+        function addDatasets1(index) {
+            var colorName = colorNames[config.data.datasets.length % colorNames.length];
+            var newColor = chartColors[colorName];
+            var newDataset = {
+                label: lab[index],
+                backgroundColor: color(newColor).alpha(0.5).rgbString(),
+                borderColor: newColor,
+                fill: false,
+                data: [],
+                yAxisID: 'y-axis-' + index,
+                pointStyle: "line",
+                borderWidth: 1.5,
+            };
+
+            config.data.datasets.push(newDataset);
+            addScale(index)
+            console.log('y-axis-' + index)
+            chart1.update();
+        };
+
+        function addScale(index) {
+
+            var newScale = {
+                id: 'y-axis-' + index,
+                scaleLabel: {
+                    display: true,
+                    labelString: lab[index] + " (" + unit[index] + ")"
+                },
+                gridLines: {color: "#696969"},
+                ticks: {
+                    fontColor: "white"
+                }
+            }
+            if (index % 2 === 0) {
+                newScale.position = "left"
+            } else {
+                newScale.position = "right"
+            }
+            console.log(index)
+            config.options.scales.yAxes.push(newScale)
+            chart1.update()
+        }
+
+        function removeDatasets(index) {
+            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]
+            chart1.config.data.datasets.forEach(function (dataset) {
+                console.log(index)
+                if (dataset.label === lab[index]) {
+                    config.data.datasets.pop();
+                    config.options.scales.yAxes.pop()
+                    chart1.update();
+                }
+            })
+
+        };
+
+        function addds(selectedarray) {
+            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]
+            for (var i = 0; i < selectedarray.length; i++) {
+                var flag = 0
+                lab.indexOf(selectedarray[i])
+                console.log(chart.config.data.datasets.length)
+                for (var j = 0; j < chart1.data.datasets.length; j++) {
+                    if (chart1.data.datasets[j].label === selectedarray[i]) {
+                        flag = 1
+                        break
+                    } else if (chart1.data.datasets[j].label !== selectedarray[i]) {
+                        flag = 0
+                    }
+                }
+                if (flag === 0) {
+                    addDatasets1(lab.indexOf(selectedarray[i]))
+                }
+            }
+            for (var k = 0; k < chart1.config.data.datasets.length; k++) {
+                var flag = 0
+                lab.indexOf(selectedarray[k])
+                console.log(chart.config.data.datasets.length)
+                for (var l = 0; l < selectedarray.length; l++) {
+                    if (chart1.data.datasets[k].label === selectedarray[l]) {
+                        flag = 1
+                        break
+                    } else if (chart1.data.datasets[k].label !== selectedarray[l]) {
+                        flag = 0
+                    }
+                }
+                if (flag === 0) {
+                    removeDatasets(lab.indexOf(chart1.config.data.datasets[k].label))
+                }
+            }
+        }
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-en_US.min.js"></script>
+    <script>
+        $(".multiple_select").mousedown(function (e) {
+            if (e.target.tagName == "OPTION") {
+                return; //don't close dropdown if i select option
+            }
+            $(this).toggleClass('multiple_select_active'); //close dropdown if click inside <select> box
+        });
+        $(".multiple_select").on('blur', function (e) {
+            $(this).removeClass('multiple_select_active'); //close dropdown if click outside <select>
+        });
+
+        $('.multiple_select option').mousedown(function (e) { //no ctrl to select multiple
+            e.preventDefault();
+            $(this).prop('selected', $(this).prop('selected') ? false : true); //set selected options on click
+            $(this).parent().change(); //trigger change event
+        });
+
+
+        $("#myFilter").on('change', function () {
+            var selected = $("#myFilter").val(); //here I get all options and convert to string
+            console.log(selected)
+            addds(selected)
+            var document_style = document.documentElement.style;
+            if (selected !== "") {
+                document_style.setProperty('--text', "'Selected: " + selected + "'");
+            } else
+                document_style.setProperty('--text', "'Select values'");
+        })
     </script>
 {% endblock javascripts %}
