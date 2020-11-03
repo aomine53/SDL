@@ -213,8 +213,8 @@
                             class="fa fa-search"></i></button>
                     <button type="button" class="btn btn-primary mb-1 " onclick="refreshdata()"><i
                             class="fa fa-refresh"></i></button>
-{#                    <button type="button" class="btn btn-primary mb-1 " onclick="showcanvas()"><i#}
-{#                            class="fa fa-plus"></i></button>#}
+                    {#                    <button type="button" class="btn btn-primary mb-1 " onclick="showcanvas()"><i#}
+                    {#                            class="fa fa-plus"></i></button>#}
                     {#                    <button type="button" class="btn btn-secondary mb-1 mr-2" onclick="chart.destroy()">Destroy!!#}
                     {#                    </button>#}
                 </div>
@@ -241,15 +241,14 @@
             </div>
         </div>
 
-        {#        <div class="masonry-item col-md-6">#}
-        {#            <!-- TODO: -->#}
-        {#            <div class="p-20 bd" style="background-color: #313131;">#}
-        {#                <h6 class="" style="color: white;">APPD vs TP</h6>#}
-        {#                <div class="mT-30">#}
-        {#                    <canvas id="line-chart" height="220"></canvas>#}
-        {#                </div>#}
-        {#            </div>#}
-        {#        </div>#}
+        <div class="masonry-item col-md-12">
+            <div class="p-20 bd" style="background-color: #313131;">
+                <h6 class="" style="color: white;">APPD vs TP</h6>
+                <div class="mT-30">
+                    <div id="line-chart" style="height: auto; width: 1100px;"></div>
+                </div>
+            </div>
+        </div>
 
         {#        <div class="masonry-item col-md-12">#}
         {#            <div class="p-20 bd" style="background-color: #313131;">#}
@@ -459,8 +458,8 @@
                             },
                             afterZoom: function (start, end) {
 
-                                    chart.data.datasets[0].data = Zoomobj.Vin
-                                    chart.data.datasets[1].data = Zoomobj.Vbat
+                                chart.data.datasets[0].data = Zoomobj.Vin
+                                chart.data.datasets[1].data = Zoomobj.Vbat
 
                             }
 
@@ -515,6 +514,7 @@
                 x.style.display = "block"
             }
         }
+
         {##}
         {#function showcanvas() {#}
         {#    console.log('clicked')#}
@@ -529,195 +529,196 @@
         {#    }#}
         {#}#}
 
-        function addDataset() {
-            var newDataset = {
-                label: 'Appd',
-                borderWidth: 1.5,
-                //backgroundColor:"rgba(255,79,0,0.5)",
-                borderColor: "rgb(255,103,0)",
-                yAxisID: 'yaxis2',
-                data: [],
-                fill: "false",
-                pointStyle: 'line'
-            }
-            chart.data.datasets.push(newDataset)
-            var currentTime = new Date();
-            console.log(currentTime)
-            for (var i = 30; i >= 0; i--) {
-                var time = new Date(currentTime - i * 2000);
-                // chart.data.labels.push(time)
-                {#chart1.data.labels.push(time)#}
-                console.log(chart.data.datasets.length)
-                chart.data.datasets[chart.data.datasets.length - 1].data.push({
-                    y: undefined,
-                    x: time
-                })
-            }
-            console.log(chart.data.datasets.length)
-            chart.update()
-        }
-
-        function search(Result) {
-            chart.data.datasets[0].data = Result.Vin
-            chart.data.datasets[1].data = Result.Vbat
-            chart.data.labels = Result.labels
-            chart.update()
-        }
-
-        function addData(data1) {
-            let k = 0
-            let datayaxis = [data1.vin, data1.vbat, data1.appd, data1.tp, data1.spdk, data1.es]
-            chart.data.labels.push(data1.time)
-            chart.data.datasets.forEach(function (dataset) {
-                dataset.data.push({
-                    y: datayaxis[k],
-                    x: data1.time
-                })
-                k++
-            })
-            {#chart.data.datasets[0].data.push(data1.vin)#}
-            {#chart.data.datasets[1].data.push(data1.vbat)#}
-            {#chart.data.datasets[2].data.push(data1.appd)#}
-            chart.update()
-        }
-
-        function removedata() {
-            chart.data.labels.shift()
-            chart.data.datasets.forEach(function (dataset) {
-                dataset.data.shift()
-            })
-            chart.update()
-        }
-
-
-        var oldrno = -1;
-        var clr = 0
-        var VIN, VBAT, TIME, TP, APPD, CELV, ES, ECT, SPDK
-
-        function livedata() {
-            $.ajax({
-                method: "GET",
-                url: 'api/data/live',
-                success: function (data) {
-                    if (data.data[1].rno !== oldrno) {
-                        //  addData(data.data[1]);
-                        {#addData1(data.data[1]);#}
-                        VIN = data.data[1].vin
-                        VBAT = data.data[1].vbat
-                        TP = data.data[1].tp
-                        APPD = data.data[1].appd
-                        CELV = data.data[1].celv
-                        ES = data.data[1].es
-                        ECT = data.data[1].ect
-                        SPDK = data.data[1].spdk
-                        TIME = data.data[1].time
-                        oldrno = data.data[1].rno;
-                    }
-                    //if (chart.data.labels.length >= 30) {
-                    //removedata();
-                    {#removedata1()#}
-                    //}
-                },
-                error: function (error_data) {
-                    console.log("error")
-                    console.log(error_data)
+            function addDataset() {
+                var newDataset = {
+                    label: 'Appd',
+                    borderWidth: 1.5,
+                    //backgroundColor:"rgba(255,79,0,0.5)",
+                    borderColor: "rgb(255,103,0)",
+                    yAxisID: 'yaxis2',
+                    data: [],
+                    fill: "false",
+                    pointStyle: 'line'
                 }
-            })
-        }
-
-        var Zoomobj = undefined
-
-        function get_archive_data() {
-            console.log($("#fromdata").val() + " " + $("#todata").val())
-            $.ajax({
-                method: "POST",
-                url: "api/data/archive",
-                async: true,
-                data: {'csrfmiddlewaretoken': csrftoken, 'from': $("#fromdata").val(), 'to': $("#todata").val()},
-                success: function (result, status, xhr) {
-                    //clearInterval(clr)
-                    //archive = true
-                    search(result)
-                    if (x.style.display === "block") {
-                        x.style.display = "none"
-                        y.style.display = "block"
-                    } else {
-                        y.style.display = "block"
-                    }
-                    //search1(result)
-                    Zoomobj = result
-
-                },
-                error: function (error_data) {
-                    console.log("error")
-                    alert("error")
-                    console.log(error_data)
-                }
-            })
-            var x = document.getElementById("scatter-chart");
-            var y = document.getElementById("area-chart");
-            {#config.destroy()#}
-            {#var ctx = document.getElementById('scatter-chart').getContext('2d');#}
-            {#newchart = new Chart(ctx, searchchart);#}
-        }
-
-
-        function start() {
-            console.log("start")
-            var currentTime = new Date();
-            console.log(currentTime)
-            for (var i = 30; i >= 0; i--) {
-                var time = new Date(currentTime - i * 1000);
-                chart.data.labels.push(time)
-                {#chart1.data.labels.push(time)#}
-                console.log(chart.data.datasets.length)
-                chart.data.datasets.forEach(function (dataset) {
-                    dataset.data.push({
+                chart.data.datasets.push(newDataset)
+                var currentTime = new Date();
+                console.log(currentTime)
+                for (var i = 30; i >= 0; i--) {
+                    var time = new Date(currentTime - i * 2000);
+                    // chart.data.labels.push(time)
+                    {#chart1.data.labels.push(time)#}
+                    console.log(chart.data.datasets.length)
+                    chart.data.datasets[chart.data.datasets.length - 1].data.push({
                         y: undefined,
                         x: time
                     })
+                }
+                console.log(chart.data.datasets.length)
+                chart.update()
+            }
+
+            function search(Result) {
+                chart.data.datasets[0].data = Result.Vin
+                chart.data.datasets[1].data = Result.Vbat
+                chart.data.labels = Result.labels
+                chart.update()
+            }
+
+            function addData(data1) {
+                let k = 0
+                let datayaxis = [data1.vin, data1.vbat, data1.appd, data1.tp, data1.spdk, data1.es]
+                chart.data.labels.push(data1.time)
+                chart.data.datasets.forEach(function (dataset) {
+                    dataset.data.push({
+                        y: datayaxis[k],
+                        x: data1.time
+                    })
+                    k++
                 })
-                {#chart.data.datasets[0].data.push(undefined)#}
-                {#chart.data.datasets[1].data.push(undefined)#}
-                {#chart.data.datasets[2].data.push(undefined)#}
+                {#chart.data.datasets[0].data.push(data1.vin)#}
+                {#chart.data.datasets[1].data.push(data1.vbat)#}
+                {#chart.data.datasets[2].data.push(data1.appd)#}
+                chart.update()
+            }
 
-                {#chart1.data.datasets[0].data.push(undefined)#}
-                {#chart1.data.datasets[1].data.push(undefined)#}
+            function removedata() {
+                chart.data.labels.shift()
+                chart.data.datasets.forEach(function (dataset) {
+                    dataset.data.shift()
+                })
+                chart.update()
+            }
+
+
+            var oldrno = -1;
+            var clr = 0
+            var VIN, VBAT, TIME, TP, APPD, CELV, ES, ECT, SPDK
+
+            function livedata() {
+                $.ajax({
+                    method: "GET",
+                    url: 'api/data/live',
+                    success: function (data) {
+                        if (data.data[1].rno !== oldrno) {
+                            //  addData(data.data[1]);
+                            {#addData1(data.data[1]);#}
+                            VIN = data.data[1].vin
+                            VBAT = data.data[1].vbat
+                            TP = data.data[1].tp
+                            APPD = data.data[1].appd
+                            CELV = data.data[1].celv
+                            ES = data.data[1].es
+                            ECT = data.data[1].ect
+                            SPDK = data.data[1].spdk
+                            TIME = data.data[1].time
+                            oldrno = data.data[1].rno;
+                        }
+                        //if (chart.data.labels.length >= 30) {
+                        //removedata();
+                        {#removedata1()#}
+                        //}
+                    },
+                    error: function (error_data) {
+                        console.log("error")
+                        console.log(error_data)
+                    }
+                })
+            }
+
+            var Zoomobj = undefined
+
+            function get_archive_data() {
+                console.log($("#fromdata").val() + " " + $("#todata").val())
+                $.ajax({
+                    method: "POST",
+                    url: "api/data/archive",
+                    async: true,
+                    data: {'csrfmiddlewaretoken': csrftoken, 'from': $("#fromdata").val(), 'to': $("#todata").val()},
+                    success: function (result, status, xhr) {
+                        //clearInterval(clr)
+                        //archive = true
+                        search(result)
+                        adjustValue1(result)
+                        if (x.style.display === "block") {
+                            x.style.display = "none"
+                            y.style.display = "block"
+                        } else {
+                            y.style.display = "block"
+                        }
+                        //search1(result)
+                        Zoomobj = result
+
+                    },
+                    error: function (error_data) {
+                        console.log("error")
+                        alert("error")
+                        console.log(error_data)
+                    }
+                })
+                var x = document.getElementById("scatter-chart");
+                var y = document.getElementById("area-chart");
+                {#config.destroy()#}
+                {#var ctx = document.getElementById('scatter-chart').getContext('2d');#}
+                {#newchart = new Chart(ctx, searchchart);#}
+            }
+
+
+            function start() {
+                console.log("start")
+                var currentTime = new Date();
+                console.log(currentTime)
+                for (var i = 30; i >= 0; i--) {
+                    var time = new Date(currentTime - i * 1000);
+                    chart.data.labels.push(time)
+                    {#chart1.data.labels.push(time)#}
+                    console.log(chart.data.datasets.length)
+                    chart.data.datasets.forEach(function (dataset) {
+                        dataset.data.push({
+                            y: undefined,
+                            x: time
+                        })
+                    })
+                    {#chart.data.datasets[0].data.push(undefined)#}
+                    {#chart.data.datasets[1].data.push(undefined)#}
+                    {#chart.data.datasets[2].data.push(undefined)#}
+
+                    {#chart1.data.datasets[0].data.push(undefined)#}
+                    {#chart1.data.datasets[1].data.push(undefined)#}
+
+                }
+                chart.update();
+                {#chart1.update();#}
+                clr = setInterval(livedata, 500);
+            }
+
+            function live() {
+                chart.data.labels = []
+                chart.data.datasets.forEach(function (dataset) {
+                    dataset.data = []
+                })
+                {#chart.data.datasets[0].data = []#}
+                {#chart.data.datasets[1].data = []#}
 
             }
-            chart.update();
-            {#chart1.update();#}
-            clr = setInterval(livedata, 500);
-        }
 
-        function live() {
-            chart.data.labels = []
-            chart.data.datasets.forEach(function (dataset) {
-                dataset.data = []
-            })
-            {#chart.data.datasets[0].data = []#}
-            {#chart.data.datasets[1].data = []#}
-
-        }
-
-        function checkTime(i) {
-            if (i < 10) {
-                i = "0" + i;
+            function checkTime(i) {
+                if (i < 10) {
+                    i = "0" + i;
+                }
+                return i;
             }
-            return i;
-        }
 
-        function converter(time) {
-            var h = time.getHours();
-            var m = time.getMinutes();
-            var s = time.getSeconds();
-            // add a zero in front of numbers<10
-            h = checkTime(h);
-            m = checkTime(m);
-            s = checkTime(s);
-            var time = h + ":" + m + ":" + s
-            return time;
-        }
+            function converter(time) {
+                var h = time.getHours();
+                var m = time.getMinutes();
+                var s = time.getSeconds();
+                // add a zero in front of numbers<10
+                h = checkTime(h);
+                m = checkTime(m);
+                s = checkTime(s);
+                var time = h + ":" + m + ":" + s
+                return time;
+            }
     </script>
     {#    <script>#}
     {#        var ctx = document.getElementById('line-chart').getContext('2d');#}
@@ -1001,7 +1002,7 @@
                         realtime: {
                             duration: 20000,
                             refresh: 1000,
-                            delay: 3000,
+                            delay: 7000,
                             onRefresh: onRefresh
                         },
                         gridLines: {color: "#696969"},
@@ -1152,5 +1153,78 @@
             } else
                 document_style.setProperty('--text', "'Select values'");
         })
+    </script>
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <script>
+        var data = [
+            {
+                x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
+                y: [1, 3, 6],
+                type: 'scatter'
+            }
+        ];
+        var config = {responsive: true}
+        Plotly.newPlot('line-chart', data, config);
+
+        function adjustValue1(value) {
+            var newd =
+                {
+                    x: value.labels,
+                    y: value.Vin,
+                    type: 'line'
+                }
+            var newd2 =
+                {
+                    x: value.labels,
+                    y: value.Vbat,
+                    type: 'line',
+                    yaxis: 'y2',
+                }
+            var data = [newd, newd2];
+            var layout = {
+                legend: {
+                    x:0.5,
+                    y: 1.5,
+                    "orientation": "h"
+                },
+                paper_bgcolor: '#313131',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                xaxis: {
+                    ticks: '',
+                    side: 'bottom',
+                    gridcolor: '#696969',
+                    linecolor: '#696969',
+                    tickfont: {
+                        family: 'Old Standard TT, serif',
+                        size: 14,
+                        color: 'white'
+                    },
+                },
+                yaxis: {
+                    title: 'Vin',
+                    gridcolor: '#696969',
+                    linecolor: '#696969',
+                    tickfont: {
+                        family: 'Old Standard TT, serif',
+                        size: 14,
+                        color: 'white'
+                    },
+                },
+                yaxis2: {
+                    title: 'Vbat',
+                    gridcolor: '#696969',
+                    linecolor: '#696969',
+                    titlefont: {color: 'rgb(148, 103, 189)'},
+                    overlaying: 'y',
+                    side: 'right',
+                    tickfont: {
+                        family: 'Old Standard TT, serif',
+                        size: 14,
+                        color: 'white'
+                    },
+                }
+            };
+            Plotly.newPlot('line-chart', data, layout);
+        }
     </script>
 {% endblock javascripts %}

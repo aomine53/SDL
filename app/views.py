@@ -16,7 +16,7 @@ from app.operations import searchdata, getlivedata, getdevicedata
 
 @login_required(login_url="/login/")
 def index(request):
-    return render(request, "index.html")
+    return render(request, "indexsolar.html")
 
 @login_required(login_url="/login/")
 def get_live_data(request):
@@ -62,11 +62,11 @@ def get_archive_data(request):
                 newCelv.append(celv[i])
                 newEct.append(ect[i])
                 newEs.append(es[i])
-                if (edt[i + 1] - edt[i]) > timedelta(seconds=2):
+                if (edt[i + 1] - edt[i]) > timedelta(seconds=5):
                     difference = int(edt[i + 1].timestamp() - edt[i].timestamp())
                     # print(difference)
                     for sec in range(1, difference):
-                        temptimedate = edt[i] + timedelta(seconds=2)
+                        temptimedate = edt[i] + timedelta(seconds=5)
                         newtime.append(temptimedate.strftime('%Y-%m-%d %H:%M:%S%z'))
                         newVin.append(None)
                         newVbat.append(None)

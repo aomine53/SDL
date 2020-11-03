@@ -11,6 +11,7 @@ config = {
 def getdevicedata():
     slu = []
     mydb = mysql.connector.connect(**config)
+    mydb.time_zone = '+05:30'
     cursor = mydb.cursor()
     query = 'SELECT SLU FROM devices'
     cursor.execute(query)
@@ -25,6 +26,8 @@ def getdevicedata():
 
 def getlivedata():
     mydb = mysql.connector.connect(**config)
+    mydb.time_zone = '+05:30'
+
     cursor = mydb.cursor()
     datalist = []
     slulist = getdevicedata()
@@ -43,6 +46,8 @@ def getlivedata():
 
 def searchdata(start, end):
     mydb = mysql.connector.connect(**config)
+    mydb.time_zone = '+05:30'
+
     cursor = mydb.cursor()
     edt = []
     vin = []

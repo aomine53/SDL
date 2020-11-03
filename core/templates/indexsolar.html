@@ -24,11 +24,11 @@
     </style>
     <style>
         :root {
-            --text: "Select values";
+            --text: "Select Parameter";
         }
 
         .multiple_select {
-            height: 31.4px;
+            height: 35px;
             width: auto;
             overflow: hidden;
             -webkit-appearance: menulist;
@@ -42,6 +42,7 @@
             margin-left: 5px;
             margin-bottom: 2px;
             margin-right: 5px;
+            margin-top: 5px;
         }
 
         .multiple_select_active {
@@ -63,6 +64,95 @@
         }
 
         .multiple_select option:checked::before {
+            content: "\2611";
+        }
+    </style>
+    <style>
+        :root {
+            --text1: "Select Device";
+        }
+        .multiple_select1 {
+            height: 35px;
+            width: auto;
+            overflow: hidden;
+            -webkit-appearance: menulist;
+            position: absolute;
+            margin-left: 5px;
+        }
+
+        .multiple_select1::before {
+            content: var(--text1);
+            display: block;
+            margin-left: 5px;
+            margin-bottom: 2px;
+            margin-right: 5px;
+            margin-top: 5px;
+        }
+
+        .multiple_select_active1 {
+            overflow: visible !important;
+        }
+
+        .multiple_select1 option {
+            display: none;
+            height: 30px;
+            background-color: white;
+        }
+
+        .multiple_select_active1 option {
+            display: block;
+        }
+
+        .multiple_select1 option::before {
+            content: "\2610";
+        }
+
+        .multiple_select1 option:checked::before {
+            content: "\2611";
+        }
+    </style>
+    <style>
+        :root {
+            --text2: "Select WeatherC";
+        }
+
+        .multiple_select2 {
+            height: 35px;
+            width: auto;
+            overflow: hidden;
+            -webkit-appearance: menulist;
+            position: absolute;
+            margin-left: 5px;
+        }
+
+        .multiple_select2::before {
+            content: var(--text2);
+            display: block;
+            margin-left: 5px;
+            margin-bottom: 2px;
+            margin-right: 5px;
+            margin-top: 5px;
+        }
+
+        .multiple_select_active2 {
+            overflow: visible !important;
+        }
+
+        .multiple_select2 option {
+            display: none;
+            height: 30px;
+            background-color: white;
+        }
+
+        .multiple_select_active2 option {
+            display: block;
+        }
+
+        .multiple_select2 option::before {
+            content: "\2610";
+        }
+
+        .multiple_select2 option:checked::before {
             content: "\2611";
         }
     </style>
@@ -188,33 +278,14 @@
 
 {% block content %}
     <div class="row gap-20 masonry pos-r">
-        <div class="masonry-item  col-md-12">
-            <div class="p-20 mx-auto row" style="background-color: #313131;">
-                <div class=" col-sm-5 d-inline-block">
-                    <div class=" input-group date" id="datetimepicker1" data-target-input="nearest">
-                        <input type="text" id="fromdata" class="form-control datetimepicker-input"
-                               data-target="#datetimepicker1">
-                        <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-5 d-inline-block">
-                    <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                        <input type="text" id="todata" class="form-control datetimepicker-input"
-                               data-target="#datetimepicker2">
-                        <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-inline-block p-0 m-0">
-                    <button type="button" class="btn btn-primary mb-1 mr-2" onclick="get_archive_data()"><i
-                            class="fa fa-search"></i></button>
-                    <button type="button" class="btn btn-primary mb-1 " onclick="refreshdata()"><i
-                            class="fa fa-refresh"></i></button>
-                    {#                    <button type="button" class="btn btn-secondary mb-1 mr-2" onclick="chart.destroy()">Destroy!!#}
-                    {#                    </button>#}
+        <div class="masonry-item col-md-12">
+            <div class="bd p-10" style="background-color: #313131;">
+                <div class="layers" style="align-items: start;">
+                    <small style="color: #EC4a49">Inverter 5 Tripped</small>
+                    <small style="color: #eed202">Inverter 2 Temp High</small>
+                    <small style="color: #eed202">Batt SOC Low</small>
+                    <small style="color: #EC4a49">DG Fuel Low</small>
+                    <small style="color: #eed202">PR Low</small>
                 </div>
             </div>
         </div>
@@ -663,16 +734,54 @@
         {#            </div>#}
         <div class="masonry-item col-md-12">
             <div class="p-20 bd" style="background-color: #313131;">
-                <select id="myFilter" class="multiple_select minimal" multiple>
-                    <option>VIN</option>
-                    <option>VBAT</option>
-                    <option>SPDK</option>
-                    <option>TP</option>
-                    <option>APPD</option>
-                    <option>CELV</option>
-                    <option>ES</option>
-                    <option>ECT</option>
-                </select>
+                <div class="row" style="background-color: #313131;">
+                    <div class=" col-sm-2 d-inline-block">
+                        <div class=" input-group date" id="datetimepicker1" data-target-input="nearest">
+                            <input type="text" id="fromdata" class="form-control datetimepicker-input"
+                                   data-target="#datetimepicker1">
+                            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 d-inline-block">
+                        <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                            <input type="text" id="todata" class="form-control datetimepicker-input"
+                                   data-target="#datetimepicker2">
+                            <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-inline-block p-0 m-0">
+                        <button type="button" class="btn btn-primary mb-1 mr-2" onclick="get_archive_data()"><i
+                                class="fa fa-search"></i></button>
+                        <button type="button" class="btn btn-primary mb-1 " onclick="refreshdata()"><i
+                                class="fa fa-refresh"></i></button>
+                        {#                    <button type="button" class="btn btn-secondary mb-1 mr-2" onclick="chart.destroy()">Destroy!!#}
+                        {#                    </button>#}
+                        <select id="myFilter" class="multiple_select minimal" multiple style="margin-left: 20px;">
+                            <option>VIN</option>
+                            <option>VBAT</option>
+                            <option>SPDK</option>
+                            <option>TP</option>
+                            <option>APPD</option>
+                            <option>CELV</option>
+                            <option>ES</option>
+                            <option>ECT</option>
+
+                        </select>
+
+                        <select id="myFilter1" class="multiple_select1 minimal" multiple style="margin-left: 220px;">
+                            <option>$SLU355000082004871</option>
+                            <option>$SLU352353085992789</option>
+                            <option>$SLU862549047732402</option>
+                        </select>
+
+                        <select id="myFilter2" class="multiple_select2 minimal" multiple style="margin-left: 400px;">
+                        </select>
+                    </div>
+                </div>
                 <div class="mT-30">
                     <canvas id="area-chart" height="100" style="display: none; margin-top: 10px;"></canvas>
                     <canvas id="scatter-chart" height="100" style="display: block;margin-top: 10px;">
@@ -980,9 +1089,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@0.1.3/dist/chartjs-chart-matrix.min.js"></script>
     <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
     <script>
-        var xValues = ['0h', '1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', '10h', '11h', '12h', '13h', '14h', '15h', '16h', '17h', '18h', '19h', '20h', '21h', '22h', '23h'];
+        var xValues = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
 
-        var yValues = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7', 'Day8', 'Day9', 'Day10', 'Day11', 'Day12', 'Day13', 'Day14', 'Day15', 'Day16', 'Day17', 'Day18', 'Day19', 'Day20', 'Day21', 'Day22', 'Day23', 'Day24', 'Day25', 'Day26', 'Day27', 'Day28', 'Day29', 'Day30', 'Day31'];
+        var yValues = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
 
         var zValues = [
             [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 5, 0, 1, 2, 3],
@@ -1107,57 +1216,575 @@
 
         Plotly.newPlot('heatmap', data, layout);
     </script>
+    {#    <script>#}
+    {#        Plotly.d3.json('https://raw.githubusercontent.com/plotly/plotly.js/master/test/image/mocks/sankey_energy.json', function (fig) {#}
+    {##}
+    {#            var data = {#}
+    {#                type: "sankey",#}
+    {#                domain: {#}
+    {#                    x: [0, 1],#}
+    {#                    y: [0, 1]#}
+    {#                },#}
+    {#                orientation: "h",#}
+    {#                valueformat: ".0f",#}
+    {#                valuesuffix: "TWh",#}
+    {#                node: {#}
+    {#                    pad: 15,#}
+    {#                    thickness: 15,#}
+    {#                    line: {#}
+    {#                        color: "black",#}
+    {#                        width: 0.5#}
+    {#                    },#}
+    {#                    label: fig.data[0].node.label,#}
+    {#                    color: fig.data[0].node.color#}
+    {#                },#}
+    {##}
+    {#                link: {#}
+    {#                    source: fig.data[0].link.source,#}
+    {#                    target: fig.data[0].link.target,#}
+    {#                    value: fig.data[0].link.value,#}
+    {#                    label: fig.data[0].link.label#}
+    {#                }#}
+    {#            }#}
+    {##}
+    {##}
+    {#            var layout = {#}
+    {#                title: "Sankey Chart",#}
+    {#                width: 590,#}
+    {#                height: 500,#}
+    {#                font: {#}
+    {#                    size: 10#}
+    {#                },#}
+    {#                paper_bgcolor: '#313131',#}
+    {#                plot_bgcolor: 'rgba(0,0,0,0)',#}
+    {#                titlefont: {#}
+    {#                    family: 'Old Standard TT, serif',#}
+    {#                    size: 14,#}
+    {#                    color: 'white'#}
+    {#                },#}
+    {#            }#}
+    {#            Plotly.newPlot('sankey', data, layout2)#}
+    {#        });#}
+    {##}
+    {#    </script>#}
     <script>
-        Plotly.d3.json('https://raw.githubusercontent.com/plotly/plotly.js/master/test/image/mocks/sankey_energy.json', function (fig) {
-
-            var data = {
-                type: "sankey",
-                domain: {
-                    x: [0, 1],
-                    y: [0, 1]
+        var data2 = {
+            "type": "sankey",
+            "domain": {
+                "x": [
+                    0,
+                    1
+                ],
+                "y": [
+                    0,
+                    1
+                ]
+            },
+            "orientation": "h",
+            "valueformat": ".0f",
+            "valuesuffix": "TWh",
+            "node": {
+                "pad": 15,
+                "thickness": 15,
+                "line": {
+                    "color": "black",
+                    "width": 0.5
                 },
-                orientation: "h",
-                valueformat: ".0f",
-                valuesuffix: "TWh",
-                node: {
-                    pad: 15,
-                    thickness: 15,
-                    line: {
-                        color: "black",
-                        width: 0.5
-                    },
-                    label: fig.data[0].node.label,
-                    color: fig.data[0].node.color
-                },
-
-                link: {
-                    source: fig.data[0].link.source,
-                    target: fig.data[0].link.target,
-                    value: fig.data[0].link.value,
-                    label: fig.data[0].link.label
-                }
+                "label": [
+                    "Agricultural 'waste'",
+                    "Bio-conversion",
+                    "Liquid",
+                    "Losses",
+                    "Solid",
+                    "Gas",
+                    "Biofuel imports",
+                    "Biomass imports",
+                    "Coal imports",
+                    "Coal",
+                    "Coal reserves",
+                    "District heating",
+                    "Industry",
+                    "Heating and cooling - commercial",
+                    "Heating and cooling - homes",
+                    "Electricity grid",
+                    "Over generation / exports",
+                    "H2 conversion",
+                    "Road transport",
+                    "Agriculture",
+                    "Rail transport",
+                    "Lighting & appliances - commercial",
+                    "Lighting & appliances - homes",
+                    "Gas imports",
+                    "Ngas",
+                    "Gas reserves",
+                    "Thermal generation",
+                    "Geothermal",
+                    "H2",
+                    "Hydro",
+                    "International shipping",
+                    "Domestic aviation",
+                    "International aviation",
+                    "National navigation",
+                    "Marine algae",
+                    "Nuclear",
+                    "Oil imports",
+                    "Oil",
+                    "Oil reserves",
+                    "Other waste",
+                    "Pumped heat",
+                    "Solar PV",
+                    "Solar Thermal",
+                    "Solar",
+                    "Tidal",
+                    "UK land based bioenergy",
+                    "Wave",
+                    "Wind"
+                ],
+                "color": [
+                    "rgba(31, 119, 180, 0.8)",
+                    "rgba(255, 127, 14, 0.8)",
+                    "rgba(44, 160, 44, 0.8)",
+                    "rgba(214, 39, 40, 0.8)",
+                    "rgba(148, 103, 189, 0.8)",
+                    "rgba(140, 86, 75, 0.8)",
+                    "rgba(227, 119, 194, 0.8)",
+                    "rgba(127, 127, 127, 0.8)",
+                    "rgba(188, 189, 34, 0.8)",
+                    "rgba(23, 190, 207, 0.8)",
+                    "rgba(31, 119, 180, 0.8)",
+                    "rgba(255, 127, 14, 0.8)",
+                    "rgba(44, 160, 44, 0.8)",
+                    "rgba(214, 39, 40, 0.8)",
+                    "rgba(148, 103, 189, 0.8)",
+                    "rgba(140, 86, 75, 0.8)",
+                    "rgba(227, 119, 194, 0.8)",
+                    "rgba(127, 127, 127, 0.8)",
+                    "rgba(188, 189, 34, 0.8)",
+                    "rgba(23, 190, 207, 0.8)",
+                    "rgba(31, 119, 180, 0.8)",
+                    "rgba(255, 127, 14, 0.8)",
+                    "rgba(44, 160, 44, 0.8)",
+                    "rgba(214, 39, 40, 0.8)",
+                    "rgba(148, 103, 189, 0.8)",
+                    "rgba(140, 86, 75, 0.8)",
+                    "rgba(227, 119, 194, 0.8)",
+                    "rgba(127, 127, 127, 0.8)",
+                    "rgba(188, 189, 34, 0.8)",
+                    "rgba(23, 190, 207, 0.8)",
+                    "rgba(31, 119, 180, 0.8)",
+                    "rgba(255, 127, 14, 0.8)",
+                    "rgba(44, 160, 44, 0.8)",
+                    "rgba(214, 39, 40, 0.8)",
+                    "rgba(148, 103, 189, 0.8)",
+                    "magenta",
+                    "rgba(227, 119, 194, 0.8)",
+                    "rgba(127, 127, 127, 0.8)",
+                    "rgba(188, 189, 34, 0.8)",
+                    "rgba(23, 190, 207, 0.8)",
+                    "rgba(31, 119, 180, 0.8)",
+                    "rgba(255, 127, 14, 0.8)",
+                    "rgba(44, 160, 44, 0.8)",
+                    "rgba(214, 39, 40, 0.8)",
+                    "rgba(148, 103, 189, 0.8)",
+                    "rgba(140, 86, 75, 0.8)",
+                    "rgba(227, 119, 194, 0.8)",
+                    "rgba(127, 127, 127, 0.8)"]
+            },
+            "link": {
+                "source": [
+                    8,
+                    10,
+                    9,
+                    15,
+                    15,
+                    15,
+                    15,
+                    15,
+                    15,
+                    15,
+                    15,
+                    15,
+                    15,
+                    15,
+                    23,
+                    25,
+                    5,
+                    5,
+                    5,
+                    5,
+                    5,
+                    27,
+                    28,
+                    29,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    24,
+                    35,
+                    35,
+                    36,
+                    38,
+                    37,
+                    40,
+                    40,
+                    41,
+                    42,
+                    43,
+                    43,
+                    4,
+                    4,
+                    4,
+                    26,
+                    26,
+                    26,
+                    47,
+                    35,
+                    35
+                ],
+                "target": [
+                    9,
+                    9,
+                    4,
+                    16,
+                    14,
+                    17,
+                    12,
+                    18,
+                    19,
+                    13,
+                    3,
+                    20,
+                    21,
+                    22,
+                    24,
+                    24,
+                    13,
+                    3,
+                    26,
+                    19,
+                    12,
+                    15,
+                    18,
+                    15,
+                    12,
+                    30,
+                    18,
+                    31,
+                    32,
+                    19,
+                    33,
+                    20,
+                    5,
+                    26,
+                    26,
+                    37,
+                    37,
+                    2,
+                    14,
+                    13,
+                    15,
+                    14,
+                    42,
+                    41,
+                    19,
+                    26,
+                    12,
+                    15,
+                    3,
+                    11,
+                    15,
+                    26,
+                    26
+                ],
+                "value": [
+                    11.606,
+                    63.965,
+                    75.571,
+                    104.453,
+                    113.726,
+                    27.14,
+                    342.165,
+                    37.797,
+                    4.412,
+                    40.858,
+                    56.691,
+                    7.863,
+                    90.008,
+                    93.494,
+                    40.719,
+                    82.233,
+                    0.129,
+                    1.401,
+                    151.891,
+                    2.096,
+                    48.58,
+                    7.013,
+                    20.897,
+                    6.995,
+                    121.066,
+                    128.69,
+                    135.835,
+                    14.458,
+                    206.267,
+                    3.64,
+                    33.218,
+                    4.413,
+                    122.952,
+                    500,
+                    139.978,
+                    504.287,
+                    107.703,
+                    611.99,
+                    193.026,
+                    70.672,
+                    59.901,
+                    19.263,
+                    19.263,
+                    59.901,
+                    0.882,
+                    400.12,
+                    46.477,
+                    525.531,
+                    787.129,
+                    79.329,
+                    289.366,
+                    100,
+                    100
+                ],
+                "color": [
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(33,102,172,0.35)",
+                    "rgba(178,24,43,0.35)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "lightgreen",
+                    "goldenrod"
+                ],
+                "label": [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "stream 1",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "Old generation plant (made-up)",
+                    "New generation plant (made-up)",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                ]
             }
-
-            var data = [data]
-
-            var layout = {
-                title: "Sankey Chart",
-                width: 590,
-                height: 500,
-                font: {
-                    size: 10
-                },
-                paper_bgcolor: '#313131',
-                plot_bgcolor: 'rgba(0,0,0,0)',
-                titlefont: {
-                    family: 'Old Standard TT, serif',
-                    size: 14,
-                    color: 'white'
-                },
-            }
-            Plotly.newPlot('sankey', data, layout)
-        });
-
+        }
+        var data = [data2]
+        var layout2 = {
+            "title": {"text": "Sankey Chart"},
+            "width": 590,
+            "height": 500,
+            "font": {
+                "size": 10,
+            },
+            titlefont: {
+                family: 'Old Standard TT, serif',
+                size: 14,
+                color: 'white'
+            },
+            {#paper_bgcolor: '#313131',#}
+            {#plot_bgcolor: 'rgba(0,0,0,0)',#}
+            {#"updatemenus": [#}
+            {#    {#}
+            {#        "y": 1,#}
+            {#        "buttons": [#}
+            {#            {#}
+            {#                "label": "Light",#}
+            {#                "method": "relayout",#}
+            {#                "args": ["paper_bgcolor", "white"]#}
+            {#            },#}
+            {#            {#}
+            {#                "label": "Dark",#}
+            {#                "method": "relayout",#}
+            {#                "args": ["paper_bgcolor", "black"]#}
+            {#            }#}
+            {#        ]#}
+            {#    },#}
+            {#    {#}
+            {#        "y": 0.9,#}
+            {#        "buttons": [#}
+            {#            {#}
+            {#                "label": "Thick",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["node.thickness", 15]#}
+            {#            },#}
+            {#            {#}
+            {#                "label": "Thin",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["node.thickness", 8]#}
+            {#            }#}
+            {#        ]#}
+            {#    },#}
+            {#    {#}
+            {#        "y": 0.8,#}
+            {#        "buttons": [#}
+            {#            {#}
+            {#                "label": "Small gap",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["node.pad", 15]#}
+            {#            },#}
+            {#            {#}
+            {#                "label": "Large gap",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["node.pad", 20]#}
+            {#            }#}
+            {#        ]#}
+            {#    },#}
+            {#    {#}
+            {#        "y": 0.7,#}
+            {#        "buttons": [#}
+            {#            {#}
+            {#                "label": "Snap",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["arrangement", "snap"]#}
+            {#            },#}
+            {#            {#}
+            {#                "label": "Perpendicular",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["arrangement", "perpendicular"]#}
+            {#            },#}
+            {#            {#}
+            {#                "label": "Freeform",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["arrangement", "freeform"]#}
+            {#            },#}
+            {#            {#}
+            {#                "label": "Fixed",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["arrangement", "fixed"]#}
+            {#            }#}
+            {#        ]#}
+            {#    },#}
+            {#    {#}
+            {#        "y": 0.6,#}
+            {#        "buttons": [#}
+            {#            {#}
+            {#                "label": "Horizontal",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["orientation", "h"]#}
+            {#            },#}
+            {#            {#}
+            {#                "label": "Vertical",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["orientation", "v"]#}
+            {#            }#}
+            {#        ]#}
+            {#    }#}
+            {#]#}
+        }
+        Plotly.newPlot('sankey', data, layout2)
     </script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-crosshair@1"></script>
@@ -1648,8 +2275,6 @@
             $(this).prop('selected', $(this).prop('selected') ? false : true); //set selected options on click
             $(this).parent().change(); //trigger change event
         });
-
-
         $("#myFilter").on('change', function () {
             var selected = $("#myFilter").val(); //here I get all options and convert to string
             console.log(selected)
@@ -1659,6 +2284,61 @@
                 document_style.setProperty('--text', "'Selected: " + selected + "'");
             } else
                 document_style.setProperty('--text', "'Select values'");
+        })
+
+    </script>
+    <script>
+        $(".multiple_select1").mousedown(function (e) {
+            if (e.target.tagName == "OPTION") {
+                return; //don't close dropdown if i select option
+            }
+            $(this).toggleClass('multiple_select_active1'); //close dropdown if click inside <select> box
+        });
+        $(".multiple_select1").on('blur', function (e) {
+            $(this).removeClass('multiple_select_active1'); //close dropdown if click outside <select>
+        });
+
+        $('.multiple_select1 option').mousedown(function (e) { //no ctrl to select multiple
+            e.preventDefault();
+            $(this).prop('selected', $(this).prop('selected') ? false : true); //set selected options on click
+            $(this).parent().change(); //trigger change event
+        });
+        $("#myFilter1").on('change', function () {
+            var selected1 = $("#myFilter1").val(); //here I get all options and convert to string
+            console.log(selected1)
+           // addds(selected1)
+            var document_style1 = document.documentElement.style;
+            if (selected1 !== "") {
+                document_style1.setProperty('--text1', "'Selected: " + selected1 + "'");
+            } else
+                document_style1.setProperty('--text1', "'Select values'");
+        })
+    </script>
+    <script>
+        $(".multiple_select2").mousedown(function (e) {
+            if (e.target.tagName == "OPTION") {
+                return; //don't close dropdown if i select option
+            }
+            $(this).toggleClass('multiple_select_active2'); //close dropdown if click inside <select> box
+        });
+        $(".multiple_select2").on('blur', function (e) {
+            $(this).removeClass('multiple_select_active2'); //close dropdown if click outside <select>
+        });
+
+        $('.multiple_select2 option').mousedown(function (e) { //no ctrl to select multiple
+            e.preventDefault();
+            $(this).prop('selected', $(this).prop('selected') ? false : true); //set selected options on click
+            $(this).parent().change(); //trigger change event
+        });
+        $("#myFilter2").on('change', function () {
+            var selected2 = $("#myFilter2").val(); //here I get all options and convert to string
+            console.log(selected2)
+           // addds(selected2)
+            var document_style2 = document.documentElement.style;
+            if (selected2 !== "") {
+                document_style2.setProperty('--text2', "'Selected: " + selected2 + "'");
+            } else
+                document_style2.setProperty('--text2', "'Select values'");
         })
     </script>
 {% endblock javascripts %}
