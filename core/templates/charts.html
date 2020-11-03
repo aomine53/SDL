@@ -1023,8 +1023,10 @@
                 }
             }
         };
+         console.log(config)
         var chart1 = new Chart(ctx, config)
         console.log(chart1)
+        console.log(config)
         let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]
         let unit = ["Volt", "Volt", "Kmph", "", "", "", "", ""]
         var colorNames = Object.keys(chartColors);
@@ -1163,8 +1165,8 @@
                 type: 'scatter'
             }
         ];
-        var config = {responsive: true}
-        Plotly.newPlot('line-chart', data, config);
+        var config1 = {responsive: true}
+        Plotly.newPlot('line-chart', data, config1);
 
         function adjustValue1(value) {
             var newd =

@@ -2164,7 +2164,7 @@
         var colorNames = Object.keys(chartColors);
 
         function addDatasets1(index) {
-            var colorName = colorNames[config.data.datasets.length % colorNames.length];
+            var colorName = colorNames[chart1.config.data.datasets.length % colorNames.length];
             var newColor = chartColors[colorName];
             var newDataset = {
                 label: lab[index],
