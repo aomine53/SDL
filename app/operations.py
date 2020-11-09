@@ -17,8 +17,8 @@ def getdevicedata():
     cursor.execute(query)
     # print(dir(cursor))
     # slu = cursor.fetchall()
-    for SLU in cursor:
-        slu.append(SLU[0])
+    for SLU, in cursor:
+        slu.append(SLU)
     cursor.close()
     mydb.close()
     return slu
@@ -75,6 +75,52 @@ def searchdata(start, end):
     mydb.close()
     return edt, vin, vbat, appd, tp, spdk, celv, ect, es
 
+
+def getreport():
+    mydb = mysql.connector.connect(**config)
+    mydb.time_zone = '+05:30'
+    Report = []
+    cursor = mydb.cursor()
+    query = "SELECT TRIPID,STARTEDT,ENDEDT,STARTLAT,ENDLAT,STARTLNG,ENDLNG,STARTODO,ENDODO FROM " \
+            "$SLU355000082004871report "
+    cursor.execute(query)
+    for tripid, startedt, endedt, startlat, endlat, startlng, endlng, startodo, endodo in cursor:
+        record = {
+            "TripID": tripid,
+            "StartTime": startedt,
+            "EndTime": endedt,
+            'StartLAT': startlat,
+            'EndLAT': endlat,
+            'StartLNG': startlng,
+            'EndLNG': endlng,
+            'Distance': endodo - startodo
+        }
+        Report.append(record)
+    return Report
+
+
+if __name__ == "__main__":
+    print(getreport())
+# def getparameters():
+#     mydb = mysql.connector.connect(**config)
+#     mydb.time_zone = '+05:30'
+#     cursor = mydb.cursor()
+#     slulist = getdevicedata()
+#     print(slulist)
+#     paralist = []
+#     for slu in slulist:
+#         query = f"SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='mytestdb' AND `TABLE_NAME`= '{slu}'"
+#         cursor.execute(query)
+#         paralist1 = [i[0] for i in cursor.fetchall()]
+#         paralist.append(paralist1)
+#
+#     #print(cursor.fetchall())
+#     print(paralist)
+#     cursor.close()
+#     mydb.close()
+#
+#
+# getparameters()
 # searchdata("2020-10-09 21:36:00","2020-10-09 21:37:00")
 # print(type(getdevicedata()))
 # print(getdevicedata())
