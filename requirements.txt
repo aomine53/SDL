@@ -11,3 +11,4 @@ gunicorn
 whitenoise
 mysql-connector-python
 mysqlclient
+mapbox

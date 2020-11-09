@@ -1,4 +1,6 @@
 import mysql.connector
+from mapbox import Geocoder
+from datetime import datetime
 
 config = {
     "user": 'mmlink',
@@ -76,7 +78,21 @@ def searchdata(start, end):
     return edt, vin, vbat, appd, tp, spdk, celv, ect, es
 
 
+def geocoding_reverse(lat, lng, geocoder):
+    response = geocoder.reverse(lat=lat, lon=lng, limit=1, types=['poi'])
+    if response.status_code == 200:
+        features = response.geojson()['features']
+        if len(features) == 0:
+            return "poi not found"
+        place_name = "{place_name}".format(**features[0])
+        return place_name
+
+    return "api error"
+
+
 def getreport():
+    geocoder = Geocoder(
+        access_token="pk.eyJ1IjoibWFjaGluZW1hdGgiLCJhIjoiY2toYXFkZmhpMTZubDJybzgwYjkxMWxlbyJ9.UFsD4WU_yE_MVXnTEJbnfA")
     mydb = mysql.connector.connect(**config)
     mydb.time_zone = '+05:30'
     Report = []
@@ -85,14 +101,13 @@ def getreport():
             "$SLU355000082004871report "
     cursor.execute(query)
     for tripid, startedt, endedt, startlat, endlat, startlng, endlng, startodo, endodo in cursor:
+        print(tripid)
         record = {
             "TripID": tripid,
-            "StartTime": startedt,
-            "EndTime": endedt,
-            'StartLAT': startlat,
-            'EndLAT': endlat,
-            'StartLNG': startlng,
-            'EndLNG': endlng,
+            "StartTime": startedt.strftime('%Y-%m-%d %H:%M:%S'),
+            "EndTime": endedt.strftime('%Y-%m-%d %H:%M:%S'),
+            'StartAddress': geocoding_reverse(startlat, startlng, geocoder),
+            'EndAddress': geocoding_reverse(endlat, endlng, geocoder),
             'Distance': endodo - startodo
         }
         Report.append(record)
@@ -100,6 +115,9 @@ def getreport():
 
 
 if __name__ == "__main__":
+    geocoder = Geocoder(
+        access_token="pk.eyJ1IjoibWFjaGluZW1hdGgiLCJhIjoiY2toYXFkZmhpMTZubDJybzgwYjkxMWxlbyJ9.UFsD4WU_yE_MVXnTEJbnfA")
+    print(geocoding_reverse(18.4463, 73.81612, geocoder))
     print(getreport())
 # def getparameters():
 #     mydb = mysql.connector.connect(**config)
