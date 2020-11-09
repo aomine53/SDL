@@ -113,7 +113,7 @@
     </style>
     <style>
         :root {
-            --text2: "Select WeatherC";
+            --text2: "Weather Parameter";
         }
 
         .multiple_select2 {
@@ -760,7 +760,7 @@
                                 class="fa fa-refresh"></i></button>
                         {#                    <button type="button" class="btn btn-secondary mb-1 mr-2" onclick="chart.destroy()">Destroy!!#}
                         {#                    </button>#}
-                        <select id="myFilter" class="multiple_select minimal" multiple style="margin-left: 400px;">
+                        <select id="myFilter" class="multiple_select minimal" multiple style="margin-left: 200px;">
                             <option>VIN</option>
                             <option>VBAT</option>
                             <option>SPDK</option>
@@ -778,7 +778,14 @@
                             <option>$SLU862549047732402</option>
                         </select>
 
-                        <select id="myFilter2" class="multiple_select2 minimal" multiple style="margin-left: 200px;">
+                        <select id="myFilter2" class="multiple_select2 minimal" multiple style="margin-left: 400px;">
+                            <option>Irradiance</option>
+                            <option>Ambient Temperature</option>
+                            <option>Module Temperature</option>
+                            <option>Wind Speed</option>
+                            <option>Wind Direction</option>
+                            <option>Humidity</option>
+                            <option>Rain</option>
                         </select>
                     </div>
                 </div>

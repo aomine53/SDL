@@ -11,12 +11,13 @@ from django import template
 from django.db import connection
 from datetime import datetime, timedelta
 import pytz
-from app.operations import searchdata, getlivedata, getdevicedata
+from app.operations import searchdata, getlivedata, getdevicedata, getreport
 
 
 @login_required(login_url="/login/")
 def index(request):
     return render(request, "indexsolar.html")
+
 
 @login_required(login_url="/login/")
 def get_live_data(request):
@@ -31,6 +32,7 @@ def get_live_data(request):
 
     cont = {"data": dataobj}
     return JsonResponse(cont)
+
 
 @login_required(login_url="/login/")
 def get_archive_data(request):
@@ -94,6 +96,13 @@ def get_archive_data(request):
     else:
         html_template = loader.get_template('page-404.html')
         return HttpResponse(html_template.render(context, request))
+
+
+@login_required(login_url="/login/")
+def GetReport(request):
+    context = {"data": getreport()}
+
+    return JsonResponse(context)
 
 
 @login_required(login_url="/login/")

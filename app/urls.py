@@ -12,6 +12,7 @@ urlpatterns = [
     path('', views.index, name='home'),
     path('api/data/live', views.get_live_data, name='api-data'),
     path('api/data/archive', views.get_archive_data, name="archive"),
+    path('api/data/report', views.GetReport, name="report"),
     # Matches any html file
     re_path(r'^.*\.*', views.pages, name='pages'),
 
