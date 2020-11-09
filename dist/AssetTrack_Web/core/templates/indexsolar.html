@@ -1,0 +1,2748 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE  -->
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css"
+          integrity="sha512-PMjWzHVtwxdq7m7GIxBot5vdxUY+5aKP9wpKtvnNBZrVv1srI8tU6xvFMzG8crLNcMj/8Xl/WWmo/oAP/40p1g=="
+          crossorigin="anonymous"/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <style>
+        .btn:hover {
+            background-color: RoyalBlue;
+        }
+    </style>
+    <style>
+        :root {
+            --text: "Select Parameter";
+        }
+
+        .multiple_select {
+            height: 35px;
+            width: auto;
+            overflow: hidden;
+            -webkit-appearance: menulist;
+            position: absolute;
+            margin-left: 5px;
+        }
+
+        .multiple_select::before {
+            content: var(--text);
+            display: block;
+            margin-left: 5px;
+            margin-bottom: 2px;
+            margin-right: 5px;
+            margin-top: 5px;
+        }
+
+        .multiple_select_active {
+            overflow: visible !important;
+        }
+
+        .multiple_select option {
+            display: none;
+            height: 30px;
+            background-color: white;
+        }
+
+        .multiple_select_active option {
+            display: block;
+        }
+
+        .multiple_select option::before {
+            content: "\2610";
+        }
+
+        .multiple_select option:checked::before {
+            content: "\2611";
+        }
+    </style>
+    <style>
+        :root {
+            --text1: "Select Device";
+        }
+        .multiple_select1 {
+            height: 35px;
+            width: auto;
+            overflow: hidden;
+            -webkit-appearance: menulist;
+            position: absolute;
+            margin-left: 5px;
+        }
+
+        .multiple_select1::before {
+            content: var(--text1);
+            display: block;
+            margin-left: 5px;
+            margin-bottom: 2px;
+            margin-right: 5px;
+            margin-top: 5px;
+        }
+
+        .multiple_select_active1 {
+            overflow: visible !important;
+        }
+
+        .multiple_select1 option {
+            display: none;
+            height: 30px;
+            background-color: white;
+        }
+
+        .multiple_select_active1 option {
+            display: block;
+        }
+
+        .multiple_select1 option::before {
+            content: "\2610";
+        }
+
+        .multiple_select1 option:checked::before {
+            content: "\2611";
+        }
+    </style>
+    <style>
+        :root {
+            --text2: "Weather Parameter";
+        }
+
+        .multiple_select2 {
+            height: 35px;
+            width: auto;
+            overflow: hidden;
+            -webkit-appearance: menulist;
+            position: absolute;
+            margin-left: 5px;
+        }
+
+        .multiple_select2::before {
+            content: var(--text2);
+            display: block;
+            margin-left: 5px;
+            margin-bottom: 2px;
+            margin-right: 5px;
+            margin-top: 5px;
+        }
+
+        .multiple_select_active2 {
+            overflow: visible !important;
+        }
+
+        .multiple_select2 option {
+            display: none;
+            height: 30px;
+            background-color: white;
+        }
+
+        .multiple_select_active2 option {
+            display: block;
+        }
+
+        .multiple_select2 option::before {
+            content: "\2610";
+        }
+
+        .multiple_select2 option:checked::before {
+            content: "\2611";
+        }
+    </style>
+    <style>
+        select {
+
+            /* styling */
+            background-color: white;
+            border: thin solid blue;
+            border-radius: 4px;
+            display: inline-block;
+            font: inherit;
+            line-height: 1.5em;
+            padding-right: 3.5em;
+            padding-left: 1em;
+            padding-top: 0.1em;
+            /* reset */
+
+            margin: 0;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+
+        /* arrows */
+
+        select.classic {
+            background-image: linear-gradient(45deg, transparent 50%, blue 50%),
+            linear-gradient(135deg, blue 50%, transparent 50%),
+            linear-gradient(to right, skyblue, skyblue);
+            background-position: calc(100% - 20px) calc(1em + 2px),
+            calc(100% - 15px) calc(1em + 2px),
+            100% 0;
+            background-size: 5px 5px,
+            5px 5px,
+            2.5em 2.5em;
+            background-repeat: no-repeat;
+        }
+
+        select.classic:focus {
+            background-image: linear-gradient(45deg, white 50%, transparent 50%),
+            linear-gradient(135deg, transparent 50%, white 50%),
+            linear-gradient(to right, gray, gray);
+            background-position: calc(100% - 15px) 1em,
+            calc(100% - 20px) 1em,
+            100% 0;
+            background-size: 5px 5px,
+            5px 5px,
+            2.5em 2.5em;
+            background-repeat: no-repeat;
+            border-color: grey;
+            outline: 0;
+        }
+
+
+        select.round {
+            background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+            linear-gradient(135deg, gray 50%, transparent 50%),
+            radial-gradient(#ddd 70%, transparent 72%);
+            background-position: calc(100% - 20px) calc(1em + 2px),
+            calc(100% - 15px) calc(1em + 2px),
+            calc(100% - .5em) .5em;
+            background-size: 5px 5px,
+            5px 5px,
+            1.5em 1.5em;
+            background-repeat: no-repeat;
+        }
+
+        select.round:focus {
+            background-image: linear-gradient(45deg, white 50%, transparent 50%),
+            linear-gradient(135deg, transparent 50%, white 50%),
+            radial-gradient(gray 70%, transparent 72%);
+            background-position: calc(100% - 15px) 1em,
+            calc(100% - 20px) 1em,
+            calc(100% - .5em) .5em;
+            background-size: 5px 5px,
+            5px 5px,
+            1.5em 1.5em;
+            background-repeat: no-repeat;
+            border-color: green;
+            outline: 0;
+        }
+
+
+        select.minimal {
+            background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+            linear-gradient(135deg, gray 50%, transparent 50%),
+            linear-gradient(to right, #ccc, #ccc);
+            background-position: calc(100% - 20px) calc(1em + 2px),
+            calc(100% - 15px) calc(1em + 2px),
+            calc(100% - 2.5em) 0.5em;
+            background-size: 5px 5px,
+            5px 5px,
+            1px 1.5em;
+            background-repeat: no-repeat;
+        }
+
+        select.minimal:focus {
+            background-image: linear-gradient(45deg, green 50%, transparent 50%),
+            linear-gradient(135deg, transparent 50%, green 50%),
+            linear-gradient(to right, #ccc, #ccc);
+            background-position: calc(100% - 15px) 1em,
+            calc(100% - 20px) 1em,
+            calc(100% - 2.5em) 0.5em;
+            background-size: 5px 5px,
+            5px 5px,
+            1px 1.5em;
+            background-repeat: no-repeat;
+            border-color: green;
+            outline: 0;
+        }
+
+
+        select:-moz-focusring {
+            color: transparent;
+            text-shadow: 0 0 0 #000;
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block content %}
+    <div class="row gap-20 masonry pos-r">
+        <div class="masonry-item col-md-12">
+            <div class="bd p-10" style="background-color: #313131;">
+                <div class="layers" style="align-items: start;">
+                    <small style="color: #EC4a49">Inverter 5 Tripped</small>
+                    <small style="color: #eed202">Inverter 2 Temp High</small>
+                    <small style="color: #eed202">Batt SOC Low</small>
+                    <small style="color: #EC4a49">DG Fuel Low</small>
+                    <small style="color: #eed202">PR Low</small>
+                </div>
+            </div>
+        </div>
+        <div class="masonry-sizer col-md-6"></div>
+        <div class="masonry-item w-100">
+            <div class="row gap-20">
+                <!-- #Toatl Visits ==================== -->
+                <div class="col-md-2">
+                    <div class="layers bd p-20" style="background-color: #313131;">
+                        <div class="layer w-100 mB-10">
+                            <h6 class="lh-1" style="color: white;">Consumption</h6>
+                        </div>
+                        <div class="layer w-100">
+                            <div class="peers ai-sb fxw-nw">
+                                <div class="peer peer-greed">
+                                    <span id="sparklinedash"></span>
+                                </div>
+                                <div class="peer">
+                                    <span id="rno"
+                                          class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50 c-green-500">00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- #Total Page Views ==================== -->
+                <div class="col-md-2">
+                    <div class="layers bd p-20" style="background-color: #313131;">
+                        <div class="layer w-100 mB-10">
+                            <h6 class="lh-1">Solar Generation</h6>
+                        </div>
+                        <div class="layer w-100">
+                            <div class="peers ai-sb fxw-nw">
+                                <div class="peer peer-greed">
+                                    <span id="sparklinedash2"></span>
+                                </div>
+                                <div class="peer">
+                                    <span id="vbat"
+                                          class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500">-7%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- #Unique Visitors ==================== -->
+                <div class="col-md-2">
+                    <div class="layers bd p-20" style="background-color: #313131;">
+                        <div class="layer w-100 mB-10">
+                            <h6 class="lh-1">Export to grid</h6>
+                        </div>
+                        <div class="layer w-100">
+                            <div class="peers ai-sb fxw-nw">
+                                <div class="peer peer-greed">
+                                    <span id="sparklinedash3"></span>
+                                </div>
+                                <div class="peer">
+                                    <span id="vin"
+                                          class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-purple-50 c-purple-500">~12%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- #Bounce Rate ==================== -->
+                <div class="col-md-2">
+                    <div class="layers bd p-20" style="background-color: #313131;">
+                        <div class="layer w-100 mB-10">
+                            <h6 class="lh-1">Import From Grid</h6>
+                        </div>
+                        <div class="layer w-100">
+                            <div class="peers ai-sb fxw-nw">
+                                <div class="peer peer-greed">
+                                    <span id="sparklinedash4"></span>
+                                </div>
+                                <div class="peer">
+                                    <span id="spdk"
+                                          class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-50 c-blue-500">33%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="layers bd p-20" style="background-color: #313131;">
+                        <div class="layer w-100 mB-10">
+                            <h6 class="lh-1">Battery</h6>
+                        </div>
+                        <div class="layer w-100">
+                            <div class="peers ai-sb fxw-nw">
+                                <div class="peer peer-greed">
+                                    <span id="sparklinedash4"></span>
+                                </div>
+                                <div class="peer">
+                                    <large><strong>±</strong></large>
+                                    <span id="spdk"
+                                          class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-50 c-blue-500">33</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-2">
+                    <div class="layers bd p-20" style="background-color: #313131;">
+                        <div class="layer w-100 mB-10">
+                            <h6 class="lh-1">Import From DG</h6>
+                        </div>
+                        <div class="layer w-100">
+                            <div class="peers ai-sb fxw-nw">
+                                <div class="peer peer-greed">
+                                    <span id="sparklinedash4"></span>
+                                </div>
+                                <div class="peer">
+                                    <span id="spdk"
+                                          class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-50 c-blue-500">33%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="masonry-item col-12">
+            <!-- #Site Visits ==================== -->
+            <div class="bd" style="background-color: #313131;">
+                <div class="peers fxw-nw@lg+ ai-s">
+                    <div class="peer peer-greed w-70p@lg+ w-100@lg- p-20">
+                        <div class="layers">
+                            <div class="layer w-100">
+                                <div id="mymapid" style="
+                                     height:500px ;
+                                     position: sticky;
+                                     overflow: hidden;
+                                     background-color: transparent;
+                                ">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="peer bdL p-20 w-30p@lg+ w-100p@lg-">
+                        <!-- #Weather ==================== -->
+                        <div class="bd" style="background-color: #313131;">
+                            <div class="layers">
+                                <!-- Widget Title -->
+
+
+                                <!-- Today Weather -->
+                                <div class="layer w-100">
+                                    <div class="peers ai-c jc-sb fxw-nw">
+                                        <div class="peer peer-greed">
+                                            <div class="layers">
+                                                <!-- Temprature -->
+                                                <div class="layer w-100">
+                                                    <div class="peers fxw-nw ai-c">
+                                                        <div class="peer mR-20">
+                                                            <h3>32<sup>°F</sup></h3>
+                                                        </div>
+                                                        <div class="peer">
+                                                            <canvas class="sleet" width="44" height="44"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Condition -->
+                                                <div class="layer w-100">
+                                                    <span class="fw-600 c-grey-600">Partly Clouds</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="peer">
+                                            <div class="layers ai-fe">
+                                                <div class="layer">
+                                                    <h5 class="mB-5">Monday</h5>
+                                                </div>
+                                                <div class="layer">
+                                                    <span class="fw-600 c-grey-600">Nov, 01 2017</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Today Weather Extended -->
+                                <div class="layer w-100 mY-30">
+                                    <div class="layers bdB">
+                                        <div class="layer w-100 bdT pY-5">
+                                            <div class="peers ai-c jc-sb fxw-nw">
+                                                <div class="peer">
+                                                    <span>Sunrise</span>
+                                                </div>
+                                                <div class="peer ta-r">
+                                                    <span class="fw-600 c-grey-800">05:00 AM</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layer w-100 bdT pY-5">
+                                            <div class="peers ai-c jc-sb fxw-nw">
+                                                <div class="peer">
+                                                    <span>Sunset</span>
+                                                </div>
+                                                <div class="peer ta-r">
+                                                    <span class="fw-600 c-grey-800">06:00 PM</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layer w-100 bdT pY-5">
+                                            <div class="peers ai-c jc-sb fxw-nw">
+                                                <div class="peer">
+                                                    <span>Irradiance</span>
+                                                </div>
+                                                <div class="peer ta-r">
+                                                    <span class="fw-600 c-grey-800">10 Wb/m<sup>2</sup></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layer w-100 bdT pY-5">
+                                            <div class="peers ai-c jc-sb fxw-nw">
+                                                <div class="peer">
+                                                    <span>Ambient Temperature</span>
+                                                </div>
+                                                <div class="peer ta-r">
+                                                    <span class="fw-600 c-grey-800">10 ℃</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layer w-100 bdT pY-5">
+                                            <div class="peers ai-c jc-sb fxw-nw">
+                                                <div class="peer">
+                                                    <span>Module Temperature</span>
+                                                </div>
+                                                <div class="peer ta-r">
+                                                    <span class="fw-600 c-grey-800">10 ℃</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layer w-100 bdT pY-5">
+                                            <div class="peers ai-c jc-sb fxw-nw">
+                                                <div class="peer">
+                                                    <span>Wind Speed</span>
+                                                </div>
+                                                <div class="peer ta-r">
+                                                    <span class="fw-600 c-grey-800">10km/h</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layer w-100 bdT pY-5">
+                                            <div class="peers ai-c jc-sb fxw-nw">
+                                                <div class="peer">
+                                                    <span>Wind Direction</span>
+                                                </div>
+                                                <div class="peer ta-r">
+                                                    <span class="fw-600 c-grey-800">10°</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="layer w-100 bdT pY-5">
+                                            <div class="peers ai-c jc-sb fxw-nw">
+                                                <div class="peer">
+                                                    <span>Humidity</span>
+                                                </div>
+                                                <div class="peer ta-r">
+                                                    <span class="fw-600 c-grey-800">10%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Week Forecast -->
+                                <div class="layer w-100">
+                                    <div class="peers peers-greed ai-fs ta-c">
+                                        <div class="peer">
+                                            <h6 class="mB-10">MON</h6>
+                                            <canvas class="sleet" width="30" height="30"></canvas>
+                                            <span class="d-b fw-600">32<sup>°F</sup></span>
+                                        </div>
+                                        <div class="peer">
+                                            <h6 class="mB-10">TUE</h6>
+                                            <canvas class="clear-day" width="30" height="30"></canvas>
+                                            <span class="d-b fw-600">30<sup>°F</sup></span>
+                                        </div>
+                                        <div class="peer">
+                                            <h6 class="mB-10">WED</h6>
+                                            <canvas class="partly-cloudy-day" width="30" height="30"></canvas>
+                                            <span class="d-b fw-600">28<sup>°F</sup></span>
+                                        </div>
+                                        <div class="peer">
+                                            <h6 class="mB-10">THR</h6>
+                                            <canvas class="cloudy" width="30" height="30"></canvas>
+                                            <span class="d-b fw-600">32<sup>°F</sup></span>
+                                        </div>
+                                        <div class="peer">
+                                            <h6 class="mB-10">FRI</h6>
+                                            <canvas class="snow" width="30" height="30"></canvas>
+                                            <span class="d-b fw-600">24<sup>°F</sup></span>
+                                        </div>
+                                        <div class="peer">
+                                            <h6 class="mB-10">SAT</h6>
+                                            <canvas class="wind" width="30" height="30"></canvas>
+                                            <span class="d-b fw-600">28<sup>°F</sup></span>
+                                        </div>
+                                        <div class="peer">
+                                            <h6 class="mB-10">SUN</h6>
+                                            <canvas class="sleet" width="30" height="30"></canvas>
+                                            <span class="d-b fw-600">32<sup>°F</sup></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="peer bdL p-20 w-30p@lg+ w-100p@lg-">
+                        <div class="layers">
+                            <div class="layer w-100">
+                                <!-- Progress Bars -->
+                                <div class="layers">
+                                    <div class="layer w-100 mT-15">
+                                        <small class="fw-600 c-grey-700">Battery SOC</small>
+                                        <span class="pull-right c-grey-600 fsz-sm">90%</span>
+                                        <div class="progress mT-10">
+                                            <div class="progress-bar bgc-blue-grey-500" role="progressbar"
+                                                 aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width:90%;"><span class="sr-only">90% Complete</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="layer w-100 mT-15">
+                                        <small class="fw-600 c-grey-700">Consumption Till Date(Mwh)</small>
+                                        <span class="pull-right c-grey-600 fsz-sm">50%</span>
+                                        <div class="progress mT-10">
+                                            <div class="progress-bar bgc-deep-purple-500" role="progressbar"
+                                                 aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width:50%;"><span class="sr-only">50% Complete</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="layer w-100 mT-15">
+                                        <small class="fw-600 c-grey-700">Solar Generation Till Date(Mwh)</small>
+                                        <span class="pull-right c-grey-600 fsz-sm">80%</span>
+                                        <div class="progress mT-10">
+                                            <div class="progress-bar bgc-green-500" role="progressbar"
+                                                 aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width:80%;"><span class="sr-only">80% Complete</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="layer w-100 mT-15">
+                                        <small class="fw-600 c-grey-700">Export To Grid Till Date(Mwh)</small>
+                                        <span class="pull-right c-grey-600 fsz-sm">40%</span>
+                                        <div class="progress mT-10">
+                                            <div class="progress-bar bgc-light-blue-500" role="progressbar"
+                                                 aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width:40%;"><span class="sr-only">40% Complete</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="layer w-100 mT-15">
+                                        <small class="fw-600 c-grey-700">Import From Grid Till Date(Mwh)</small>
+                                        <span class="pull-right c-grey-600 fsz-sm">90%</span>
+                                        <div class="progress mT-10">
+                                            <div class="progress-bar bgc-blue-grey-500" role="progressbar"
+                                                 aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width:90%;"><span class="sr-only">90% Complete</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="layer w-100 mT-15">
+                                        <small class="fw-600 c-grey-700">Import From DG Till Date(Mwh)</small>
+                                        <span class="pull-right c-grey-600 fsz-sm">90%</span>
+                                        <div class="progress mT-10">
+                                            <div class="progress-bar bgc-blue-grey-500" role="progressbar"
+                                                 aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width:90%;"><span class="sr-only">90% Complete</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Pie Charts -->
+                                <div class="peers pT-20 mT-20 bdT fxw-nw@lg+ jc-sb ta-c gap-10">
+                                    <div class="peer">
+                                        <div class="easy-pie-chart" data-size="80" data-percent="75"
+                                             data-bar-color="#f44336">
+                                            <span></span>
+                                        </div>
+                                        <small class="fw-600 c-grey-700">Today PR</small>
+                                    </div>
+                                    <div class="peer">
+                                        <div class="easy-pie-chart" data-size="80" data-percent="50"
+                                             data-bar-color="#2196f3">
+                                            <span></span>
+                                        </div>
+                                        <small class="fw-600 c-grey-700">Monthly PR</small>
+                                    </div>
+                                    <div class="peer">
+                                        <div class="easy-pie-chart" data-size="80" data-percent="90"
+                                             data-bar-color="#ff9800">
+                                            <span></span>
+                                        </div>
+                                        <small class="fw-600 c-grey-700">Till Date PR</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="masonry-item col-md-6">
+            <!-- #Monthly Stats ==================== -->
+            <div class="bd" style="background-color: #313131;">
+                <div class="layers">
+                    <div id="sankey" class="layer w-90 h-10">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="masonry-item col-md-6">
+            <div class="bd" style="background-color: #313131;">
+                <div class="layers">
+                    <div id="heatmap" class="layer w-90 h-10">
+                    </div>
+                </div>
+            </div>
+            {#            <div id="heatmap" style="align-content: center; height: 500px; width: 590px">#}
+        </div>
+        {#            <div class="bd" style="background-color: #313131;">#}
+        {#                <h6 class="c-grey-900">Heatmap</h6>#}
+        {#                <canvas id="heatmap" height="338" width="560"></canvas>#}
+        {#            </div>#}
+        {#            <div class="bd" style="background-color: #313131;">#}
+        {#                <div class="peers fxw-nw@lg+ ai-s">#}
+        {#                    <div class="peer peer-greed w-70p@lg+ w-100@lg- p-20">#}
+        {#                        <div class="layers">#}
+        {#                            <div class="layer w-100">#}
+        {#                                <div id="heatmap" style="#}
+        {#                                     height:500px ;#}
+        {#                                     position: sticky;#}
+        {#                                     overflow: hidden;#}
+        {#                                     background-color: transparent;#}
+        {#                                ">#}
+        {#                                </div>#}
+        {#                            </div>#}
+        {#                        </div>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        <div class="masonry-item col-md-12">
+            <div class="p-20 bd" style="background-color: #313131;">
+                <div class="row" style="background-color: #313131;">
+                    <div class=" col-sm-2 d-inline-block">
+                        <div class=" input-group date" id="datetimepicker1" data-target-input="nearest">
+                            <input type="text" id="fromdata" class="form-control datetimepicker-input"
+                                   data-target="#datetimepicker1">
+                            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 d-inline-block">
+                        <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                            <input type="text" id="todata" class="form-control datetimepicker-input"
+                                   data-target="#datetimepicker2">
+                            <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-inline-block p-0 m-0">
+                        <button type="button" class="btn btn-primary mb-1 mr-2" onclick="get_archive_data()"><i
+                                class="fa fa-search"></i></button>
+                        <button type="button" class="btn btn-primary mb-1 " onclick="refreshdata()"><i
+                                class="fa fa-refresh"></i></button>
+                        {#                    <button type="button" class="btn btn-secondary mb-1 mr-2" onclick="chart.destroy()">Destroy!!#}
+                        {#                    </button>#}
+                        <select id="myFilter" class="multiple_select minimal" multiple style="margin-left: 200px;">
+                            <option>VIN</option>
+                            <option>VBAT</option>
+                            <option>SPDK</option>
+                            <option>TP</option>
+                            <option>APPD</option>
+                            <option>CELV</option>
+                            <option>ES</option>
+                            <option>ECT</option>
+
+                        </select>
+
+                        <select id="myFilter1" class="multiple_select1 minimal" multiple style="margin-left: 20px;">
+                            <option>$SLU355000082004871</option>
+                            <option>$SLU352353085992789</option>
+                            <option>$SLU862549047732402</option>
+                        </select>
+
+                        <select id="myFilter2" class="multiple_select2 minimal" multiple style="margin-left: 400px;">
+                            <option>Irradiance</option>
+                            <option>Ambient Temperature</option>
+                            <option>Module Temperature</option>
+                            <option>Wind Speed</option>
+                            <option>Wind Direction</option>
+                            <option>Humidity</option>
+                            <option>Rain</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="line-chart" style="display: none;"></div>
+                <div class="mT-30">
+                    <canvas id="scatter-chart" height="100" style="display: block;margin-top: 10px;">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#        <div class="masonry-item col-md-6">#}
+    {#            <!-- #Sales Report ==================== -->#}
+    {#            <div class="bd" style="background-color: #313131;">#}
+    {#                <div class="layers">#}
+    {#                    <div class="layer w-100 p-20">#}
+    {#                        <h6 class="lh-1">Sales Report</h6>#}
+    {#                    </div>#}
+    {#                    <div class="layer w-100">#}
+    {#                        <div class="bgc-light-blue-500 c-white p-20">#}
+    {#                            <div class="peers ai-c jc-sb gap-40">#}
+    {#                                <div class="peer peer-greed">#}
+    {#                                    <h5>November 2017</h5>#}
+    {#                                    <p class="mB-0">Sales Report</p>#}
+    {#                                </div>#}
+    {#                                <div class="peer">#}
+    {#                                    <h3 class="text-right">$6,000</h3>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                        <div class="table-responsive p-20">#}
+    {#                            <table class="table">#}
+    {#                                <thead>#}
+    {#                                <tr>#}
+    {#                                    <th class="bdwT-0">Name</th>#}
+    {#                                    <th class="bdwT-0">Status</th>#}
+    {#                                    <th class="bdwT-0">Date</th>#}
+    {#                                    <th class="bdwT-0">Price</th>#}
+    {#                                </tr>#}
+    {#                                </thead>#}
+    {#                                <tbody>#}
+    {#                                <tr>#}
+    {#                                    <td class="fw-600">Item #1 Name</td>#}
+    {#                                    <td><span#}
+    {#                                            class="badge bgc-red-50 c-red-700 p-10 lh-0 tt-c badge-pill">Unavailable</span>#}
+    {#                                    </td>#}
+    {#                                    <td>Nov 18</td>#}
+    {#                                    <td><span class="text-success">$12</span></td>#}
+    {#                                </tr>#}
+    {#                                <tr>#}
+    {#                                    <td class="fw-600">Item #2 Name</td>#}
+    {#                                    <td><span#}
+    {#                                            class="badge bgc-deep-purple-50 c-deep-purple-700 p-10 lh-0 tt-c badge-pill">New</span>#}
+    {#                                    </td>#}
+    {#                                    <td>Nov 19</td>#}
+    {#                                    <td><span class="text-info">$34</span></td>#}
+    {#                                </tr>#}
+    {#                                <tr>#}
+    {#                                    <td class="fw-600">Item #3 Name</td>#}
+    {#                                    <td><span class="badge bgc-pink-50 c-pink-700 p-10 lh-0 tt-c badge-pill">New</span>#}
+    {#                                    </td>#}
+    {#                                    <td>Nov 20</td>#}
+    {#                                    <td><span class="text-danger">-$45</span></td>#}
+    {#                                </tr>#}
+    {#                                <tr>#}
+    {#                                    <td class="fw-600">Item #4 Name</td>#}
+    {#                                    <td><span#}
+    {#                                            class="badge bgc-green-50 c-green-700 p-10 lh-0 tt-c badge-pill">Unavailable</span>#}
+    {#                                    </td>#}
+    {#                                    <td>Nov 21</td>#}
+    {#                                    <td><span class="text-success">$65</span></td>#}
+    {#                                </tr>#}
+    {#                                <tr>#}
+    {#                                    <td class="fw-600">Item #5 Name</td>#}
+    {#                                    <td><span class="badge bgc-red-50 c-red-700 p-10 lh-0 tt-c badge-pill">Used</span>#}
+    {#                                    </td>#}
+    {#                                    <td>Nov 22</td>#}
+    {#                                    <td><span class="text-success">$78</span></td>#}
+    {#                                </tr>#}
+    {#                                <tr>#}
+    {#                                    <td class="fw-600">Item #6 Name</td>#}
+    {#                                    <td><span#}
+    {#                                            class="badge bgc-orange-50 c-orange-700 p-10 lh-0 tt-c badge-pill">Used</span>#}
+    {#                                    </td>#}
+    {#                                    <td>Nov 23</td>#}
+    {#                                    <td><span class="text-danger">-$88</span></td>#}
+    {#                                </tr>#}
+    {#                                <tr>#}
+    {#                                    <td class="fw-600">Item #7 Name</td>#}
+    {#                                    <td><span#}
+    {#                                            class="badge bgc-yellow-50 c-yellow-700 p-10 lh-0 tt-c badge-pill">Old</span>#}
+    {#                                    </td>#}
+    {#                                    <td>Nov 22</td>#}
+    {#                                    <td><span class="text-success">$56</span></td>#}
+    {#                                </tr>#}
+    {#                                </tbody>#}
+    {#                            </table>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#                <div class="ta-c bdT w-100 p-20">#}
+    {#                    <a href="#">Check all the sales</a>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {##}
+    {#        <div class="masonry-item col-md-6">#}
+    {#            <!-- #Chat ==================== -->#}
+    {#            <div class="bd" style="background-color: #313131;">#}
+    {#                <div class="layers">#}
+    {#                    <div class="layer w-100 p-20">#}
+    {#                        <h6 class="lh-1">Quick Chat</h6>#}
+    {#                    </div>#}
+    {#                    <div class="layer w-100">#}
+    {#                        <!-- Chat Box -->#}
+    {#                        <div class="bgc-grey-200 p-20 gapY-15">#}
+    {#                            <!-- Chat Conversation -->#}
+    {#                            <div class="peers fxw-nw">#}
+    {#                                <div class="peer mR-20">#}
+    {#                                    <img class="w-2r bdrs-50p" src="https://randomuser.me/api/portraits/men/11.jpg"#}
+    {#                                         alt="">#}
+    {#                                </div>#}
+    {#                                <div class="peer peer-greed">#}
+    {#                                    <div class="layers ai-fs gapY-5">#}
+    {#                                        <div class="layer">#}
+    {#                                            <div class="peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">#}
+    {#                                                <div class="peer mR-10">#}
+    {#                                                    <small>10:00 AM</small>#}
+    {#                                                </div>#}
+    {#                                                <div class="peer-greed">#}
+    {#                                                    <span>Lorem Ipsum is simply dummy text of</span>#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <div class="layer">#}
+    {#                                            <div class="peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">#}
+    {#                                                <div class="peer mR-10">#}
+    {#                                                    <small>10:00 AM</small>#}
+    {#                                                </div>#}
+    {#                                                <div class="peer-greed">#}
+    {#                                                    <span>the printing and typesetting industry.</span>#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <div class="layer">#}
+    {#                                            <div class="peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">#}
+    {#                                                <div class="peer mR-10">#}
+    {#                                                    <small>10:00 AM</small>#}
+    {#                                                </div>#}
+    {#                                                <div class="peer-greed">#}
+    {#                                                    <span>Lorem Ipsum has been the industry's</span>#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {##}
+    {#                            <!-- Chat Conversation -->#}
+    {#                            <div class="peers fxw-nw ai-fe">#}
+    {#                                <div class="peer ord-1 mL-20">#}
+    {#                                    <img class="w-2r bdrs-50p" src="https://randomuser.me/api/portraits/men/12.jpg"#}
+    {#                                         alt="">#}
+    {#                                </div>#}
+    {#                                <div class="peer peer-greed ord-0">#}
+    {#                                    <div class="layers ai-fe gapY-10">#}
+    {#                                        <div class="layer">#}
+    {#                                            <div class="peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">#}
+    {#                                                <div class="peer mL-10 ord-1">#}
+    {#                                                    <small>10:00 AM</small>#}
+    {#                                                </div>#}
+    {#                                                <div class="peer-greed ord-0">#}
+    {#                                                    <span>Heloo</span>#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <div class="layer">#}
+    {#                                            <div class="peers fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">#}
+    {#                                                <div class="peer mL-10 ord-1">#}
+    {#                                                    <small>10:00 AM</small>#}
+    {#                                                </div>#}
+    {#                                                <div class="peer-greed ord-0">#}
+    {#                                                    <span>??</span>#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                        <!-- Chat Send -->#}
+    {#                        <div class="p-20 bdT bgc-white">#}
+    {#                            <div class="pos-r">#}
+    {#                                <input type="text" class="form-control bdrs-10em m-0" placeholder="Say something...">#}
+    {#                                <button type="button" class="btn btn-primary bdrs-50p w-2r p-0 h-2r pos-a r-1 t-1">#}
+    {#                                    <i class="fa fa-paper-plane-o"></i>#}
+    {#                                </button>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var endpoint = '/api/data/live'
+        setInterval(function () {
+            $.ajax({
+                method: "GET",
+                url: endpoint,
+                success: function (data) {
+                    //var jsondata = JSON.parse(data)
+                    var Rno = document.getElementById("rno")
+                    var Vbat = document.getElementById("vbat");
+                    var Vin = document.getElementById("vin");
+                    var Spdk = document.getElementById("spdk")
+                    latlng(data.data);
+                    //let poly = polyline(data.data[i]);
+                    //removelayer(marker, poly)
+                    for (let i = 0; i < data.data.length; i++) {
+                        {#console.log(data.data);#}
+                        Vbat.textContent = data.data[i].vbat;
+                        Rno.textContent = data.data[i].rno;
+                        Vin.textContent = data.data[i].vin;
+                        Spdk.textContent = data.data[i].spdk;
+                    }
+                }
+            })
+        }, 1000)
+
+
+        /*
+        var polylist = []
+        function polyline(data2)
+        {
+          var latitude = parseFloat(data2.lat)
+          var longitude = parseFloat(data2.lng)
+          var list = [latitude,longitude]
+          polylist.push(list)
+          let poly = L.polyline(polylist).addTo(mymap)
+          return poly
+        }*/
+        {#console.log("map")#}
+        var mymap = L.map('mymapid').setView([20.5937, 78.9629], 4);
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'pk.eyJ1IjoidmVkYW50MjAiLCJhIjoiY2tmd3N4NGY2MDVmazMwcWYyZHU5bDNycyJ9.0JZoaLVZlvMPVI5V3qPKtw'
+        }).addTo(mymap);
+
+        var redIcon = L.icon({
+            iconUrl: "/static/assets/static/images/reddot.ico",
+            iconSize: [10, 10],
+            popupAnchor: [-2, -2],
+        });
+        var blueIcon = L.icon({
+            iconUrl: "/static/assets/static/images/bluedot.ico",
+            iconSize: [10, 10],
+            popupAnchor: [-2, -2],
+        });
+        var greenIcon = L.icon({
+            iconUrl: "/static/assets/static/images/greendot.ico",
+            iconSize: [10, 10],
+            popupAnchor: [-2, -2],
+        });
+        var yellowIcon = L.icon({
+            iconUrl: "/static/assets/static/images/yellowdot.ico",
+            iconSize: [10, 10],
+            popupAnchor: [-2, -2],
+        });
+        //var marker = L.marker([18.446368,73.816035],{icon:myIcon}).addTo(mymap);
+        const colors = [redIcon, blueIcon, yellowIcon, greenIcon]
+
+        function latlng(data) {
+            for (let i = 0; i < data.length; i++) {
+                let latitude = parseFloat(data[i].lat)
+                let longitude = parseFloat(data[i].lng)
+                {#console.log([latitude, longitude]);#}
+                {#console.log(colors);#}
+                let marker = L.marker([latitude, longitude], {icon: colors[i]}).addTo(mymap);
+                removelayer(marker);
+            }
+            //marker.bindPopup(data1.lat+","+data1.lng).openPopup();
+            {#return marker#}
+        }
+
+        async function removelayer(marker) {
+            await sleep(1000)
+            mymap.removeLayer(marker)
+            // mymap.removeLayer(poly)
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@0.1.3/dist/chartjs-chart-matrix.min.js"></script>
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <script>
+        var xValues = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+
+        var yValues = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
+
+        var zValues = [
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 5, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 8, 10, 12, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 6, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 5, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 8, 10, 12, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 6, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 5, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 8, 10, 12, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 6, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 5, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 8, 10, 12, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 6, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+
+        ];
+
+        var colorscaleValue = [
+            [0, '#ffffff'],
+            [0.1, '#e6ffe6'],
+            [0.2, '#b3ffb3'],
+            [0.3, '#80ff80'],
+            [0.4, '#66ff66'],
+            [0.5, '#33ff33'],
+            [0.6, '#00ff00'],
+            [0.7, '#00cc00'],
+            [0.8, '#009900'],
+            [0.9, '#006600'],
+            [1, '#003300'],
+
+
+        ];
+
+        var data = [{
+            x: xValues,
+            y: yValues,
+            z: zValues,
+            type: 'heatmap',
+            colorscale: colorscaleValue,
+            showscale: false,
+            xgap: 3,
+            ygap: 3
+        }];
+
+        var layout = {
+            paper_bgcolor: '#313131',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            title: 'Heatmap',
+            width: 590,
+            height: 500,
+            titlefont: {
+                family: 'Old Standard TT, serif',
+                size: 14,
+                color: 'white'
+            },
+            annotations: [],
+            xaxis: {
+                ticks: '',
+                side: 'bottom',
+                tickfont: {
+                    family: 'Old Standard TT, serif',
+                    size: 14,
+                    color: 'white'
+                },
+            },
+            yaxis: {
+                ticks: '',
+                ticksuffix: ' ',
+                autosize: false,
+                showgrid: true,
+                tickfont: {
+                    family: 'Old Standard TT, serif',
+                    size: 14,
+                    color: 'white'
+                },
+            },
+
+        };
+
+        for (var i = 0; i < yValues.length; i++) {
+            for (var j = 0; j < xValues.length; j++) {
+                var currentValue = zValues[i][j];
+
+                var result = {
+                    xref: 'x1',
+                    yref: 'y1',
+                    x: xValues[j],
+                    y: yValues[i],
+                    text: zValues[i][j],
+                    font: {
+                        family: 'Arial',
+                        size: 12,
+                        color: 'rgb(50, 171, 96)'
+                    },
+                    showarrow: false,
+                    font: {
+                        color: 'white'
+                    }
+                };
+                //  layout.annotations.push(result);
+            }
+        }
+
+        Plotly.newPlot('heatmap', data, layout);
+    </script>
+    {#    <script>#}
+    {#        Plotly.d3.json('https://raw.githubusercontent.com/plotly/plotly.js/master/test/image/mocks/sankey_energy.json', function (fig) {#}
+    {##}
+    {#            var data = {#}
+    {#                type: "sankey",#}
+    {#                domain: {#}
+    {#                    x: [0, 1],#}
+    {#                    y: [0, 1]#}
+    {#                },#}
+    {#                orientation: "h",#}
+    {#                valueformat: ".0f",#}
+    {#                valuesuffix: "TWh",#}
+    {#                node: {#}
+    {#                    pad: 15,#}
+    {#                    thickness: 15,#}
+    {#                    line: {#}
+    {#                        color: "black",#}
+    {#                        width: 0.5#}
+    {#                    },#}
+    {#                    label: fig.data[0].node.label,#}
+    {#                    color: fig.data[0].node.color#}
+    {#                },#}
+    {##}
+    {#                link: {#}
+    {#                    source: fig.data[0].link.source,#}
+    {#                    target: fig.data[0].link.target,#}
+    {#                    value: fig.data[0].link.value,#}
+    {#                    label: fig.data[0].link.label#}
+    {#                }#}
+    {#            }#}
+    {##}
+    {##}
+    {#            var layout = {#}
+    {#                title: "Sankey Chart",#}
+    {#                width: 590,#}
+    {#                height: 500,#}
+    {#                font: {#}
+    {#                    size: 10#}
+    {#                },#}
+    {#                paper_bgcolor: '#313131',#}
+    {#                plot_bgcolor: 'rgba(0,0,0,0)',#}
+    {#                titlefont: {#}
+    {#                    family: 'Old Standard TT, serif',#}
+    {#                    size: 14,#}
+    {#                    color: 'white'#}
+    {#                },#}
+    {#            }#}
+    {#            Plotly.newPlot('sankey', data, layout2)#}
+    {#        });#}
+    {##}
+    {#    </script>#}
+    <script>
+        var data2 = {
+            "type": "sankey",
+            "domain": {
+                "x": [
+                    0,
+                    1
+                ],
+                "y": [
+                    0,
+                    1
+                ]
+            },
+            "orientation": "h",
+            "valueformat": ".0f",
+            "valuesuffix": "TWh",
+            "node": {
+                "pad": 15,
+                "thickness": 15,
+                "line": {
+                    "color": "black",
+                    "width": 0.5
+                },
+                "label": [
+                    "Agricultural 'waste'",
+                    "Bio-conversion",
+                    "Liquid",
+                    "Losses",
+                    "Solid",
+                    "Gas",
+                    "Biofuel imports",
+                    "Biomass imports",
+                    "Coal imports",
+                    "Coal",
+                    "Coal reserves",
+                    "District heating",
+                    "Industry",
+                    "Heating and cooling - commercial",
+                    "Heating and cooling - homes",
+                    "Electricity grid",
+                    "Over generation / exports",
+                    "H2 conversion",
+                    "Road transport",
+                    "Agriculture",
+                    "Rail transport",
+                    "Lighting & appliances - commercial",
+                    "Lighting & appliances - homes",
+                    "Gas imports",
+                    "Ngas",
+                    "Gas reserves",
+                    "Thermal generation",
+                    "Geothermal",
+                    "H2",
+                    "Hydro",
+                    "International shipping",
+                    "Domestic aviation",
+                    "International aviation",
+                    "National navigation",
+                    "Marine algae",
+                    "Nuclear",
+                    "Oil imports",
+                    "Oil",
+                    "Oil reserves",
+                    "Other waste",
+                    "Pumped heat",
+                    "Solar PV",
+                    "Solar Thermal",
+                    "Solar",
+                    "Tidal",
+                    "UK land based bioenergy",
+                    "Wave",
+                    "Wind"
+                ],
+                "color": [
+                    "rgba(31, 119, 180, 0.8)",
+                    "rgba(255, 127, 14, 0.8)",
+                    "rgba(44, 160, 44, 0.8)",
+                    "rgba(214, 39, 40, 0.8)",
+                    "rgba(148, 103, 189, 0.8)",
+                    "rgba(140, 86, 75, 0.8)",
+                    "rgba(227, 119, 194, 0.8)",
+                    "rgba(127, 127, 127, 0.8)",
+                    "rgba(188, 189, 34, 0.8)",
+                    "rgba(23, 190, 207, 0.8)",
+                    "rgba(31, 119, 180, 0.8)",
+                    "rgba(255, 127, 14, 0.8)",
+                    "rgba(44, 160, 44, 0.8)",
+                    "rgba(214, 39, 40, 0.8)",
+                    "rgba(148, 103, 189, 0.8)",
+                    "rgba(140, 86, 75, 0.8)",
+                    "rgba(227, 119, 194, 0.8)",
+                    "rgba(127, 127, 127, 0.8)",
+                    "rgba(188, 189, 34, 0.8)",
+                    "rgba(23, 190, 207, 0.8)",
+                    "rgba(31, 119, 180, 0.8)",
+                    "rgba(255, 127, 14, 0.8)",
+                    "rgba(44, 160, 44, 0.8)",
+                    "rgba(214, 39, 40, 0.8)",
+                    "rgba(148, 103, 189, 0.8)",
+                    "rgba(140, 86, 75, 0.8)",
+                    "rgba(227, 119, 194, 0.8)",
+                    "rgba(127, 127, 127, 0.8)",
+                    "rgba(188, 189, 34, 0.8)",
+                    "rgba(23, 190, 207, 0.8)",
+                    "rgba(31, 119, 180, 0.8)",
+                    "rgba(255, 127, 14, 0.8)",
+                    "rgba(44, 160, 44, 0.8)",
+                    "rgba(214, 39, 40, 0.8)",
+                    "rgba(148, 103, 189, 0.8)",
+                    "magenta",
+                    "rgba(227, 119, 194, 0.8)",
+                    "rgba(127, 127, 127, 0.8)",
+                    "rgba(188, 189, 34, 0.8)",
+                    "rgba(23, 190, 207, 0.8)",
+                    "rgba(31, 119, 180, 0.8)",
+                    "rgba(255, 127, 14, 0.8)",
+                    "rgba(44, 160, 44, 0.8)",
+                    "rgba(214, 39, 40, 0.8)",
+                    "rgba(148, 103, 189, 0.8)",
+                    "rgba(140, 86, 75, 0.8)",
+                    "rgba(227, 119, 194, 0.8)",
+                    "rgba(127, 127, 127, 0.8)"]
+            },
+            "link": {
+                "source": [
+                    8,
+                    10,
+                    9,
+                    15,
+                    15,
+                    15,
+                    15,
+                    15,
+                    15,
+                    15,
+                    15,
+                    15,
+                    15,
+                    15,
+                    23,
+                    25,
+                    5,
+                    5,
+                    5,
+                    5,
+                    5,
+                    27,
+                    28,
+                    29,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    2,
+                    24,
+                    35,
+                    35,
+                    36,
+                    38,
+                    37,
+                    40,
+                    40,
+                    41,
+                    42,
+                    43,
+                    43,
+                    4,
+                    4,
+                    4,
+                    26,
+                    26,
+                    26,
+                    47,
+                    35,
+                    35
+                ],
+                "target": [
+                    9,
+                    9,
+                    4,
+                    16,
+                    14,
+                    17,
+                    12,
+                    18,
+                    19,
+                    13,
+                    3,
+                    20,
+                    21,
+                    22,
+                    24,
+                    24,
+                    13,
+                    3,
+                    26,
+                    19,
+                    12,
+                    15,
+                    18,
+                    15,
+                    12,
+                    30,
+                    18,
+                    31,
+                    32,
+                    19,
+                    33,
+                    20,
+                    5,
+                    26,
+                    26,
+                    37,
+                    37,
+                    2,
+                    14,
+                    13,
+                    15,
+                    14,
+                    42,
+                    41,
+                    19,
+                    26,
+                    12,
+                    15,
+                    3,
+                    11,
+                    15,
+                    26,
+                    26
+                ],
+                "value": [
+                    11.606,
+                    63.965,
+                    75.571,
+                    104.453,
+                    113.726,
+                    27.14,
+                    342.165,
+                    37.797,
+                    4.412,
+                    40.858,
+                    56.691,
+                    7.863,
+                    90.008,
+                    93.494,
+                    40.719,
+                    82.233,
+                    0.129,
+                    1.401,
+                    151.891,
+                    2.096,
+                    48.58,
+                    7.013,
+                    20.897,
+                    6.995,
+                    121.066,
+                    128.69,
+                    135.835,
+                    14.458,
+                    206.267,
+                    3.64,
+                    33.218,
+                    4.413,
+                    122.952,
+                    500,
+                    139.978,
+                    504.287,
+                    107.703,
+                    611.99,
+                    193.026,
+                    70.672,
+                    59.901,
+                    19.263,
+                    19.263,
+                    59.901,
+                    0.882,
+                    400.12,
+                    46.477,
+                    525.531,
+                    787.129,
+                    79.329,
+                    289.366,
+                    100,
+                    100
+                ],
+                "color": [
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(33,102,172,0.35)",
+                    "rgba(178,24,43,0.35)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "rgba(0,0,96,0.2)",
+                    "lightgreen",
+                    "goldenrod"
+                ],
+                "label": [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "stream 1",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "Old generation plant (made-up)",
+                    "New generation plant (made-up)",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                ]
+            }
+        }
+        var data = [data2]
+        var layout2 = {
+            "title": {"text": "Sankey Chart"},
+            "width": 590,
+            "height": 500,
+            "font": {
+                "size": 10,
+            },
+            titlefont: {
+                family: 'Old Standard TT, serif',
+                size: 14,
+                color: 'white'
+            },
+            {#paper_bgcolor: '#313131',#}
+            {#plot_bgcolor: 'rgba(0,0,0,0)',#}
+            {#"updatemenus": [#}
+            {#    {#}
+            {#        "y": 1,#}
+            {#        "buttons": [#}
+            {#            {#}
+            {#                "label": "Light",#}
+            {#                "method": "relayout",#}
+            {#                "args": ["paper_bgcolor", "white"]#}
+            {#            },#}
+            {#            {#}
+            {#                "label": "Dark",#}
+            {#                "method": "relayout",#}
+            {#                "args": ["paper_bgcolor", "black"]#}
+            {#            }#}
+            {#        ]#}
+            {#    },#}
+            {#    {#}
+            {#        "y": 0.9,#}
+            {#        "buttons": [#}
+            {#            {#}
+            {#                "label": "Thick",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["node.thickness", 15]#}
+            {#            },#}
+            {#            {#}
+            {#                "label": "Thin",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["node.thickness", 8]#}
+            {#            }#}
+            {#        ]#}
+            {#    },#}
+            {#    {#}
+            {#        "y": 0.8,#}
+            {#        "buttons": [#}
+            {#            {#}
+            {#                "label": "Small gap",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["node.pad", 15]#}
+            {#            },#}
+            {#            {#}
+            {#                "label": "Large gap",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["node.pad", 20]#}
+            {#            }#}
+            {#        ]#}
+            {#    },#}
+            {#    {#}
+            {#        "y": 0.7,#}
+            {#        "buttons": [#}
+            {#            {#}
+            {#                "label": "Snap",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["arrangement", "snap"]#}
+            {#            },#}
+            {#            {#}
+            {#                "label": "Perpendicular",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["arrangement", "perpendicular"]#}
+            {#            },#}
+            {#            {#}
+            {#                "label": "Freeform",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["arrangement", "freeform"]#}
+            {#            },#}
+            {#            {#}
+            {#                "label": "Fixed",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["arrangement", "fixed"]#}
+            {#            }#}
+            {#        ]#}
+            {#    },#}
+            {#    {#}
+            {#        "y": 0.6,#}
+            {#        "buttons": [#}
+            {#            {#}
+            {#                "label": "Horizontal",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["orientation", "h"]#}
+            {#            },#}
+            {#            {#}
+            {#                "label": "Vertical",#}
+            {#                "method": "restyle",#}
+            {#                "args": ["orientation", "v"]#}
+            {#            }#}
+            {#        ]#}
+            {#    }#}
+            {#]#}
+        }
+        Plotly.newPlot('sankey', data, layout2)
+    </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-crosshair@1"></script>
+{#    <script>#}
+{#        var ctx = document.getElementById('area-chart').getContext('2d');#}
+{#        var searchchart = {#}
+{#            type: 'line',#}
+{#            data: {#}
+{#                labels: [],#}
+{#                datasets: [#}
+{#                    {#}
+{#                        label: 'Vin',#}
+{#                        borderWidth: 1.5,#}
+{#                        //backgroundColor:"rgba(255,79,0,0.5)",#}
+{#                        borderColor: "rgb(255,103,0)",#}
+{#                        yAxisID: 'yaxis1',#}
+{#                        data: [],#}
+{#                        fill: "false",#}
+{#                        pointStyle: 'line'#}
+{#                    },#}
+{#                    {#}
+{#                        label: 'VBat',#}
+{#                        //backgroundColor:"rgba(191,0,255,0.5)",#}
+{#                        borderColor: "rgb(57,255,20)",#}
+{#                        pointBackgroundColor: "#880085",#}
+{#                        borderWidth: 1.5,#}
+{#                        yAxisID: 'yaxis2',#}
+{#                        data: [],#}
+{#                        fill: "false",#}
+{#                        pointStyle: 'line'#}
+{#                    }#}
+{#                ]#}
+{#            },#}
+{#            options: {#}
+{#                legend: {#}
+{#                    display: true,#}
+{#                    align: 'center',#}
+{#                    labels: {#}
+{#                        usePointStyle: true,#}
+{#                        boxWidth: 10,#}
+{#                        fontColor: '#fff',#}
+{#                        lineCap: 'butt',#}
+{#                    }#}
+{#                },#}
+{#                responsive: true,#}
+{#                elements: {#}
+{#                    point: {#}
+{#                        radius: 1#}
+{#                    }#}
+{#                },#}
+{#                tooltips: {#}
+{#                    mode: 'interpolate',#}
+{#                    intersect: false#}
+{#                },#}
+{#                plugins: {#}
+{#                    crosshair: {#}
+{#                        line: {#}
+{#                            color: '#F66',        // crosshair line color#}
+{#                            width: 1,             // crosshair line width#}
+{#                            dashPattern: [5, 5]   // crosshair line dash pattern#}
+{#                        },#}
+{#                        sync: {#}
+{#                            enabled: false,            // enable trace line syncing with other charts#}
+{#                            group: 1,                 // chart group#}
+{#                            suppressTooltips: false   // suppress tooltips when showing a synced tracer#}
+{#                        },#}
+{#                        zoom: {#}
+{#                            enabled: true,                                      // enable zooming#}
+{#                            zoomboxBackgroundColor: 'rgba(66,133,244,0.2)',     // background color of zoom box#}
+{#                            zoomboxBorderColor: '#48F',                         // border color of zoom box#}
+{#                            zoomButtonText: 'Reset Zoom',                       // reset zoom button text#}
+{#                            zoomButtonClass: 'reset-zoom',                      // reset zoom button class#}
+{#                        },#}
+{#                        callbacks: {#}
+{#                            beforeZoom: function (start, end) {#}
+{##}
+{#                                console.log(start + " " + end)// called before zoom, return false to prevent zoom#}
+{#                                return true;#}
+{#                            },#}
+{#                            afterZoom: function (start, end) {#}
+{##}
+{#                                chart.data.datasets[0].data = Zoomobj.Vin#}
+{#                                chart.data.datasets[1].data = Zoomobj.Vbat#}
+{##}
+{#                            }#}
+{##}
+{#                        }#}
+{#                    }#}
+{#                },#}
+{#                scales: {#}
+{#                    xAxes: [{#}
+{#                        gridLines: {color: "#696969"},#}
+{#                        type: 'time',#}
+{#                        distribution: 'linear',#}
+{#                        time: {#}
+{#                            displayFormats: {#}
+{#                                hour: "MMM D ha"#}
+{##}
+{#                            }#}
+{#                        },#}
+{#                        ticks: {#}
+{#                            fontColor: "white",#}
+{#                            maxTicksLimit: 12,#}
+{#                        }#}
+{#                    }],#}
+{#                    yAxes: [#}
+{#                        {#}
+{#                            id: 'yaxis1',#}
+{#                            gridLines: {color: "#696969"},#}
+{#                            ticks: {#}
+{#                                fontColor: "white"#}
+{#                            }#}
+{#                        },#}
+{#                        {#}
+{#                            id: 'yaxis2',#}
+{#                            position: 'right',#}
+{#                            gridLines: {color: "#696969"},#}
+{#                            ticks: {#}
+{#                                fontColor: "white"#}
+{#                            }#}
+{#                        }]#}
+{#                }#}
+{#            },#}
+{#        }#}
+{#        var chart = new Chart(ctx, searchchart);#}
+{##}
+{#        function refreshdata() {#}
+{#            archive = false#}
+{#            var x = document.getElementById("scatter-chart");#}
+{#            var y = document.getElementById("area-chart");#}
+{#            if (x.style.display === "none") {#}
+{#                x.style.display = "block"#}
+{#                y.style.display = "none"#}
+{#            } else {#}
+{#                x.style.display = "block"#}
+{#            }#}
+{#        }#}
+{##}
+{#        function search(Result) {#}
+{#            chart.data.datasets[0].data = Result.Vin#}
+{#            chart.data.datasets[1].data = Result.Vbat#}
+{#            chart.data.labels = Result.labels#}
+{#            chart.update()#}
+{#        }#}
+{##}
+{#        var oldrno = -1;#}
+{#        var clr = 0#}
+{#        var VIN, VBAT, TIME, TP, APPD, CELV, ES, ECT, SPDK#}
+{##}
+{#        function livedata() {#}
+{#            $.ajax({#}
+{#                method: "GET",#}
+{#                url: 'api/data/live',#}
+{#                success: function (data) {#}
+{#                    if (data.data[1].rno !== oldrno) {#}
+{#                        //  addData(data.data[1]);#}
+                        {#addData1(data.data[1]);#}
+{#                        VIN = data.data[1].vin#}
+{#                        VBAT = data.data[1].vbat#}
+{#                        TP = data.data[1].tp#}
+{#                        APPD = data.data[1].appd#}
+{#                        CELV = data.data[1].celv#}
+{#                        ES = data.data[1].es#}
+{#                        ECT = data.data[1].ect#}
+{#                        SPDK = data.data[1].spdk#}
+{#                        TIME = data.data[1].time#}
+{#                        oldrno = data.data[1].rno;#}
+{#                    }#}
+{#                    //if (chart.data.labels.length >= 30) {#}
+{#                    //removedata();#}
+                    {#removedata1()#}
+{#                    //}#}
+{#                },#}
+{#                error: function (error_data) {#}
+{#                    console.log("error")#}
+{#                    console.log(error_data)#}
+{#                }#}
+{#            })#}
+{#        }#}
+{##}
+{#        var Zoomobj = undefined#}
+{##}
+{#        function get_archive_data() {#}
+{#            console.log($("#fromdata").val() + " " + $("#todata").val())#}
+{#            $.ajax({#}
+{#                method: "POST",#}
+{#                url: "api/data/archive",#}
+{#                async: true,#}
+{#                data: {'csrfmiddlewaretoken': csrftoken, 'from': $("#fromdata").val(), 'to': $("#todata").val()},#}
+{#                success: function (result, status, xhr) {#}
+{#                    //clearInterval(clr)#}
+{#                    //archive = true#}
+{#                    search(result)#}
+{#                    if (x.style.display === "block") {#}
+{#                        x.style.display = "none"#}
+{#                        y.style.display = "block"#}
+{#                    } else {#}
+{#                        y.style.display = "block"#}
+{#                    }#}
+{#                    //search1(result)#}
+{#                    Zoomobj = result#}
+{##}
+{#                },#}
+{#                error: function (error_data) {#}
+{#                    console.log("error")#}
+{#                    alert("error")#}
+{#                    console.log(error_data)#}
+{#                }#}
+{#            })#}
+{#            var x = document.getElementById("scatter-chart");#}
+{#            var y = document.getElementById("area-chart");#}
+            {#config.destroy()#}
+            {#var ctx = document.getElementById('scatter-chart').getContext('2d');#}
+            {#newchart = new Chart(ctx, searchchart);#}
+{#        }#}
+{##}
+{##}
+{#        function start() {#}
+{#            console.log("start")#}
+{#            var currentTime = new Date();#}
+{#            console.log(currentTime)#}
+{#            for (var i = 30; i >= 0; i--) {#}
+{#                var time = new Date(currentTime - i * 1000);#}
+{#                chart.data.labels.push(time)#}
+                {#chart1.data.labels.push(time)#}
+{#                console.log(chart.data.datasets.length)#}
+{#                chart.data.datasets.forEach(function (dataset) {#}
+{#                    dataset.data.push({#}
+{#                        y: undefined,#}
+{#                        x: time#}
+{#                    })#}
+{#                })#}
+{##}
+{#            }#}
+{#            chart.update();#}
+            {#chart1.update();#}
+{#            clr = setInterval(livedata, 500);#}
+{#        }#}
+{#    </script>#}
+{#    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>#}
+{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"#}
+{#            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"#}
+{#            crossorigin="anonymous"></script>#}
+{#    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"#}
+{#            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"#}
+{#            crossorigin="anonymous"></script>#}
+{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"#}
+{#            integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="#}
+{#            crossorigin="anonymous"></script>#}
+{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js"#}
+{#            integrity="sha512-2JBCbWoMJPH+Uj7Wq5OLub8E5edWHlTM4ar/YJkZh3plwB2INhhOC3eDoqHm1Za/ZOSksrLlURLoyXVdfQXqwg=="#}
+{#            crossorigin="anonymous"></script>#}
+{#    <script type="text/javascript">#}
+{#        $(function () {#}
+{#            $('#datetimepicker1').datetimepicker({#}
+{#                format: 'YYYY-MM-DD HH:mm:ss',#}
+{#            });#}
+{#        });#}
+{#        $(function () {#}
+{#            $('#datetimepicker2').datetimepicker({#}
+{#                format: 'YYYY-MM-DD HH:mm:ss',#}
+{#            });#}
+{#        });#}
+{#    </script>#}
+{#    <script>#}
+{#        function getCookie(name) {#}
+{#            let cookieValue = null;#}
+{#            if (document.cookie && document.cookie !== '') {#}
+{#                const cookies = document.cookie.split(';');#}
+{#                for (let i = 0; i < cookies.length; i++) {#}
+{#                    const cookie = cookies[i].trim();#}
+{#                    // Does this cookie string begin with the name we want?#}
+{#                    if (cookie.substring(0, name.length + 1) === (name + '=')) {#}
+{#                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));#}
+{#                        break;#}
+{#                    }#}
+{#                }#}
+{#            }#}
+{#            return cookieValue;#}
+{#        }#}
+{##}
+{#        const csrftoken = getCookie('csrftoken');#}
+{#    </script>#}
+{#    <script>#}
+{#        start()#}
+{#    </script>#}
+{#    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js"></script>#}
+{#    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>#}
+{#    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>#}
+{##}
+{#    <script>#}
+{#        var chartColors = {#}
+{#            red: 'rgb(255, 99, 132)',#}
+{#            orange: 'rgb(255, 159, 64)',#}
+{#            yellow: 'rgb(255, 205, 86)',#}
+{#            green: 'rgb(75, 192, 192)',#}
+{#            blue: 'rgb(54, 162, 235)',#}
+{#            purple: 'rgb(153, 102, 255)',#}
+{#            grey: 'rgb(201, 203, 207)'#}
+{#        };#}
+{##}
+{#        function randomScalingFactor() {#}
+{#            return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);#}
+{#        }#}
+{##}
+{##}
+{#        function datavar() {#}
+{#            return [VIN, VBAT, SPDK, TP, APPD, CELV, ES, ECT]#}
+{#        }#}
+{##}
+{#        function onRefresh(chart) {#}
+{#            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]#}
+{#            let i = 0#}
+{#            let dat = datavar()#}
+{#            chart.config.data.datasets.forEach(function (dataset) {#}
+{#                dataset.data.push({#}
+{#                    x: TIME,#}
+{#                    y: dat[lab.indexOf(dataset.label)]#}
+{#                })#}
+{#            })#}
+{#        }#}
+{##}
+{#        var color = Chart.helpers.color;#}
+{#        var ctx = document.getElementById('scatter-chart').getContext('2d');#}
+{#        var config = {#}
+{#            type: 'line',#}
+{#            data: {#}
+{#                datasets: []#}
+{#            },#}
+{#            options: {#}
+{#                legend: {#}
+{#                    display: true,#}
+{#                    align: 'center',#}
+{#                    labels: {#}
+{#                        usePointStyle: true,#}
+{#                        boxWidth: 10,#}
+{#                        fontColor: '#fff',#}
+{#                        lineCap: 'butt',#}
+{#                    }#}
+{#                },#}
+{#                elements: {#}
+{#                    point: {#}
+{#                        radius: 1#}
+{#                    }#}
+{#                },#}
+{#                scales: {#}
+{#                    xAxes: [{#}
+{#                        type: 'realtime',#}
+{#                        realtime: {#}
+{#                            duration: 20000,#}
+{#                            refresh: 1000,#}
+{#                            delay: 3000,#}
+{#                            onRefresh: onRefresh#}
+{#                        },#}
+{#                        gridLines: {color: "#696969"},#}
+{#                        ticks: {#}
+{#                            fontColor: "white",#}
+{##}
+{#                        }#}
+{#                    }],#}
+{#                    yAxes: []#}
+{#                },#}
+{#                tooltips: {#}
+{#                    mode: 'nearest',#}
+{#                    intersect: false#}
+{#                },#}
+{#                hover: {#}
+{#                    mode: 'nearest',#}
+{#                    intersect: false#}
+{#                }#}
+{#            }#}
+{#        };#}
+{#        var chart1 = new Chart(ctx, config)#}
+{#        console.log(chart1)#}
+{#        let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]#}
+{#        let unit = ["Volt", "Volt", "Kmph", "", "", "", "", ""]#}
+{#        var colorNames = Object.keys(chartColors);#}
+{##}
+{#        function addDatasets1(index) {#}
+{#            var colorName = colorNames[chart1.config.data.datasets.length % colorNames.length];#}
+{#            var newColor = chartColors[colorName];#}
+{#            var newDataset = {#}
+{#                label: lab[index],#}
+{#                backgroundColor: color(newColor).alpha(0.5).rgbString(),#}
+{#                borderColor: newColor,#}
+{#                fill: false,#}
+{#                data: [],#}
+{#                yAxisID: 'y-axis-' + index,#}
+{#                pointStyle: "line",#}
+{#                borderWidth: 1.5,#}
+{#            };#}
+{##}
+{#            config.data.datasets.push(newDataset);#}
+{#            addScale(index)#}
+{#            console.log('y-axis-' + index)#}
+{#            chart1.update();#}
+{#        };#}
+{##}
+{#        function addScale(index) {#}
+{##}
+{#            var newScale = {#}
+{#                id: 'y-axis-' + index,#}
+{#                scaleLabel: {#}
+{#                    display: true,#}
+{#                    labelString: lab[index] + " (" + unit[index] + ")"#}
+{#                },#}
+{#                gridLines: {color: "#696969"},#}
+{#                ticks: {#}
+{#                    fontColor: "white"#}
+{#                }#}
+{#            }#}
+{#            if (index % 2 === 0) {#}
+{#                newScale.position = "left"#}
+{#            } else {#}
+{#                newScale.position = "right"#}
+{#            }#}
+{#            console.log(index)#}
+{#            config.options.scales.yAxes.push(newScale)#}
+{#            chart1.update()#}
+{#        }#}
+{##}
+{#        function removeDatasets(index) {#}
+{#            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]#}
+{#            chart1.config.data.datasets.forEach(function (dataset) {#}
+{#                console.log(index)#}
+{#                if (dataset.label === lab[index]) {#}
+{#                    config.data.datasets.pop();#}
+{#                    config.options.scales.yAxes.pop()#}
+{#                    chart1.update();#}
+{#                }#}
+{#            })#}
+{##}
+{#        };#}
+{##}
+{#        function addds(selectedarray) {#}
+{#            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]#}
+{#            for (var i = 0; i < selectedarray.length; i++) {#}
+{#                var flag = 0#}
+{#                lab.indexOf(selectedarray[i])#}
+{#                console.log(chart.config.data.datasets.length)#}
+{#                for (var j = 0; j < chart1.data.datasets.length; j++) {#}
+{#                    if (chart1.data.datasets[j].label === selectedarray[i]) {#}
+{#                        flag = 1#}
+{#                        break#}
+{#                    } else if (chart1.data.datasets[j].label !== selectedarray[i]) {#}
+{#                        flag = 0#}
+{#                    }#}
+{#                }#}
+{#                if (flag === 0) {#}
+{#                    addDatasets1(lab.indexOf(selectedarray[i]))#}
+{#                }#}
+{#            }#}
+{#            for (var k = 0; k < chart1.config.data.datasets.length; k++) {#}
+{#                var flag = 0#}
+{#                lab.indexOf(selectedarray[k])#}
+{#                console.log(chart.config.data.datasets.length)#}
+{#                for (var l = 0; l < selectedarray.length; l++) {#}
+{#                    if (chart1.data.datasets[k].label === selectedarray[l]) {#}
+{#                        flag = 1#}
+{#                        break#}
+{#                    } else if (chart1.data.datasets[k].label !== selectedarray[l]) {#}
+{#                        flag = 0#}
+{#                    }#}
+{#                }#}
+{#                if (flag === 0) {#}
+{#                    removeDatasets(lab.indexOf(chart1.config.data.datasets[k].label))#}
+{#                }#}
+{#            }#}
+{#        }#}
+{##}
+{#    </script>#}
+{#    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>#}
+{##}
+{#    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-en_US.min.js"></script>#}
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+            integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js"
+            integrity="sha512-2JBCbWoMJPH+Uj7Wq5OLub8E5edWHlTM4ar/YJkZh3plwB2INhhOC3eDoqHm1Za/ZOSksrLlURLoyXVdfQXqwg=="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm:ss',
+            });
+        });
+        $(function () {
+            $('#datetimepicker2').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm:ss',
+            });
+        });
+    </script>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
+    </script>
+    {#    <script>#}
+    {#        start()#}
+    {#    </script>#}
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>
+
+    <script>
+        var oldrno = -1;
+        var clr = 0
+        var VIN, VBAT, TIME, TP, APPD, CELV, ES, ECT, SPDK
+
+        function livedata() {
+            $.ajax({
+                method: "GET",
+                url: 'api/data/live',
+                success: function (data) {
+                    if (data.data[1].rno !== oldrno) {
+                        //  addData(data.data[1]);
+                        {#addData1(data.data[1]);#}
+                        VIN = data.data[1].vin
+                        VBAT = data.data[1].vbat
+                        TP = data.data[1].tp
+                        APPD = data.data[1].appd
+                        CELV = data.data[1].celv
+                        ES = data.data[1].es
+                        ECT = data.data[1].ect
+                        SPDK = data.data[1].spdk
+                        TIME = data.data[1].time
+                        oldrno = data.data[1].rno;
+                    }
+                    //if (chart.data.labels.length >= 30) {
+                    //removedata();
+                    {#removedata1()#}
+                    //}
+                },
+                error: function (error_data) {
+                    console.log("error")
+                    console.log(error_data)
+                }
+            })
+        }
+
+        setInterval(livedata, 500)
+        var chartColors = {
+            red: 'rgb(255, 99, 132)',
+            orange: 'rgb(255, 159, 64)',
+            yellow: 'rgb(255, 205, 86)',
+            green: 'rgb(75, 192, 192)',
+            blue: 'rgb(54, 162, 235)',
+            purple: 'rgb(153, 102, 255)',
+            grey: 'rgb(201, 203, 207)'
+        };
+
+        function randomScalingFactor() {
+            return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
+        }
+
+
+        function datavar() {
+            return [VIN, VBAT, SPDK, TP, APPD, CELV, ES, ECT]
+        }
+
+        function onRefresh(chart) {
+            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]
+            let i = 0
+            let dat = datavar()
+            chart.config.data.datasets.forEach(function (dataset) {
+                dataset.data.push({
+                    x: TIME,
+                    y: dat[lab.indexOf(dataset.label)]
+                })
+            })
+        }
+
+        var color = Chart.helpers.color;
+        var ctx = document.getElementById('scatter-chart').getContext('2d');
+        var config = {
+            type: 'line',
+            data: {
+                datasets: []
+            },
+            options: {
+                legend: {
+                    display: true,
+                    align: 'center',
+                    labels: {
+                        usePointStyle: true,
+                        boxWidth: 10,
+                        fontColor: '#fff',
+                        lineCap: 'butt',
+                    }
+                },
+                elements: {
+                    point: {
+                        radius: 1
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'realtime',
+                        realtime: {
+                            duration: 20000,
+                            refresh: 1000,
+                            delay: 7000,
+                            onRefresh: onRefresh
+                        },
+                        gridLines: {color: "#696969"},
+                        ticks: {
+                            fontColor: "white",
+
+                        }
+                    }],
+                    yAxes: []
+                },
+                tooltips: {
+                    mode: 'nearest',
+                    intersect: false
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: false
+                }
+            }
+        };
+        console.log(config)
+        var chart1 = new Chart(ctx, config)
+        console.log(chart1)
+        console.log(config)
+        let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]
+        let unit = ["Volt", "Volt", "Kmph", "", "", "", "", ""]
+        var colorNames = Object.keys(chartColors);
+
+        function addDatasets1(index) {
+            var colorName = colorNames[config.data.datasets.length % colorNames.length];
+            var newColor = chartColors[colorName];
+            var newDataset = {
+                label: lab[index],
+                backgroundColor: color(newColor).alpha(0.5).rgbString(),
+                borderColor: newColor,
+                fill: false,
+                data: [],
+                yAxisID: 'y-axis-' + index,
+                pointStyle: "line",
+                borderWidth: 1.5,
+            };
+
+            config.data.datasets.push(newDataset);
+            addScale(index)
+            console.log('y-axis-' + index)
+            chart1.update();
+        };
+
+        function addScale(index) {
+
+            var newScale = {
+                id: 'y-axis-' + index,
+                scaleLabel: {
+                    display: true,
+                    labelString: lab[index] + " (" + unit[index] + ")"
+                },
+                gridLines: {color: "#696969"},
+                ticks: {
+                    fontColor: "white"
+                }
+            }
+            if (index % 2 === 0) {
+                newScale.position = "left"
+            } else {
+                newScale.position = "right"
+            }
+            console.log(index)
+            config.options.scales.yAxes.push(newScale)
+            chart1.update()
+        }
+
+        function removeDatasets(index) {
+            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]
+            chart1.config.data.datasets.forEach(function (dataset) {
+                console.log(index)
+                if (dataset.label === lab[index]) {
+                    config.data.datasets.pop();
+                    config.options.scales.yAxes.pop()
+                    chart1.update();
+                }
+            })
+
+        };
+
+        function addds(selectedarray) {
+            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]
+            for (var i = 0; i < selectedarray.length; i++) {
+                var flag = 0
+                lab.indexOf(selectedarray[i])
+                console.log(chart1.config.data.datasets.length)
+                for (var j = 0; j < chart1.data.datasets.length; j++) {
+                    if (chart1.data.datasets[j].label === selectedarray[i]) {
+                        flag = 1
+                        break
+                    } else if (chart1.data.datasets[j].label !== selectedarray[i]) {
+                        flag = 0
+                    }
+                }
+                if (flag === 0) {
+                    addDatasets1(lab.indexOf(selectedarray[i]))
+                }
+            }
+            for (var k = 0; k < chart1.config.data.datasets.length; k++) {
+                var flag = 0
+                lab.indexOf(selectedarray[k])
+                console.log(chart1.config.data.datasets.length)
+                for (var l = 0; l < selectedarray.length; l++) {
+                    if (chart1.data.datasets[k].label === selectedarray[l]) {
+                        flag = 1
+                        break
+                    } else if (chart1.data.datasets[k].label !== selectedarray[l]) {
+                        flag = 0
+                    }
+                }
+                if (flag === 0) {
+                    removeDatasets(lab.indexOf(chart1.config.data.datasets[k].label))
+                }
+            }
+        }
+
+    </script>
+    <script>
+        $(".multiple_select").mousedown(function (e) {
+            if (e.target.tagName == "OPTION") {
+                return; //don't close dropdown if i select option
+            }
+            $(this).toggleClass('multiple_select_active'); //close dropdown if click inside <select> box
+        });
+        $(".multiple_select").on('blur', function (e) {
+            $(this).removeClass('multiple_select_active'); //close dropdown if click outside <select>
+        });
+
+        $('.multiple_select option').mousedown(function (e) { //no ctrl to select multiple
+            e.preventDefault();
+            $(this).prop('selected', $(this).prop('selected') ? false : true); //set selected options on click
+            $(this).parent().change(); //trigger change event
+        });
+        $("#myFilter").on('change', function () {
+            var selected = $("#myFilter").val(); //here I get all options and convert to string
+            console.log(selected)
+            addds(selected)
+        })
+
+    </script>
+    <script>
+        $(".multiple_select1").mousedown(function (e) {
+            if (e.target.tagName == "OPTION") {
+                return; //don't close dropdown if i select option
+            }
+            $(this).toggleClass('multiple_select_active1'); //close dropdown if click inside <select> box
+        });
+        $(".multiple_select1").on('blur', function (e) {
+            $(this).removeClass('multiple_select_active1'); //close dropdown if click outside <select>
+        });
+
+        $('.multiple_select1 option').mousedown(function (e) { //no ctrl to select multiple
+            e.preventDefault();
+            $(this).prop('selected', $(this).prop('selected') ? false : true); //set selected options on click
+            $(this).parent().change(); //trigger change event
+        });
+        $("#myFilter1").on('change', function () {
+            var selected1 = $("#myFilter1").val(); //here I get all options and convert to string
+            console.log(selected1)
+           // addds(selected1)
+
+        })
+    </script>
+    <script>
+        $(".multiple_select2").mousedown(function (e) {
+            if (e.target.tagName == "OPTION") {
+                return; //don't close dropdown if i select option
+            }
+            $(this).toggleClass('multiple_select_active2'); //close dropdown if click inside <select> box
+        });
+        $(".multiple_select2").on('blur', function (e) {
+            $(this).removeClass('multiple_select_active2'); //close dropdown if click outside <select>
+        });
+
+        $('.multiple_select2 option').mousedown(function (e) { //no ctrl to select multiple
+            e.preventDefault();
+            $(this).prop('selected', $(this).prop('selected') ? false : true); //set selected options on click
+            $(this).parent().change(); //trigger change event
+        });
+        $("#myFilter2").on('change', function () {
+            var selected2 = $("#myFilter2").val(); //here I get all options and convert to string
+            console.log(selected2)
+           // addds(selected2)
+        })
+    </script>
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <script>
+        function get_archive_data() {
+            console.log($("#fromdata").val() + " " + $("#todata").val())
+            $.ajax({
+                method: "POST",
+                url: "api/data/archive",
+                async: true,
+                data: {'csrfmiddlewaretoken': csrftoken, 'from': $("#fromdata").val(), 'to': $("#todata").val()},
+                success: function (result, status, xhr) {
+                    //clearInterval(clr)
+                    //archive = true
+                    var x = document.getElementById("scatter-chart");
+                    var y = document.getElementById("line-chart");
+                    // search(result)
+                    adjustValue1(result)
+                    if (x.style.display === "block") {
+                        x.style.display = "none"
+                        y.style.display = "block"
+                    } else {
+                        y.style.display = "block"
+                    }
+                },
+                error: function (error_data) {
+                    console.log("error")
+                    alert("error")
+                    console.log(error_data)
+                }
+            })
+        }
+
+        function refreshdata() {
+            archive = false
+            var x = document.getElementById("scatter-chart");
+            var y = document.getElementById("line-chart");
+            if (x.style.display === "none") {
+                x.style.display = "block"
+                y.style.display = "none"
+            } else {
+                x.style.display = "block"
+            }
+        }
+
+        {##}
+        {#var data = [#}
+        {#    {#}
+        {#        x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],#}
+        {#        y: [1, 3, 6],#}
+        {#        type: 'scatter'#}
+        {#    }#}
+        {#];#}
+        {#var config1 = {responsive: true}#}
+        {#Plotly.newPlot('line-chart', data, config1);#}
+
+        function adjustValue1(value) {
+            var newd =
+                {
+                    name: "Vin",
+                    x: value.labels,
+                    y: value.Vin,
+                    type: 'line',
+                    marker: {
+                        color: "rgb(255,103,0)",
+                        size: 5
+                    },
+
+                }
+            var newd2 =
+                {
+                    name: "Vbat",
+                    x: value.labels,
+                    y: value.Vbat,
+                    type: 'line',
+                    yaxis: 'y2',
+                    marker: {
+                        color: "rgb(57,255,20)",
+                        size: 5
+                    },
+                }
+            var data = [newd, newd2];
+            var layout = {
+                legend: {
+                    x: 0.5,
+                    y: 1.3,
+                    "orientation": "h",
+                    font: {
+                        family: 'sans-serif',
+                        size: 12,
+                        color: '#fff'
+                    },
+                },
+                margin: {
+                    l: 50,
+                    r: 50,
+                    b: 25,
+                    t: 25,
+                },
+                autosize: false,
+                width: 1120,
+                height: 350,
+                paper_bgcolor: '#313131',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                xaxis: {
+                    ticks: '',
+                    side: 'bottom',
+                    gridcolor: '#696969',
+                    linecolor: '#696969',
+                    tickfont: {
+                        family: 'Old Standard TT, serif',
+                        size: 14,
+                        color: 'white'
+                    },
+                },
+                yaxis: {
+                    title: 'Vin',
+                    gridcolor: '#696969',
+                    linecolor: '#696969',
+                    titlefont: {color: "rgb(255,103,0)"},
+                    tickfont: {
+                        family: 'Old Standard TT, serif',
+                        size: 14,
+                        color: 'white'
+                    },
+                },
+                yaxis2: {
+                    title: 'Vbat',
+                    gridcolor: '#696969',
+                    linecolor: '#696969',
+                    titlefont: {color: "rgb(57,255,20)"},
+                    overlaying: 'y',
+                    side: 'right',
+                    tickfont: {
+                        family: 'Old Standard TT, serif',
+                        size: 14,
+                        color: 'white'
+                    },
+                },
+            };
+            Plotly.newPlot('line-chart', data, layout, {modeBarButtonsToRemove: ['hoverClosestCartesian','zoom2d', 'hoverCompareCartesian', 'zoomIn2d', 'zoomOut2d', 'pan2d', 'toggleSpikelines', 'resetScale2d']});
+        }
+    </script>
+{% endblock javascripts %}
