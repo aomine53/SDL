@@ -6,8 +6,14 @@
       <synchronize>true</synchronize>
       <imported>true</imported>
       <remarks>$PROJECT_DIR$/core/settings.py</remarks>
-      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://127.0.0.1:3306/mytestdb</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="@mmlink" uuid="5e4fe3fc-1f7e-45c9-9f63-914c1a8bf915">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://143.110.187.187:3306/mytestdb</jdbc-url>
     </data-source>
   </component>
 </project>

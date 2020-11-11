@@ -11,7 +11,7 @@ from django import template
 from django.db import connection
 from datetime import datetime, timedelta
 import pytz
-from app.operations import searchdata, getlivedata, getdevicedata, getreport
+from app.operations import searchdata, getlivedata, getdevicedata, getreport, getmapreport
 
 
 @login_required(login_url="/login/")
@@ -103,6 +103,19 @@ def GetReport(request):
     context = {"data": getreport()}
 
     return JsonResponse(context)
+
+
+@login_required(login_url="/login/")
+def get_map_report(request):
+    context = {}
+    utc = pytz.UTC
+    if request.method == "POST":
+        tripid = request.POST["tripid"]
+        context = {"data": getmapreport(tripid)}
+        return JsonResponse(context)
+    else:
+        html_template = loader.get_template('page-404.html')
+        return HttpResponse(html_template.render(context, request))
 
 
 @login_required(login_url="/login/")

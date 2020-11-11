@@ -98,7 +98,7 @@ def getreport():
     Report = []
     cursor = mydb.cursor()
     query = "SELECT TRIPID,STARTEDT,ENDEDT,STARTLAT,ENDLAT,STARTLNG,ENDLNG,STARTODO,ENDODO FROM " \
-            "$SLU355000082004871report "
+            "$SLU355000082004871report  "
     cursor.execute(query)
     for tripid, startedt, endedt, startlat, endlat, startlng, endlng, startodo, endodo in cursor:
         print(tripid)
@@ -111,14 +111,33 @@ def getreport():
             'Distance': endodo - startodo
         }
         Report.append(record)
+    cursor.close()
+    mydb.close()
     return Report
+
+
+def getmapreport(tripid):
+    mydb = mysql.connector.connect(**config)
+    mydb.time_zone = '+05:30'
+    cursor = mydb.cursor()
+    query = "SELECT TRIPID,STARTEDT,ENDEDT,STARTLAT,ENDLAT,STARTLNG,ENDLNG,STARTODO,ENDODO FROM " \
+            f"$SLU355000082004871report where TRIPID = {tripid}"
+    cursor.execute(query)
+    print(cursor.fetchall())
+    data = {
+        "TripID": tripid,
+    }
+    cursor.close()
+    mydb.close()
+    return data;
 
 
 if __name__ == "__main__":
     geocoder = Geocoder(
         access_token="pk.eyJ1IjoibWFjaGluZW1hdGgiLCJhIjoiY2toYXFkZmhpMTZubDJybzgwYjkxMWxlbyJ9.UFsD4WU_yE_MVXnTEJbnfA")
-    print(geocoding_reverse(18.4463, 73.81612, geocoder))
-    print(getreport())
+    print(geocoder.place_types)
+    # print(geocoding_reverse(18.4463, 73.81612, geocoder))
+    # print(getreport())
 # def getparameters():
 #     mydb = mysql.connector.connect(**config)
 #     mydb.time_zone = '+05:30'

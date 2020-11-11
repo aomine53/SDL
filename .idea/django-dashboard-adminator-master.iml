@@ -36,6 +36,13 @@
     <orderEntry type="library" name="moment" level="application" />
     <orderEntry type="library" name="chart.js" level="application" />
     <orderEntry type="library" name="chartjs-plugin-streaming" level="application" />
+    <orderEntry type="library" name="bootbox.js" level="application" />
+    <orderEntry type="library" name="jquery-3.5.1.slim" level="application" />
+    <orderEntry type="library" name="tabulator-tables" level="application" />
+    <orderEntry type="library" name="jspdf" level="application" />
+    <orderEntry type="library" name="jspdf-autotable" level="application" />
+    <orderEntry type="library" name="xlsx.full" level="application" />
+    <orderEntry type="library" name="jquery-3.5.1" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
