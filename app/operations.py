@@ -1,6 +1,5 @@
 import mysql.connector
-from mapbox import Geocoder
-from datetime import datetime
+from datetime import datetime, timedelta
 
 config = {
     "user": 'mmlink',
@@ -12,9 +11,9 @@ config = {
 
 def getdevicedata():
     slu = []
-    mydb = mysql.connector.connect(**config)
-    mydb.time_zone = '+05:30'
-    cursor = mydb.cursor()
+    cnx = mysql.connector.connect(**config)
+    cnx.time_zone = '+05:30'
+    cursor = cnx.cursor()
     query = 'SELECT SLU FROM devices'
     cursor.execute(query)
     # print(dir(cursor))
@@ -22,18 +21,18 @@ def getdevicedata():
     for SLU, in cursor:
         slu.append(SLU)
     cursor.close()
-    mydb.close()
+    cnx.close()
     return slu
 
 
 def getlivedata():
-    mydb = mysql.connector.connect(**config)
-    mydb.time_zone = '+05:30'
+    cnx = mysql.connector.connect(**config)
+    cnx.time_zone = '+05:30'
 
-    cursor = mydb.cursor()
+    cursor = cnx.cursor()
     datalist = []
-    slulist = getdevicedata()
-    for slu in slulist:
+    device_list = getdevicedata()
+    for _ in device_list:
         query = "SELECT RNO,VIN,VBAT,EDT,SPDK,LAT,LNG,APPD,TP,CELV,ECT,ES FROM $SLU355000082004871 ORDER BY EDT DESC LIMIT 1"
         cursor.execute(query)
         datalist.append(cursor.fetchone())
@@ -41,16 +40,16 @@ def getlivedata():
     # print(datalist)
     # rno,vin,vbat,edt,spdk,lat,lng = cursor.fetchone()
     cursor.close()
-    mydb.close()
+    cnx.close()
     # return rno,vin,vbat,edt,spdk,lat,lng
     return datalist
 
 
 def searchdata(start, end):
-    mydb = mysql.connector.connect(**config)
-    mydb.time_zone = '+05:30'
+    cnx = mysql.connector.connect(**config)
+    cnx.time_zone = '+05:30'
 
-    cursor = mydb.cursor()
+    cursor = cnx.cursor()
     edt = []
     vin = []
     vbat = []
@@ -74,70 +73,93 @@ def searchdata(start, end):
         es.append(ES)
 
     cursor.close()
-    mydb.close()
+    cnx.close()
     return edt, vin, vbat, appd, tp, spdk, celv, ect, es
 
 
-def geocoding_reverse(lat, lng, geocoder):
-    response = geocoder.reverse(lat=lat, lon=lng, limit=1, types=['poi'])
-    if response.status_code == 200:
-        features = response.geojson()['features']
-        if len(features) == 0:
-            return "poi not found"
-        place_name = "{place_name}".format(**features[0])
-        return place_name
-
-    return "api error"
-
-
 def getreport():
-    geocoder = Geocoder(
-        access_token="pk.eyJ1IjoibWFjaGluZW1hdGgiLCJhIjoiY2toYXFkZmhpMTZubDJybzgwYjkxMWxlbyJ9.UFsD4WU_yE_MVXnTEJbnfA")
-    mydb = mysql.connector.connect(**config)
-    mydb.time_zone = '+05:30'
+    cnx = mysql.connector.connect(**config)
+    cnx.time_zone = '+05:30'
     Report = []
-    cursor = mydb.cursor()
-    query = "SELECT TRIPID,STARTEDT,ENDEDT,STARTLAT,ENDLAT,STARTLNG,ENDLNG,STARTODO,ENDODO FROM " \
-            "$SLU355000082004871report  "
+    cursor = cnx.cursor()
+    query = "SELECT TRIPID,STARTEDT,ENDEDT,STARTADDRESS,ENDADDRESS,STARTODO,ENDODO FROM " \
+            "$SLU355000082004871report ORDER BY TRIPID DESC"
     cursor.execute(query)
-    for tripid, startedt, endedt, startlat, endlat, startlng, endlng, startodo, endodo in cursor:
-        print(tripid)
-        record = {
-            "TripID": tripid,
-            "StartTime": startedt.strftime('%Y-%m-%d %H:%M:%S'),
-            "EndTime": endedt.strftime('%Y-%m-%d %H:%M:%S'),
-            'StartAddress': geocoding_reverse(startlat, startlng, geocoder),
-            'EndAddress': geocoding_reverse(endlat, endlng, geocoder),
-            'Distance': endodo - startodo
-        }
+    record = {
+        "TripID": '-',
+        "StartTime": '-',
+        "EndTime": '-',
+        'Duration': '-',
+        'StartAddress': '-',
+        'EndAddress': '-',
+        'Distance': '-',
+    }
+
+    for tripid, startedt, endedt, startadd, endadd, startodo, endodo in cursor:
+        if startedt is not None and endedt is not None:
+            record = {
+                "TripID": tripid,
+                "StartTime": startedt.strftime('%Y-%m-%d %H:%M:%S'),
+                "EndTime": endedt.strftime('%Y-%m-%d %H:%M:%S'),
+                'Duration': f"{round((endedt - startedt).total_seconds() / 60)} Minutes",
+                'StartAddress': startadd,
+                'EndAddress': endadd,
+                'Distance': endodo - startodo
+            }
+        elif endedt is None:
+            record = {
+                "TripID": tripid,
+                "StartTime": startedt.strftime('%Y-%m-%d %H:%M:%S'),
+                "EndTime": '-',
+                'Duration': '-',
+                'StartAddress': startadd,
+                'EndAddress': '-',
+                'Distance': '-'
+            }
+        else:
+            record = {
+                "TripID": '-',
+                "StartTime": '-',
+                "EndTime": '-',
+                'Duration': '-',
+                'StartAddress': '-',
+                'EndAddress': '-',
+                'Distance': '-',
+            }
+        Report.append(record)
+
+    if cursor.rowcount == 0:
         Report.append(record)
     cursor.close()
-    mydb.close()
+    cnx.close()
     return Report
 
 
 def getmapreport(tripid):
-    mydb = mysql.connector.connect(**config)
-    mydb.time_zone = '+05:30'
-    cursor = mydb.cursor()
+    cnx = mysql.connector.connect(**config)
+    cnx.time_zone = '+05:30'
+    cursor = cnx.cursor()
     query = "SELECT TRIPID,STARTEDT,ENDEDT,STARTLAT,ENDLAT,STARTLNG,ENDLNG,STARTODO,ENDODO FROM " \
             f"$SLU355000082004871report where TRIPID = {tripid}"
     cursor.execute(query)
-    print(cursor.fetchall())
+    result = cursor.fetchone()
+    startedt = result[1].strftime('%Y-%m-%dT%H:%M:%S')
+    endedt = result[2].strftime('%Y-%m-%dT%H:%M:%S')
+
+    query = f"SELECT LAT,LNG,WBVSPDK FROM $SLU355000082004871 WHERE '{endedt}' >= EDT and EDT >= '{startedt}'"
+    cursor.execute(query)
+    result = cursor.fetchall()
+    print(result)
     data = {
-        "TripID": tripid,
+        "data": result,
     }
     cursor.close()
-    mydb.close()
-    return data;
+    cnx.close()
+    return data
 
 
 if __name__ == "__main__":
-    geocoder = Geocoder(
-        access_token="pk.eyJ1IjoibWFjaGluZW1hdGgiLCJhIjoiY2toYXFkZmhpMTZubDJybzgwYjkxMWxlbyJ9.UFsD4WU_yE_MVXnTEJbnfA")
-    print(geocoder.place_types)
-    # print(geocoding_reverse(18.4463, 73.81612, geocoder))
-    # print(getreport())
+    print(getreport())
 # def getparameters():
 #     mydb = mysql.connector.connect(**config)
 #     mydb.time_zone = '+05:30'

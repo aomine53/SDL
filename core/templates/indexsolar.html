@@ -23,6 +23,11 @@
         }
     </style>
     <style>
+
+        #mymapid {
+            z-index: 0;
+        }
+
         :root {
             --text: "Select Parameter";
         }
@@ -71,6 +76,7 @@
         :root {
             --text1: "Select Device";
         }
+
         .multiple_select1 {
             height: 35px;
             width: auto;
@@ -1036,7 +1042,11 @@
           return poly
         }*/
         {#console.log("map")#}
-        var mymap = L.map('mymapid').setView([20.5937, 78.9629], 4);
+        var mymap = L.map('mymapid', {
+            center: [18.516726, 73.856255],
+            zoom: 13,
+            preferCanvas: true,
+        });
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             maxZoom: 18,
@@ -1793,477 +1803,477 @@
     </script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-crosshair@1"></script>
-{#    <script>#}
-{#        var ctx = document.getElementById('area-chart').getContext('2d');#}
-{#        var searchchart = {#}
-{#            type: 'line',#}
-{#            data: {#}
-{#                labels: [],#}
-{#                datasets: [#}
-{#                    {#}
-{#                        label: 'Vin',#}
-{#                        borderWidth: 1.5,#}
-{#                        //backgroundColor:"rgba(255,79,0,0.5)",#}
-{#                        borderColor: "rgb(255,103,0)",#}
-{#                        yAxisID: 'yaxis1',#}
-{#                        data: [],#}
-{#                        fill: "false",#}
-{#                        pointStyle: 'line'#}
-{#                    },#}
-{#                    {#}
-{#                        label: 'VBat',#}
-{#                        //backgroundColor:"rgba(191,0,255,0.5)",#}
-{#                        borderColor: "rgb(57,255,20)",#}
-{#                        pointBackgroundColor: "#880085",#}
-{#                        borderWidth: 1.5,#}
-{#                        yAxisID: 'yaxis2',#}
-{#                        data: [],#}
-{#                        fill: "false",#}
-{#                        pointStyle: 'line'#}
-{#                    }#}
-{#                ]#}
-{#            },#}
-{#            options: {#}
-{#                legend: {#}
-{#                    display: true,#}
-{#                    align: 'center',#}
-{#                    labels: {#}
-{#                        usePointStyle: true,#}
-{#                        boxWidth: 10,#}
-{#                        fontColor: '#fff',#}
-{#                        lineCap: 'butt',#}
-{#                    }#}
-{#                },#}
-{#                responsive: true,#}
-{#                elements: {#}
-{#                    point: {#}
-{#                        radius: 1#}
-{#                    }#}
-{#                },#}
-{#                tooltips: {#}
-{#                    mode: 'interpolate',#}
-{#                    intersect: false#}
-{#                },#}
-{#                plugins: {#}
-{#                    crosshair: {#}
-{#                        line: {#}
-{#                            color: '#F66',        // crosshair line color#}
-{#                            width: 1,             // crosshair line width#}
-{#                            dashPattern: [5, 5]   // crosshair line dash pattern#}
-{#                        },#}
-{#                        sync: {#}
-{#                            enabled: false,            // enable trace line syncing with other charts#}
-{#                            group: 1,                 // chart group#}
-{#                            suppressTooltips: false   // suppress tooltips when showing a synced tracer#}
-{#                        },#}
-{#                        zoom: {#}
-{#                            enabled: true,                                      // enable zooming#}
-{#                            zoomboxBackgroundColor: 'rgba(66,133,244,0.2)',     // background color of zoom box#}
-{#                            zoomboxBorderColor: '#48F',                         // border color of zoom box#}
-{#                            zoomButtonText: 'Reset Zoom',                       // reset zoom button text#}
-{#                            zoomButtonClass: 'reset-zoom',                      // reset zoom button class#}
-{#                        },#}
-{#                        callbacks: {#}
-{#                            beforeZoom: function (start, end) {#}
-{##}
-{#                                console.log(start + " " + end)// called before zoom, return false to prevent zoom#}
-{#                                return true;#}
-{#                            },#}
-{#                            afterZoom: function (start, end) {#}
-{##}
-{#                                chart.data.datasets[0].data = Zoomobj.Vin#}
-{#                                chart.data.datasets[1].data = Zoomobj.Vbat#}
-{##}
-{#                            }#}
-{##}
-{#                        }#}
-{#                    }#}
-{#                },#}
-{#                scales: {#}
-{#                    xAxes: [{#}
-{#                        gridLines: {color: "#696969"},#}
-{#                        type: 'time',#}
-{#                        distribution: 'linear',#}
-{#                        time: {#}
-{#                            displayFormats: {#}
-{#                                hour: "MMM D ha"#}
-{##}
-{#                            }#}
-{#                        },#}
-{#                        ticks: {#}
-{#                            fontColor: "white",#}
-{#                            maxTicksLimit: 12,#}
-{#                        }#}
-{#                    }],#}
-{#                    yAxes: [#}
-{#                        {#}
-{#                            id: 'yaxis1',#}
-{#                            gridLines: {color: "#696969"},#}
-{#                            ticks: {#}
-{#                                fontColor: "white"#}
-{#                            }#}
-{#                        },#}
-{#                        {#}
-{#                            id: 'yaxis2',#}
-{#                            position: 'right',#}
-{#                            gridLines: {color: "#696969"},#}
-{#                            ticks: {#}
-{#                                fontColor: "white"#}
-{#                            }#}
-{#                        }]#}
-{#                }#}
-{#            },#}
-{#        }#}
-{#        var chart = new Chart(ctx, searchchart);#}
-{##}
-{#        function refreshdata() {#}
-{#            archive = false#}
-{#            var x = document.getElementById("scatter-chart");#}
-{#            var y = document.getElementById("area-chart");#}
-{#            if (x.style.display === "none") {#}
-{#                x.style.display = "block"#}
-{#                y.style.display = "none"#}
-{#            } else {#}
-{#                x.style.display = "block"#}
-{#            }#}
-{#        }#}
-{##}
-{#        function search(Result) {#}
-{#            chart.data.datasets[0].data = Result.Vin#}
-{#            chart.data.datasets[1].data = Result.Vbat#}
-{#            chart.data.labels = Result.labels#}
-{#            chart.update()#}
-{#        }#}
-{##}
-{#        var oldrno = -1;#}
-{#        var clr = 0#}
-{#        var VIN, VBAT, TIME, TP, APPD, CELV, ES, ECT, SPDK#}
-{##}
-{#        function livedata() {#}
-{#            $.ajax({#}
-{#                method: "GET",#}
-{#                url: 'api/data/live',#}
-{#                success: function (data) {#}
-{#                    if (data.data[1].rno !== oldrno) {#}
-{#                        //  addData(data.data[1]);#}
-                        {#addData1(data.data[1]);#}
-{#                        VIN = data.data[1].vin#}
-{#                        VBAT = data.data[1].vbat#}
-{#                        TP = data.data[1].tp#}
-{#                        APPD = data.data[1].appd#}
-{#                        CELV = data.data[1].celv#}
-{#                        ES = data.data[1].es#}
-{#                        ECT = data.data[1].ect#}
-{#                        SPDK = data.data[1].spdk#}
-{#                        TIME = data.data[1].time#}
-{#                        oldrno = data.data[1].rno;#}
-{#                    }#}
-{#                    //if (chart.data.labels.length >= 30) {#}
-{#                    //removedata();#}
-                    {#removedata1()#}
-{#                    //}#}
-{#                },#}
-{#                error: function (error_data) {#}
-{#                    console.log("error")#}
-{#                    console.log(error_data)#}
-{#                }#}
-{#            })#}
-{#        }#}
-{##}
-{#        var Zoomobj = undefined#}
-{##}
-{#        function get_archive_data() {#}
-{#            console.log($("#fromdata").val() + " " + $("#todata").val())#}
-{#            $.ajax({#}
-{#                method: "POST",#}
-{#                url: "api/data/archive",#}
-{#                async: true,#}
-{#                data: {'csrfmiddlewaretoken': csrftoken, 'from': $("#fromdata").val(), 'to': $("#todata").val()},#}
-{#                success: function (result, status, xhr) {#}
-{#                    //clearInterval(clr)#}
-{#                    //archive = true#}
-{#                    search(result)#}
-{#                    if (x.style.display === "block") {#}
-{#                        x.style.display = "none"#}
-{#                        y.style.display = "block"#}
-{#                    } else {#}
-{#                        y.style.display = "block"#}
-{#                    }#}
-{#                    //search1(result)#}
-{#                    Zoomobj = result#}
-{##}
-{#                },#}
-{#                error: function (error_data) {#}
-{#                    console.log("error")#}
-{#                    alert("error")#}
-{#                    console.log(error_data)#}
-{#                }#}
-{#            })#}
-{#            var x = document.getElementById("scatter-chart");#}
-{#            var y = document.getElementById("area-chart");#}
-            {#config.destroy()#}
-            {#var ctx = document.getElementById('scatter-chart').getContext('2d');#}
-            {#newchart = new Chart(ctx, searchchart);#}
-{#        }#}
-{##}
-{##}
-{#        function start() {#}
-{#            console.log("start")#}
-{#            var currentTime = new Date();#}
-{#            console.log(currentTime)#}
-{#            for (var i = 30; i >= 0; i--) {#}
-{#                var time = new Date(currentTime - i * 1000);#}
-{#                chart.data.labels.push(time)#}
-                {#chart1.data.labels.push(time)#}
-{#                console.log(chart.data.datasets.length)#}
-{#                chart.data.datasets.forEach(function (dataset) {#}
-{#                    dataset.data.push({#}
-{#                        y: undefined,#}
-{#                        x: time#}
-{#                    })#}
-{#                })#}
-{##}
-{#            }#}
-{#            chart.update();#}
-            {#chart1.update();#}
-{#            clr = setInterval(livedata, 500);#}
-{#        }#}
-{#    </script>#}
-{#    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>#}
-{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"#}
-{#            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"#}
-{#            crossorigin="anonymous"></script>#}
-{#    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"#}
-{#            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"#}
-{#            crossorigin="anonymous"></script>#}
-{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"#}
-{#            integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="#}
-{#            crossorigin="anonymous"></script>#}
-{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js"#}
-{#            integrity="sha512-2JBCbWoMJPH+Uj7Wq5OLub8E5edWHlTM4ar/YJkZh3plwB2INhhOC3eDoqHm1Za/ZOSksrLlURLoyXVdfQXqwg=="#}
-{#            crossorigin="anonymous"></script>#}
-{#    <script type="text/javascript">#}
-{#        $(function () {#}
-{#            $('#datetimepicker1').datetimepicker({#}
-{#                format: 'YYYY-MM-DD HH:mm:ss',#}
-{#            });#}
-{#        });#}
-{#        $(function () {#}
-{#            $('#datetimepicker2').datetimepicker({#}
-{#                format: 'YYYY-MM-DD HH:mm:ss',#}
-{#            });#}
-{#        });#}
-{#    </script>#}
-{#    <script>#}
-{#        function getCookie(name) {#}
-{#            let cookieValue = null;#}
-{#            if (document.cookie && document.cookie !== '') {#}
-{#                const cookies = document.cookie.split(';');#}
-{#                for (let i = 0; i < cookies.length; i++) {#}
-{#                    const cookie = cookies[i].trim();#}
-{#                    // Does this cookie string begin with the name we want?#}
-{#                    if (cookie.substring(0, name.length + 1) === (name + '=')) {#}
-{#                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));#}
-{#                        break;#}
-{#                    }#}
-{#                }#}
-{#            }#}
-{#            return cookieValue;#}
-{#        }#}
-{##}
-{#        const csrftoken = getCookie('csrftoken');#}
-{#    </script>#}
-{#    <script>#}
-{#        start()#}
-{#    </script>#}
-{#    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js"></script>#}
-{#    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>#}
-{#    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>#}
-{##}
-{#    <script>#}
-{#        var chartColors = {#}
-{#            red: 'rgb(255, 99, 132)',#}
-{#            orange: 'rgb(255, 159, 64)',#}
-{#            yellow: 'rgb(255, 205, 86)',#}
-{#            green: 'rgb(75, 192, 192)',#}
-{#            blue: 'rgb(54, 162, 235)',#}
-{#            purple: 'rgb(153, 102, 255)',#}
-{#            grey: 'rgb(201, 203, 207)'#}
-{#        };#}
-{##}
-{#        function randomScalingFactor() {#}
-{#            return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);#}
-{#        }#}
-{##}
-{##}
-{#        function datavar() {#}
-{#            return [VIN, VBAT, SPDK, TP, APPD, CELV, ES, ECT]#}
-{#        }#}
-{##}
-{#        function onRefresh(chart) {#}
-{#            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]#}
-{#            let i = 0#}
-{#            let dat = datavar()#}
-{#            chart.config.data.datasets.forEach(function (dataset) {#}
-{#                dataset.data.push({#}
-{#                    x: TIME,#}
-{#                    y: dat[lab.indexOf(dataset.label)]#}
-{#                })#}
-{#            })#}
-{#        }#}
-{##}
-{#        var color = Chart.helpers.color;#}
-{#        var ctx = document.getElementById('scatter-chart').getContext('2d');#}
-{#        var config = {#}
-{#            type: 'line',#}
-{#            data: {#}
-{#                datasets: []#}
-{#            },#}
-{#            options: {#}
-{#                legend: {#}
-{#                    display: true,#}
-{#                    align: 'center',#}
-{#                    labels: {#}
-{#                        usePointStyle: true,#}
-{#                        boxWidth: 10,#}
-{#                        fontColor: '#fff',#}
-{#                        lineCap: 'butt',#}
-{#                    }#}
-{#                },#}
-{#                elements: {#}
-{#                    point: {#}
-{#                        radius: 1#}
-{#                    }#}
-{#                },#}
-{#                scales: {#}
-{#                    xAxes: [{#}
-{#                        type: 'realtime',#}
-{#                        realtime: {#}
-{#                            duration: 20000,#}
-{#                            refresh: 1000,#}
-{#                            delay: 3000,#}
-{#                            onRefresh: onRefresh#}
-{#                        },#}
-{#                        gridLines: {color: "#696969"},#}
-{#                        ticks: {#}
-{#                            fontColor: "white",#}
-{##}
-{#                        }#}
-{#                    }],#}
-{#                    yAxes: []#}
-{#                },#}
-{#                tooltips: {#}
-{#                    mode: 'nearest',#}
-{#                    intersect: false#}
-{#                },#}
-{#                hover: {#}
-{#                    mode: 'nearest',#}
-{#                    intersect: false#}
-{#                }#}
-{#            }#}
-{#        };#}
-{#        var chart1 = new Chart(ctx, config)#}
-{#        console.log(chart1)#}
-{#        let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]#}
-{#        let unit = ["Volt", "Volt", "Kmph", "", "", "", "", ""]#}
-{#        var colorNames = Object.keys(chartColors);#}
-{##}
-{#        function addDatasets1(index) {#}
-{#            var colorName = colorNames[chart1.config.data.datasets.length % colorNames.length];#}
-{#            var newColor = chartColors[colorName];#}
-{#            var newDataset = {#}
-{#                label: lab[index],#}
-{#                backgroundColor: color(newColor).alpha(0.5).rgbString(),#}
-{#                borderColor: newColor,#}
-{#                fill: false,#}
-{#                data: [],#}
-{#                yAxisID: 'y-axis-' + index,#}
-{#                pointStyle: "line",#}
-{#                borderWidth: 1.5,#}
-{#            };#}
-{##}
-{#            config.data.datasets.push(newDataset);#}
-{#            addScale(index)#}
-{#            console.log('y-axis-' + index)#}
-{#            chart1.update();#}
-{#        };#}
-{##}
-{#        function addScale(index) {#}
-{##}
-{#            var newScale = {#}
-{#                id: 'y-axis-' + index,#}
-{#                scaleLabel: {#}
-{#                    display: true,#}
-{#                    labelString: lab[index] + " (" + unit[index] + ")"#}
-{#                },#}
-{#                gridLines: {color: "#696969"},#}
-{#                ticks: {#}
-{#                    fontColor: "white"#}
-{#                }#}
-{#            }#}
-{#            if (index % 2 === 0) {#}
-{#                newScale.position = "left"#}
-{#            } else {#}
-{#                newScale.position = "right"#}
-{#            }#}
-{#            console.log(index)#}
-{#            config.options.scales.yAxes.push(newScale)#}
-{#            chart1.update()#}
-{#        }#}
-{##}
-{#        function removeDatasets(index) {#}
-{#            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]#}
-{#            chart1.config.data.datasets.forEach(function (dataset) {#}
-{#                console.log(index)#}
-{#                if (dataset.label === lab[index]) {#}
-{#                    config.data.datasets.pop();#}
-{#                    config.options.scales.yAxes.pop()#}
-{#                    chart1.update();#}
-{#                }#}
-{#            })#}
-{##}
-{#        };#}
-{##}
-{#        function addds(selectedarray) {#}
-{#            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]#}
-{#            for (var i = 0; i < selectedarray.length; i++) {#}
-{#                var flag = 0#}
-{#                lab.indexOf(selectedarray[i])#}
-{#                console.log(chart.config.data.datasets.length)#}
-{#                for (var j = 0; j < chart1.data.datasets.length; j++) {#}
-{#                    if (chart1.data.datasets[j].label === selectedarray[i]) {#}
-{#                        flag = 1#}
-{#                        break#}
-{#                    } else if (chart1.data.datasets[j].label !== selectedarray[i]) {#}
-{#                        flag = 0#}
-{#                    }#}
-{#                }#}
-{#                if (flag === 0) {#}
-{#                    addDatasets1(lab.indexOf(selectedarray[i]))#}
-{#                }#}
-{#            }#}
-{#            for (var k = 0; k < chart1.config.data.datasets.length; k++) {#}
-{#                var flag = 0#}
-{#                lab.indexOf(selectedarray[k])#}
-{#                console.log(chart.config.data.datasets.length)#}
-{#                for (var l = 0; l < selectedarray.length; l++) {#}
-{#                    if (chart1.data.datasets[k].label === selectedarray[l]) {#}
-{#                        flag = 1#}
-{#                        break#}
-{#                    } else if (chart1.data.datasets[k].label !== selectedarray[l]) {#}
-{#                        flag = 0#}
-{#                    }#}
-{#                }#}
-{#                if (flag === 0) {#}
-{#                    removeDatasets(lab.indexOf(chart1.config.data.datasets[k].label))#}
-{#                }#}
-{#            }#}
-{#        }#}
-{##}
-{#    </script>#}
-{#    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>#}
-{##}
-{#    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-en_US.min.js"></script>#}
+    {#    <script>#}
+    {#        var ctx = document.getElementById('area-chart').getContext('2d');#}
+    {#        var searchchart = {#}
+    {#            type: 'line',#}
+    {#            data: {#}
+    {#                labels: [],#}
+    {#                datasets: [#}
+    {#                    {#}
+    {#                        label: 'Vin',#}
+    {#                        borderWidth: 1.5,#}
+    {#                        //backgroundColor:"rgba(255,79,0,0.5)",#}
+    {#                        borderColor: "rgb(255,103,0)",#}
+    {#                        yAxisID: 'yaxis1',#}
+    {#                        data: [],#}
+    {#                        fill: "false",#}
+    {#                        pointStyle: 'line'#}
+    {#                    },#}
+    {#                    {#}
+    {#                        label: 'VBat',#}
+    {#                        //backgroundColor:"rgba(191,0,255,0.5)",#}
+    {#                        borderColor: "rgb(57,255,20)",#}
+    {#                        pointBackgroundColor: "#880085",#}
+    {#                        borderWidth: 1.5,#}
+    {#                        yAxisID: 'yaxis2',#}
+    {#                        data: [],#}
+    {#                        fill: "false",#}
+    {#                        pointStyle: 'line'#}
+    {#                    }#}
+    {#                ]#}
+    {#            },#}
+    {#            options: {#}
+    {#                legend: {#}
+    {#                    display: true,#}
+    {#                    align: 'center',#}
+    {#                    labels: {#}
+    {#                        usePointStyle: true,#}
+    {#                        boxWidth: 10,#}
+    {#                        fontColor: '#fff',#}
+    {#                        lineCap: 'butt',#}
+    {#                    }#}
+    {#                },#}
+    {#                responsive: true,#}
+    {#                elements: {#}
+    {#                    point: {#}
+    {#                        radius: 1#}
+    {#                    }#}
+    {#                },#}
+    {#                tooltips: {#}
+    {#                    mode: 'interpolate',#}
+    {#                    intersect: false#}
+    {#                },#}
+    {#                plugins: {#}
+    {#                    crosshair: {#}
+    {#                        line: {#}
+    {#                            color: '#F66',        // crosshair line color#}
+    {#                            width: 1,             // crosshair line width#}
+    {#                            dashPattern: [5, 5]   // crosshair line dash pattern#}
+    {#                        },#}
+    {#                        sync: {#}
+    {#                            enabled: false,            // enable trace line syncing with other charts#}
+    {#                            group: 1,                 // chart group#}
+    {#                            suppressTooltips: false   // suppress tooltips when showing a synced tracer#}
+    {#                        },#}
+    {#                        zoom: {#}
+    {#                            enabled: true,                                      // enable zooming#}
+    {#                            zoomboxBackgroundColor: 'rgba(66,133,244,0.2)',     // background color of zoom box#}
+    {#                            zoomboxBorderColor: '#48F',                         // border color of zoom box#}
+    {#                            zoomButtonText: 'Reset Zoom',                       // reset zoom button text#}
+    {#                            zoomButtonClass: 'reset-zoom',                      // reset zoom button class#}
+    {#                        },#}
+    {#                        callbacks: {#}
+    {#                            beforeZoom: function (start, end) {#}
+    {##}
+    {#                                console.log(start + " " + end)// called before zoom, return false to prevent zoom#}
+    {#                                return true;#}
+    {#                            },#}
+    {#                            afterZoom: function (start, end) {#}
+    {##}
+    {#                                chart.data.datasets[0].data = Zoomobj.Vin#}
+    {#                                chart.data.datasets[1].data = Zoomobj.Vbat#}
+    {##}
+    {#                            }#}
+    {##}
+    {#                        }#}
+    {#                    }#}
+    {#                },#}
+    {#                scales: {#}
+    {#                    xAxes: [{#}
+    {#                        gridLines: {color: "#696969"},#}
+    {#                        type: 'time',#}
+    {#                        distribution: 'linear',#}
+    {#                        time: {#}
+    {#                            displayFormats: {#}
+    {#                                hour: "MMM D ha"#}
+    {##}
+    {#                            }#}
+    {#                        },#}
+    {#                        ticks: {#}
+    {#                            fontColor: "white",#}
+    {#                            maxTicksLimit: 12,#}
+    {#                        }#}
+    {#                    }],#}
+    {#                    yAxes: [#}
+    {#                        {#}
+    {#                            id: 'yaxis1',#}
+    {#                            gridLines: {color: "#696969"},#}
+    {#                            ticks: {#}
+    {#                                fontColor: "white"#}
+    {#                            }#}
+    {#                        },#}
+    {#                        {#}
+    {#                            id: 'yaxis2',#}
+    {#                            position: 'right',#}
+    {#                            gridLines: {color: "#696969"},#}
+    {#                            ticks: {#}
+    {#                                fontColor: "white"#}
+    {#                            }#}
+    {#                        }]#}
+    {#                }#}
+    {#            },#}
+    {#        }#}
+    {#        var chart = new Chart(ctx, searchchart);#}
+    {##}
+    {#        function refreshdata() {#}
+    {#            archive = false#}
+    {#            var x = document.getElementById("scatter-chart");#}
+    {#            var y = document.getElementById("area-chart");#}
+    {#            if (x.style.display === "none") {#}
+    {#                x.style.display = "block"#}
+    {#                y.style.display = "none"#}
+    {#            } else {#}
+    {#                x.style.display = "block"#}
+    {#            }#}
+    {#        }#}
+    {##}
+    {#        function search(Result) {#}
+    {#            chart.data.datasets[0].data = Result.Vin#}
+    {#            chart.data.datasets[1].data = Result.Vbat#}
+    {#            chart.data.labels = Result.labels#}
+    {#            chart.update()#}
+    {#        }#}
+    {##}
+    {#        var oldrno = -1;#}
+    {#        var clr = 0#}
+    {#        var VIN, VBAT, TIME, TP, APPD, CELV, ES, ECT, SPDK#}
+    {##}
+    {#        function livedata() {#}
+    {#            $.ajax({#}
+    {#                method: "GET",#}
+    {#                url: 'api/data/live',#}
+    {#                success: function (data) {#}
+    {#                    if (data.data[1].rno !== oldrno) {#}
+    {#                        //  addData(data.data[1]);#}
+    {#addData1(data.data[1]);#}
+    {#                        VIN = data.data[1].vin#}
+    {#                        VBAT = data.data[1].vbat#}
+    {#                        TP = data.data[1].tp#}
+    {#                        APPD = data.data[1].appd#}
+    {#                        CELV = data.data[1].celv#}
+    {#                        ES = data.data[1].es#}
+    {#                        ECT = data.data[1].ect#}
+    {#                        SPDK = data.data[1].spdk#}
+    {#                        TIME = data.data[1].time#}
+    {#                        oldrno = data.data[1].rno;#}
+    {#                    }#}
+    {#                    //if (chart.data.labels.length >= 30) {#}
+    {#                    //removedata();#}
+    {#removedata1()#}
+    {#                    //}#}
+    {#                },#}
+    {#                error: function (error_data) {#}
+    {#                    console.log("error")#}
+    {#                    console.log(error_data)#}
+    {#                }#}
+    {#            })#}
+    {#        }#}
+    {##}
+    {#        var Zoomobj = undefined#}
+    {##}
+    {#        function get_archive_data() {#}
+    {#            console.log($("#fromdata").val() + " " + $("#todata").val())#}
+    {#            $.ajax({#}
+    {#                method: "POST",#}
+    {#                url: "api/data/archive",#}
+    {#                async: true,#}
+    {#                data: {'csrfmiddlewaretoken': csrftoken, 'from': $("#fromdata").val(), 'to': $("#todata").val()},#}
+    {#                success: function (result, status, xhr) {#}
+    {#                    //clearInterval(clr)#}
+    {#                    //archive = true#}
+    {#                    search(result)#}
+    {#                    if (x.style.display === "block") {#}
+    {#                        x.style.display = "none"#}
+    {#                        y.style.display = "block"#}
+    {#                    } else {#}
+    {#                        y.style.display = "block"#}
+    {#                    }#}
+    {#                    //search1(result)#}
+    {#                    Zoomobj = result#}
+    {##}
+    {#                },#}
+    {#                error: function (error_data) {#}
+    {#                    console.log("error")#}
+    {#                    alert("error")#}
+    {#                    console.log(error_data)#}
+    {#                }#}
+    {#            })#}
+    {#            var x = document.getElementById("scatter-chart");#}
+    {#            var y = document.getElementById("area-chart");#}
+    {#config.destroy()#}
+    {#var ctx = document.getElementById('scatter-chart').getContext('2d');#}
+    {#newchart = new Chart(ctx, searchchart);#}
+    {#        }#}
+    {##}
+    {##}
+    {#        function start() {#}
+    {#            console.log("start")#}
+    {#            var currentTime = new Date();#}
+    {#            console.log(currentTime)#}
+    {#            for (var i = 30; i >= 0; i--) {#}
+    {#                var time = new Date(currentTime - i * 1000);#}
+    {#                chart.data.labels.push(time)#}
+    {#chart1.data.labels.push(time)#}
+    {#                console.log(chart.data.datasets.length)#}
+    {#                chart.data.datasets.forEach(function (dataset) {#}
+    {#                    dataset.data.push({#}
+    {#                        y: undefined,#}
+    {#                        x: time#}
+    {#                    })#}
+    {#                })#}
+    {##}
+    {#            }#}
+    {#            chart.update();#}
+    {#chart1.update();#}
+    {#            clr = setInterval(livedata, 500);#}
+    {#        }#}
+    {#    </script>#}
+    {#    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>#}
+    {#    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"#}
+    {#            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"#}
+    {#            crossorigin="anonymous"></script>#}
+    {#    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"#}
+    {#            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"#}
+    {#            crossorigin="anonymous"></script>#}
+    {#    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"#}
+    {#            integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="#}
+    {#            crossorigin="anonymous"></script>#}
+    {#    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js"#}
+    {#            integrity="sha512-2JBCbWoMJPH+Uj7Wq5OLub8E5edWHlTM4ar/YJkZh3plwB2INhhOC3eDoqHm1Za/ZOSksrLlURLoyXVdfQXqwg=="#}
+    {#            crossorigin="anonymous"></script>#}
+    {#    <script type="text/javascript">#}
+    {#        $(function () {#}
+    {#            $('#datetimepicker1').datetimepicker({#}
+    {#                format: 'YYYY-MM-DD HH:mm:ss',#}
+    {#            });#}
+    {#        });#}
+    {#        $(function () {#}
+    {#            $('#datetimepicker2').datetimepicker({#}
+    {#                format: 'YYYY-MM-DD HH:mm:ss',#}
+    {#            });#}
+    {#        });#}
+    {#    </script>#}
+    {#    <script>#}
+    {#        function getCookie(name) {#}
+    {#            let cookieValue = null;#}
+    {#            if (document.cookie && document.cookie !== '') {#}
+    {#                const cookies = document.cookie.split(';');#}
+    {#                for (let i = 0; i < cookies.length; i++) {#}
+    {#                    const cookie = cookies[i].trim();#}
+    {#                    // Does this cookie string begin with the name we want?#}
+    {#                    if (cookie.substring(0, name.length + 1) === (name + '=')) {#}
+    {#                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));#}
+    {#                        break;#}
+    {#                    }#}
+    {#                }#}
+    {#            }#}
+    {#            return cookieValue;#}
+    {#        }#}
+    {##}
+    {#        const csrftoken = getCookie('csrftoken');#}
+    {#    </script>#}
+    {#    <script>#}
+    {#        start()#}
+    {#    </script>#}
+    {#    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js"></script>#}
+    {#    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>#}
+    {#    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>#}
+    {##}
+    {#    <script>#}
+    {#        var chartColors = {#}
+    {#            red: 'rgb(255, 99, 132)',#}
+    {#            orange: 'rgb(255, 159, 64)',#}
+    {#            yellow: 'rgb(255, 205, 86)',#}
+    {#            green: 'rgb(75, 192, 192)',#}
+    {#            blue: 'rgb(54, 162, 235)',#}
+    {#            purple: 'rgb(153, 102, 255)',#}
+    {#            grey: 'rgb(201, 203, 207)'#}
+    {#        };#}
+    {##}
+    {#        function randomScalingFactor() {#}
+    {#            return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);#}
+    {#        }#}
+    {##}
+    {##}
+    {#        function datavar() {#}
+    {#            return [VIN, VBAT, SPDK, TP, APPD, CELV, ES, ECT]#}
+    {#        }#}
+    {##}
+    {#        function onRefresh(chart) {#}
+    {#            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]#}
+    {#            let i = 0#}
+    {#            let dat = datavar()#}
+    {#            chart.config.data.datasets.forEach(function (dataset) {#}
+    {#                dataset.data.push({#}
+    {#                    x: TIME,#}
+    {#                    y: dat[lab.indexOf(dataset.label)]#}
+    {#                })#}
+    {#            })#}
+    {#        }#}
+    {##}
+    {#        var color = Chart.helpers.color;#}
+    {#        var ctx = document.getElementById('scatter-chart').getContext('2d');#}
+    {#        var config = {#}
+    {#            type: 'line',#}
+    {#            data: {#}
+    {#                datasets: []#}
+    {#            },#}
+    {#            options: {#}
+    {#                legend: {#}
+    {#                    display: true,#}
+    {#                    align: 'center',#}
+    {#                    labels: {#}
+    {#                        usePointStyle: true,#}
+    {#                        boxWidth: 10,#}
+    {#                        fontColor: '#fff',#}
+    {#                        lineCap: 'butt',#}
+    {#                    }#}
+    {#                },#}
+    {#                elements: {#}
+    {#                    point: {#}
+    {#                        radius: 1#}
+    {#                    }#}
+    {#                },#}
+    {#                scales: {#}
+    {#                    xAxes: [{#}
+    {#                        type: 'realtime',#}
+    {#                        realtime: {#}
+    {#                            duration: 20000,#}
+    {#                            refresh: 1000,#}
+    {#                            delay: 3000,#}
+    {#                            onRefresh: onRefresh#}
+    {#                        },#}
+    {#                        gridLines: {color: "#696969"},#}
+    {#                        ticks: {#}
+    {#                            fontColor: "white",#}
+    {##}
+    {#                        }#}
+    {#                    }],#}
+    {#                    yAxes: []#}
+    {#                },#}
+    {#                tooltips: {#}
+    {#                    mode: 'nearest',#}
+    {#                    intersect: false#}
+    {#                },#}
+    {#                hover: {#}
+    {#                    mode: 'nearest',#}
+    {#                    intersect: false#}
+    {#                }#}
+    {#            }#}
+    {#        };#}
+    {#        var chart1 = new Chart(ctx, config)#}
+    {#        console.log(chart1)#}
+    {#        let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]#}
+    {#        let unit = ["Volt", "Volt", "Kmph", "", "", "", "", ""]#}
+    {#        var colorNames = Object.keys(chartColors);#}
+    {##}
+    {#        function addDatasets1(index) {#}
+    {#            var colorName = colorNames[chart1.config.data.datasets.length % colorNames.length];#}
+    {#            var newColor = chartColors[colorName];#}
+    {#            var newDataset = {#}
+    {#                label: lab[index],#}
+    {#                backgroundColor: color(newColor).alpha(0.5).rgbString(),#}
+    {#                borderColor: newColor,#}
+    {#                fill: false,#}
+    {#                data: [],#}
+    {#                yAxisID: 'y-axis-' + index,#}
+    {#                pointStyle: "line",#}
+    {#                borderWidth: 1.5,#}
+    {#            };#}
+    {##}
+    {#            config.data.datasets.push(newDataset);#}
+    {#            addScale(index)#}
+    {#            console.log('y-axis-' + index)#}
+    {#            chart1.update();#}
+    {#        };#}
+    {##}
+    {#        function addScale(index) {#}
+    {##}
+    {#            var newScale = {#}
+    {#                id: 'y-axis-' + index,#}
+    {#                scaleLabel: {#}
+    {#                    display: true,#}
+    {#                    labelString: lab[index] + " (" + unit[index] + ")"#}
+    {#                },#}
+    {#                gridLines: {color: "#696969"},#}
+    {#                ticks: {#}
+    {#                    fontColor: "white"#}
+    {#                }#}
+    {#            }#}
+    {#            if (index % 2 === 0) {#}
+    {#                newScale.position = "left"#}
+    {#            } else {#}
+    {#                newScale.position = "right"#}
+    {#            }#}
+    {#            console.log(index)#}
+    {#            config.options.scales.yAxes.push(newScale)#}
+    {#            chart1.update()#}
+    {#        }#}
+    {##}
+    {#        function removeDatasets(index) {#}
+    {#            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]#}
+    {#            chart1.config.data.datasets.forEach(function (dataset) {#}
+    {#                console.log(index)#}
+    {#                if (dataset.label === lab[index]) {#}
+    {#                    config.data.datasets.pop();#}
+    {#                    config.options.scales.yAxes.pop()#}
+    {#                    chart1.update();#}
+    {#                }#}
+    {#            })#}
+    {##}
+    {#        };#}
+    {##}
+    {#        function addds(selectedarray) {#}
+    {#            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]#}
+    {#            for (var i = 0; i < selectedarray.length; i++) {#}
+    {#                var flag = 0#}
+    {#                lab.indexOf(selectedarray[i])#}
+    {#                console.log(chart.config.data.datasets.length)#}
+    {#                for (var j = 0; j < chart1.data.datasets.length; j++) {#}
+    {#                    if (chart1.data.datasets[j].label === selectedarray[i]) {#}
+    {#                        flag = 1#}
+    {#                        break#}
+    {#                    } else if (chart1.data.datasets[j].label !== selectedarray[i]) {#}
+    {#                        flag = 0#}
+    {#                    }#}
+    {#                }#}
+    {#                if (flag === 0) {#}
+    {#                    addDatasets1(lab.indexOf(selectedarray[i]))#}
+    {#                }#}
+    {#            }#}
+    {#            for (var k = 0; k < chart1.config.data.datasets.length; k++) {#}
+    {#                var flag = 0#}
+    {#                lab.indexOf(selectedarray[k])#}
+    {#                console.log(chart.config.data.datasets.length)#}
+    {#                for (var l = 0; l < selectedarray.length; l++) {#}
+    {#                    if (chart1.data.datasets[k].label === selectedarray[l]) {#}
+    {#                        flag = 1#}
+    {#                        break#}
+    {#                    } else if (chart1.data.datasets[k].label !== selectedarray[l]) {#}
+    {#                        flag = 0#}
+    {#                    }#}
+    {#                }#}
+    {#                if (flag === 0) {#}
+    {#                    removeDatasets(lab.indexOf(chart1.config.data.datasets[k].label))#}
+    {#                }#}
+    {#            }#}
+    {#        }#}
+    {##}
+    {#    </script>#}
+    {#    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>#}
+    {##}
+    {#    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-en_US.min.js"></script>#}
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -2576,7 +2586,7 @@
         $("#myFilter1").on('change', function () {
             var selected1 = $("#myFilter1").val(); //here I get all options and convert to string
             console.log(selected1)
-           // addds(selected1)
+            // addds(selected1)
 
         })
     </script>
@@ -2599,7 +2609,7 @@
         $("#myFilter2").on('change', function () {
             var selected2 = $("#myFilter2").val(); //here I get all options and convert to string
             console.log(selected2)
-           // addds(selected2)
+            // addds(selected2)
         })
     </script>
     <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
@@ -2740,7 +2750,7 @@
                     },
                 },
             };
-            Plotly.newPlot('line-chart', data, layout, {modeBarButtonsToRemove: ['hoverClosestCartesian','zoom2d', 'hoverCompareCartesian', 'zoomIn2d', 'zoomOut2d', 'pan2d', 'toggleSpikelines', 'resetScale2d']});
+            Plotly.newPlot('line-chart', data, layout, {modeBarButtonsToRemove: ['hoverClosestCartesian', 'zoom2d', 'hoverCompareCartesian', 'zoomIn2d', 'zoomOut2d', 'pan2d', 'toggleSpikelines', 'resetScale2d']});
         }
     </script>
 {% endblock javascripts %}
