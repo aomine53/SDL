@@ -614,7 +614,7 @@
                                 <!-- Progress Bars -->
                                 <div class="layers">
                                     <div class="layer w-100 mT-15">
-                                        <small class="fw-600 c-grey-700">Battery SOC</small>
+                                        <small class="fw-600 c-white-700">Battery SOC</small>
                                         <span class="pull-right c-grey-600 fsz-sm">90%</span>
                                         <div class="progress mT-10">
                                             <div class="progress-bar bgc-blue-grey-500" role="progressbar"
@@ -623,7 +623,7 @@
                                         </div>
                                     </div>
                                     <div class="layer w-100 mT-15">
-                                        <small class="fw-600 c-grey-700">Consumption Till Date(Mwh)</small>
+                                        <small class="fw-600 c-white-700">Consumption Till Date(Mwh)</small>
                                         <span class="pull-right c-grey-600 fsz-sm">50%</span>
                                         <div class="progress mT-10">
                                             <div class="progress-bar bgc-deep-purple-500" role="progressbar"
@@ -632,7 +632,7 @@
                                         </div>
                                     </div>
                                     <div class="layer w-100 mT-15">
-                                        <small class="fw-600 c-grey-700">Solar Generation Till Date(Mwh)</small>
+                                        <small class="fw-600 c-white-700">Solar Generation Till Date(Mwh)</small>
                                         <span class="pull-right c-grey-600 fsz-sm">80%</span>
                                         <div class="progress mT-10">
                                             <div class="progress-bar bgc-green-500" role="progressbar"
@@ -641,7 +641,7 @@
                                         </div>
                                     </div>
                                     <div class="layer w-100 mT-15">
-                                        <small class="fw-600 c-grey-700">Export To Grid Till Date(Mwh)</small>
+                                        <small class="fw-600 c-white-700">Export To Grid Till Date(Mwh)</small>
                                         <span class="pull-right c-grey-600 fsz-sm">40%</span>
                                         <div class="progress mT-10">
                                             <div class="progress-bar bgc-light-blue-500" role="progressbar"
@@ -650,7 +650,7 @@
                                         </div>
                                     </div>
                                     <div class="layer w-100 mT-15">
-                                        <small class="fw-600 c-grey-700">Import From Grid Till Date(Mwh)</small>
+                                        <small class="fw-600 c-white-700">Import From Grid Till Date(Mwh)</small>
                                         <span class="pull-right c-grey-600 fsz-sm">90%</span>
                                         <div class="progress mT-10">
                                             <div class="progress-bar bgc-blue-grey-500" role="progressbar"
@@ -659,7 +659,7 @@
                                         </div>
                                     </div>
                                     <div class="layer w-100 mT-15">
-                                        <small class="fw-600 c-grey-700">Import From DG Till Date(Mwh)</small>
+                                        <small class="fw-600 c-white-700">Import From DG Till Date(Mwh)</small>
                                         <span class="pull-right c-grey-600 fsz-sm">90%</span>
                                         <div class="progress mT-10">
                                             <div class="progress-bar bgc-blue-grey-500" role="progressbar"
@@ -1043,9 +1043,9 @@
         }*/
         {#console.log("map")#}
         var mymap = L.map('mymapid', {
-            center: [18.516726, 73.856255],
-            zoom: 13,
-            preferCanvas: true,
+            center: [19.7515, 75.7139],
+            zoom: 6,
+            preferCanvas: false,
         });
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',

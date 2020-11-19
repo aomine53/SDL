@@ -85,7 +85,7 @@
         const viewButton = function (cell, formatterParams, onRendered) { //plain text value
             return "<button class='btn btn-md btn-light' onclick='MapReport()'>View</button>";
         }
-
+        var tripid = 0;
         var table = new Tabulator("#report-table", {
             placeholder: "<i class='fa fa-spin fa-spinner'></i> Loading",
             height: "100%",
@@ -101,7 +101,7 @@
                 {title: "Distance", field: "Distance", hozAlign: "center"},
                 {
                     formatter: viewButton, hozAlign: "center", headerSort: false, cellClick: function (e, cell) {
-                        get_map_data(cell.getRow().getData().TripID)
+                        tripid = cell.getRow().getData().TripID
                     }
                 },
             ],
@@ -125,8 +125,17 @@
         //trigger download of data.pdf file
         document.getElementById("download-pdf").addEventListener("click", function () {
             table.download("pdf", "data.pdf", {
-                orientation: "portrait", //set page orientation to portrait
+                orientation: "landscape", //set page orientation to portrait
                 title: "Trip Report", //add title to report
+                autoTable: { //advanced table styling
+                    styles: {
+                        cellWidth: 'wrap',
+                    },
+                    columnStyles: {
+                        4: {columnWidth: 'auto'},
+                        5: {columnWidth: 'auto'}
+                    }
+                },
             });
         });
 
@@ -136,6 +145,57 @@
         });
     </script>
     <script>
+        //yellow --> <55
+        //green -->  <75 && >55
+        //blue -->   >75 && <95
+        //red --->   >95
+        function plotgraph(mymap, data) {
+            var latlngs = [];
+            var bound = []
+            console.log(data.data.data)
+            for (let i = 0; i < data.data.data.length; i++) {
+                bound.push([data.data.data[i][0], data.data.data[i][1]])
+            }
+            mymap.fitBounds(bound);
+            setTimeout(function () {
+                var blueIcon = new L.Icon({
+                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                });
+                var redIcon = new L.Icon({
+                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                });
+                L.marker(bound[0], {icon: blueIcon}).addTo(mymap);
+                L.marker(bound[bound.length - 1], {icon: redIcon}).addTo(mymap);
+            }, 500)
+            setTimeout(function () {
+                for (let i = 0; i < data.data.data.length - 1; i++) {
+                    latlngs = [[data.data.data[i][0], data.data.data[i][1]], [data.data.data[i + 1][0], data.data.data[i + 1][1]]]
+                    if (data.data.data[i][2] < 55) {
+                        L.polyline(latlngs, {color: 'green'}).addTo(mymap)
+                    } else if (data.data.data[i][2] >= 55 && data.data.data[i][2] < 75) {
+                        L.polyline(latlngs, {color: 'yellow'}).addTo(mymap)
+                    } else if (data.data.data[i][2] >= 75 && data.data.data[i][2] < 95) {
+                        L.polyline(latlngs, {color: 'blue'}).addTo(mymap)
+                    } else if (data.data.data[i][2] >= 95) {
+                        L.polyline(latlngs, {color: 'red'}).addTo(mymap)
+                    } else {
+                        L.polyline(latlngs, {color: 'black'}).addTo(mymap)
+                    }
+                }
+            }, 1000)
+            //  var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
+        }
+
         function MapReport() {
             var dialog = bootbox.dialog({
                 title: 'Map',
@@ -145,8 +205,8 @@
             dialog.init(function () {
                 setTimeout(function () {
                     var mymap = L.map('mapid', {
-                        center: [18.516726, 73.856255],
-                        zoom: 13,
+                        center: [19.7515, 75.7139],
+                        zoom: 6,
                         preferCanvas: true,
                     });
                     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
@@ -158,6 +218,8 @@
                         accessToken: 'pk.eyJ1IjoibWFjaGluZW1hdGgiLCJhIjoiY2toYXFkZmhpMTZubDJybzgwYjkxMWxlbyJ9.UFsD4WU_yE_MVXnTEJbnfA'
                     }).addTo(mymap);
                     mymap.whenReady(function () {
+                        //plotgraph(mymap,get_map_data(tripid))
+                        get_map_data(tripid, mymap)
                         setTimeout(function () {
                             mymap.invalidateSize(true)
                         }, 500)
@@ -182,7 +244,8 @@
         })
     </script>
     <script>
-        function get_map_data(tripid) {
+        function get_map_data(tripid, map) {
+            var data;
             console.log(tripid)
             $.ajax({
                 method: "POST",
@@ -191,6 +254,7 @@
                 data: {'csrfmiddlewaretoken': csrftoken, 'tripid': tripid},
                 success: function (result, status, xhr) {
                     console.log(result)
+                    plotgraph(map, result)
                 },
                 error: function (error_data) {
                     console.log("error")
