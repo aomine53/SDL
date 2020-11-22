@@ -216,10 +216,10 @@
                 legend.onAdd = function (mymap) {
                     var div = L.DomUtil.create('div', 'info legend');
                     div.innerHTML += "<h4>Speed Scale</h4>";
-                    div.innerHTML += '<i style="background: green"></i><span><55</span><br>';
-                    div.innerHTML += '<i style="background: yellow"></i><span>75 - 55</span><br>';
-                    div.innerHTML += '<i style="background: blue"></i><span>75 - 95</span><br>';
-                    div.innerHTML += '<i style="background: red"></i><span>>95</span><br>';
+                    div.innerHTML += '<i style="background: green"></i><span><55 km/h</span><br>';
+                    div.innerHTML += '<i style="background: yellow"></i><span>55 - 75 km/h</span><br>';
+                    div.innerHTML += '<i style="background: blue"></i><span>75 - 95 km/h</span><br>';
+                    div.innerHTML += '<i style="background: red"></i><span>>95 km/h</span><br>';
                     return div;
                 };
                 legend.addTo(mymap);
