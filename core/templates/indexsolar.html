@@ -17,6 +17,7 @@
           crossorigin="anonymous"/>
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="/static/assets/weather-icons-master/css/weather-icons.min.css">
     <style>
         .btn:hover {
             background-color: RoyalBlue;
@@ -454,14 +455,17 @@
                                                             <h3 id="todaytemp">32<sup>°F</sup></h3>
                                                         </div>
                                                         <div class="peer">
-                                                            <canvas class="sleet" width="44" height="44"></canvas>
+                                                            {#                                                              <img src="http://openweathermap.org/img/wn/02n@2x.png" alt="" width="44" height="44">#}
+                                                            <i id="todayweather" class="wi wi-day-sunny"
+                                                               style="color: #ffc107; font-size: 40px"></i>
+                                                            {#                                                            <canvas id="todayweather" class="wi wi-night-sleet" width="44" height="44"></canvas>#}
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <!-- Condition -->
                                                 <div class="layer w-100">
-                                                    <span class="fw-600 c-grey-600">Partly Clouds</span>
+                                                    <span id="todayweatherdesc" class="fw-600">Partly Clouds</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -471,7 +475,7 @@
                                                     <h5 id="todaysday" class="mB-5">Monday</h5>
                                                 </div>
                                                 <div class="layer">
-                                                    <span id="todaysdate" class="fw-600 c-grey-600">Nov, 01 2017</span>
+                                                    <span id="todaysdate" class="fw-600">Nov, 01 2017</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -487,7 +491,7 @@
                                                     <span>Sunrise</span>
                                                 </div>
                                                 <div class="peer ta-r">
-                                                    <span id="todayssunrise" class="fw-600 c-grey-800">05:00 AM</span>
+                                                    <span id="todayssunrise" class="fw-600">05:00 AM</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -497,7 +501,7 @@
                                                     <span>Sunset</span>
                                                 </div>
                                                 <div class="peer ta-r">
-                                                    <span id="todayssunset" class="fw-600 c-grey-800">06:00 PM</span>
+                                                    <span id="todayssunset" class="fw-600">06:00 PM</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -507,7 +511,7 @@
                                                     <span>Irradiance</span>
                                                 </div>
                                                 <div class="peer ta-r">
-                                                    <span class="fw-600 c-grey-800">10 Wb/m<sup>2</sup></span>
+                                                    <span class="fw-600">10 Wb/m<sup>2</sup></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -517,7 +521,7 @@
                                                     <span>Ambient Temperature</span>
                                                 </div>
                                                 <div class="peer ta-r">
-                                                    <span class="fw-600 c-grey-800">10 ℃</span>
+                                                    <span class="fw-600">10 ℃</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -527,7 +531,7 @@
                                                     <span>Module Temperature</span>
                                                 </div>
                                                 <div class="peer ta-r">
-                                                    <span class="fw-600 c-grey-800">10 ℃</span>
+                                                    <span class="fw-600">10 ℃</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -537,7 +541,7 @@
                                                     <span>Wind Speed</span>
                                                 </div>
                                                 <div class="peer ta-r">
-                                                    <span id="todayswindspeed" class="fw-600 c-grey-800">10km/h</span>
+                                                    <span id="todayswindspeed" class="fw-600">10km/h</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -547,7 +551,7 @@
                                                     <span>Wind Direction</span>
                                                 </div>
                                                 <div class="peer ta-r">
-                                                    <span id="todayswinddir" class="fw-600 c-grey-800">10°</span>
+                                                    <span id="todayswinddir" class="fw-600">10°</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -558,7 +562,7 @@
                                                     <span>Humidity</span>
                                                 </div>
                                                 <div class="peer ta-r">
-                                                    <span id="todayshumdity" class="fw-600 c-grey-800">10%</span>
+                                                    <span id="todayshumdity" class="fw-600">10%</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -570,38 +574,46 @@
                                     <div class="peers peers-greed ai-fs ta-c">
                                         <div class="peer">
                                             <h6 class="mB-10">MON</h6>
-                                            <canvas id="slid" class="sleet" width="30" height="30"></canvas>
-                                            <span id="mtemp" class="d-b fw-600">32<sup>°F</sup></span>
+                                            {#                                            <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="" width="30" height="30">#}
+                                            <i id="monweather" class="wi wi-day-sunny" style="color: #ffc107"></i>
+                                            {#                                            <canvas id="slid" class="partly-cloudy-night" width="30" height="30"></canvas>#}
+                                            <small><span id="mtemp" class="d-b fw-600">32<sup>°F</sup></span></small>
                                         </div>
                                         <div class="peer">
                                             <h6 class="mB-10">TUE</h6>
-                                            <canvas class="clear-day" width="30" height="30"></canvas>
-                                            <span id="tutemp" class="d-b fw-600">30<sup>°F</sup></span>
+                                            <i id="tueweather" class="wi wi-day-sunny" style="color: #ffc107"></i>
+                                            {#                                            <canvas class="clear-day" width="30" height="30"></canvas>#}
+                                            <small><span id="tutemp" class="d-b fw-600">30<sup>°F</sup></span></small>
                                         </div>
                                         <div class="peer">
                                             <h6 class="mB-10">WED</h6>
-                                            <canvas class="partly-cloudy-day" width="30" height="30"></canvas>
-                                            <span id="wtemp" class="d-b fw-600">28<sup>°F</sup></span>
+                                            <i id="wedweather" class="wi wi-day-sunny" style="color: #ffc107"></i>
+                                            {#                                            <canvas class="partly-cloudy-day" width="30" height="30"></canvas>#}
+                                            <small><span id="wtemp" class="d-b fw-600">28<sup>°F</sup></span></small>
                                         </div>
                                         <div class="peer">
                                             <h6 class="mB-10">THR</h6>
-                                            <canvas class="cloudy" width="30" height="30"></canvas>
-                                            <span id="thtemp" class="d-b fw-600">32<sup>°F</sup></span>
+                                            <i id="thrweather" class="wi wi-day-sunny" style="color: #ffc107"></i>
+                                            {#                                            <canvas class="cloudy" width="30" height="30"></canvas>#}
+                                            <small><span id="thtemp" class="d-b fw-600">32<sup>°F</sup></span></small>
                                         </div>
                                         <div class="peer">
                                             <h6 class="mB-10">FRI</h6>
-                                            <canvas class="snow" width="30" height="30"></canvas>
-                                            <span id="ftemp" class="d-b fw-600">24<sup>°F</sup></span>
+                                            <i id="friweather" class="wi wi-day-sunny" style="color: #ffc107"></i>
+                                            {#                                            <canvas class="snow" width="30" height="30"></canvas>#}
+                                            <small><span id="ftemp" class="d-b fw-600">24<sup>°F</sup></span></small>
                                         </div>
                                         <div class="peer">
                                             <h6 class="mB-10">SAT</h6>
-                                            <canvas class="wind" width="30" height="30"></canvas>
-                                            <span id="satemp" class="d-b fw-600">28<sup>°F</sup></span>
+                                            <i id="satweather" class="wi wi-day-sunny" style="color: #ffc107"></i>
+                                            {#                                            <canvas class="wind" width="30" height="30"></canvas>#}
+                                            <small><span id="satemp" class="d-b fw-600">28<sup>°F</sup></span></small>
                                         </div>
                                         <div class="peer">
                                             <h6 class="mB-10">SUN</h6>
-                                            <canvas class="sleet" width="30" height="30"></canvas>
-                                            <span id="sutemp" class="d-b fw-600">32<sup>°F</sup></span>
+                                            <i id="sunweather" class="wi wi-day-sunny" style="color: #ffc107"></i>
+                                            {#                                            <canvas class="sleet" width="30" height="30"></canvas>#}
+                                            <small><span id="sutemp" class="d-b fw-600">32<sup>°F</sup></span></small>
                                         </div>
                                     </div>
                                 </div>
@@ -797,7 +809,8 @@
                     var Vbat = document.getElementById("vbat");
                     var Vin = document.getElementById("vin");
                     var Spdk = document.getElementById("spdk")
-                    latlng(data.data);
+                    if (data.data[0].lat !== "" && data.data[0].lng !== "")
+                        latlng(data.data);
                     //let poly = polyline(data.data[i]);
                     //removelayer(marker, poly)
                     for (let i = 0; i < data.data.length; i++) {
@@ -2019,7 +2032,7 @@
                     b: 25,
                     t: 25,
                 },
-                autosize: false,
+                autosize: true,
                 width: 1120,
                 height: 350,
                 paper_bgcolor: '#313131',
@@ -2068,29 +2081,33 @@
         function getWeatherData() {
             $.ajax({
                 method: "GET",
-                url: 'https://api.openweathermap.org/data/2.5/onecall?lat=19.866294&lon=75.338381&units=imperial&appid=1584befebac7a5dea1b3a2df0ad418c9',
+                url: 'https://api.openweathermap.org/data/2.5/onecall?lat=18.5204&lon=73.8567&units=metric&appid=1584befebac7a5dea1b3a2df0ad418c9',
                 success: function (data) {
                     console.log(data)
                     let d = new Date(data.current.dt * 1000);
                     let sr = new Date(data.current.sunrise * 1000)
                     let ss = new Date(data.current.sunset * 1000)
                     let ws = data.current.wind_speed * 1.609344
+                    let x = ss.getHours() - 12
                     let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Des"]
                     let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
                     document.getElementById("todaysday").innerHTML = days[d.getDay()];
                     document.getElementById("todaysdate").innerHTML = months[d.getMonth()] + ", " + d.getDate() + " " + d.getFullYear()
-                    document.getElementById("todaytemp").innerHTML = data.current.temp + '<sup>°F</sup>'
+                    document.getElementById("todaytemp").innerHTML = data.current.temp + '<sup>℃</sup>'
                     document.getElementById("todayssunrise").innerHTML = "0" + sr.getHours() + ":" + sr.getMinutes() + " " + "AM"
-                    document.getElementById("todayssunset").innerHTML = "0" + ss.getHours() - 12 + ":" + ss.getMinutes() + " " + "PM"
-                    document.getElementById("todayswindspeed").innerHTML = ws.toFixed(2) + " km/h"
+                    document.getElementById("todayssunset").innerHTML = "0" + x.toString() + ":" + ss.getMinutes() + " " + "PM"
+                    document.getElementById("todayswindspeed").innerHTML = data.current.wind_speed + " m/s"
                     document.getElementById("todayswinddir").innerHTML = data.current.wind_deg + "°"
                     document.getElementById("todayshumdity").innerHTML = data.current.humidity + "%"
                     console.log(d)
+                    document.getElementById("todayweatherdesc").innerHTML = data.current.weather[0].description;
+                    document.getElementById("todayweather").className = "wi wi-owm-" + data.current.weather[0].id;
                     let weekelements = [document.getElementById("sutemp"), document.getElementById("mtemp"), document.getElementById("tutemp"), document.getElementById("wtemp"), document.getElementById("thtemp"), document.getElementById("ftemp"), document.getElementById("satemp")]
-                    for(let i=0;i<data.daily.length-1;i++)
-                    {
-                        let dat = new Date(data.daily[i].dt*1000)
-                        weekelements[dat.getDay()].innerHTML = data.daily[i].temp.max+ '<sup>°F</sup>'
+                    let weatherid = [document.getElementById("sunweather"), document.getElementById("monweather"), document.getElementById("tueweather"), document.getElementById("wedweather"), document.getElementById("thrweather"), document.getElementById("friweather"), document.getElementById("satweather")]
+                    for (let i = 0; i < data.daily.length - 1; i++) {
+                        let dat = new Date(data.daily[i].dt * 1000)
+                        weekelements[dat.getDay()].innerHTML = data.daily[i].temp.max + '<sup>℃</sup>'
+                        weatherid[dat.getDay()].className = "wi wi-owm-"+data.daily[i].weather[0].id
                     }
                 },
                 error: function (error_data) {
@@ -2100,7 +2117,7 @@
             })
         }
 
-        getWeatherData()
+        setInterval(getWeatherData(), 60000)
 
     </script>
 {% endblock javascripts %}

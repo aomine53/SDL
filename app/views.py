@@ -29,7 +29,7 @@ def get_live_data(request):
                  "lat": lat,
                  "lng": lng, "appd": appd, "tp": tp, "celv": celv, "ect": ect, "es": es}
         dataobj.append(data1)
-
+    #print(data1)
     cont = {"data": dataobj}
     return JsonResponse(cont)
 
