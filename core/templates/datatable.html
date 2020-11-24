@@ -71,6 +71,7 @@
         <button id="download-csv" class="btn btn-outline-success btn-lg"><i class="fas fa-file-csv"></i></button>
         <button id="download-html" class="btn btn-outline-warning btn-lg"><i class="fab fa-html5"></i></button>
     </div>
+    <div id="editor"></div>
     <div id="report-table"></div>
 {% endblock content %}
 
@@ -122,6 +123,7 @@
             return "<button class='btn btn-md btn-light' onclick='MapReport()'>View</button>";
         }
         var tripid = 0;
+        var tripdetails;
         var table = new Tabulator("#report-table", {
             placeholder: "<i class='fa fa-spin fa-spinner'></i> Loading",
             height: "100%",
@@ -138,6 +140,8 @@
                 {
                     formatter: viewButton, hozAlign: "center", headerSort: false, cellClick: function (e, cell) {
                         tripid = cell.getRow().getData().TripID
+                        console.log(cell.getRow().getData())
+                        tripdetails = cell.getRow().getData()
                     }
                 },
             ],
@@ -180,6 +184,7 @@
             table.download("html", "data.html", {style: true});
         });
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
     <script>
         //yellow --> <55
         //green -->  <75 && >55
@@ -223,6 +228,16 @@
                     return div;
                 };
                 legend.addTo(mymap);
+                var legend2 = L.control({position: 'topright'});
+                legend2.onAdd = function (mymap) {
+                    var div = L.DomUtil.create('div', 'info legend');
+                    div.innerHTML += '<table class="table table-bordered"><tr><th>TripID</th><th>StartTime</th><th>EndTime</th><th>StartAddress</th><th>EndAddress</th><th>Distance</th><th>Duration</th></tr>' + '<tr>' + '<td>' + tripdetails.TripID + '</td>' + '<td>' + tripdetails.StartTime + '</td>' + '<td>' + tripdetails.EndTime + '</td>' + '<td>' + tripdetails.StartAddress + '</td>' + '<td>' + tripdetails.EndAddress + '</td>' + '<td>' + tripdetails.Distance + '</td>' + '<td>' + tripdetails.Duration + '</td>' + '</tr>' + '</table>'
+                    {#div.innerHTML += '<th>';#}
+                    {#div.innerHTML += tripdetails.StartTime + '<br>';#}
+                    {#div.innerHTML += tripdetails.EndTime + '<br>';#}
+                    return div;
+                };
+                legend2.addTo(mymap);
             }, 500)
             setTimeout(function () {
                 for (let i = 0; i < data.data.data.length - 1; i++) {
@@ -243,11 +258,64 @@
             //  var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
         }
 
+        function getPDF() {
+
+            var HTML_Width = $(".modal-body").width();
+            var HTML_Height = $(".modal-body").height();
+            var top_left_margin = 15;
+            var PDF_Width = HTML_Width + (top_left_margin * 2);
+            var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+            var canvas_image_width = HTML_Width;
+            var canvas_image_height = HTML_Height;
+
+            var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+
+            html2canvas($("#mapid")[0], {allowTaint: true}).then(function (canvas) {
+                canvas.getContext('2d');
+                console.log(canvas.height + "  " + canvas.width);
+
+
+                var imgData = canvas.toDataURL("image/jpeg", 1.0);
+                var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+                pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+
+
+                for (var i = 1; i <= totalPDFPages; i++) {
+                    pdf.addPage(PDF_Width, PDF_Height);
+                    pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
+                }
+
+                pdf.save("HTML-Document.pdf");
+            });
+        };
+
+        function export_to_pdf() {
+            html2canvas(document.getElementById("mapid"), {
+                useCORS: true,
+                onrendered: function (canvas) {
+                    var img = canvas.toDataURL("image/jpeg,1.0");
+                    var pdf = new jsPDF();
+                    pdf.addImage(img, 'JPEG', 15, 40, 180, 180);
+                    pdf.save('a4.pdf')
+                }
+            });
+        }
+
         function MapReport() {
             var dialog = bootbox.dialog({
-                title: 'Map',
                 message: '<div id="mapid"></div>',
                 size: 'extra-large',
+                buttons: {
+                    cancel: {
+                        label: "<i class=\"fas fa-file-pdf\"></i>" + " " + "Download PDF",
+                        className: 'btn-danger',
+                        callback: function () {
+                            console.log('Custom cancel clicked');
+                        }
+                    },
+                }
+
             });
             dialog.init(function () {
                 setTimeout(function () {
