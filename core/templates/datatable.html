@@ -224,7 +224,7 @@
                 var marker2 = L.marker(bound[bound.length - 1], {icon: redIcon}).addTo(mymap);
                 marker1.bindPopup(tripdetails.StartAddress,{closeOnClick: false, autoClose: false}).openPopup();
                 marker2.bindPopup(tripdetails.EndAddress,{closeOnClick: false, autoClose: false}).openPopup();
-                var legend = L.control({position: 'bottomleft'});
+                var legend = L.control({position: 'topright'});
                 legend.onAdd = function (mymap) {
                     var div = L.DomUtil.create('div', 'info legend');
                     div.innerHTML += "<h4>Speed Scale</h4>";
@@ -235,19 +235,16 @@
                     return div;
                 };
                 legend.addTo(mymap);
-                var legend2 = L.control({position: 'topright'});
+                var legend2 = L.control({position: 'bottomleft'});
                 legend2.onAdd = function (mymap) {
                     var div = L.DomUtil.create('div', 'info legend');
                     div.innerHTML += '<table class="table table-bordered table-sm p-0 m-0"><tr><th><small><strong>TripID</strong></small></th><th><small><strong>StartTime</strong></small></th><th><small><strong>EndTime</strong></small></th><th><small><strong>StartAddress</strong></small></th><th><small><strong>EndAddress</strong></small></th><th><small><strong>Distance</strong></small></th><th><small><strong>Duration</strong></small></th></tr>' + '<tr>' + '<td>' +'<small>'+ tripdetails.TripID+'</small>' + '</td>' + '<td>' + '<small>'+tripdetails.StartTime +'</small>'+ '</td>' + '<td>' +'<small>'+ tripdetails.EndTime +'</small>'+ '</td>' + '<td>' +'<small>'+ tripdetails.StartAddress +'</small>'+ '</td>' + '<td>' +'<small>'+ tripdetails.EndAddress +'</small>'+ '</td>' + '<td>' +'<small>'+ tripdetails.Distance +'</small>'+ '</td>' + '<td>' +'<small>' + tripdetails.Duration+'</small>' + '</td>' + '</tr>' + '</table>'
-                    {#div.innerHTML += '<th>';#}
-                    {#div.innerHTML += tripdetails.StartTime + '<br>';#}
-                    {#div.innerHTML += tripdetails.EndTime + '<br>';#}
                     return div;
                 };
                 legend2.addTo(mymap);
                 L.easyPrint({
                     title: 'print button',
-                    position: 'bottomright',
+                    position: 'topleft',
                     sizeModes: ['A4Portrait', 'A4Landscape'],
                     filename: "TripMapReport",
                     tileWait: 1500,
@@ -284,6 +281,7 @@
                         center: [19.7515, 75.7139],
                         zoom: 6,
                         preferCanvas: true,
+                        attributionControl: false
                     });
                     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
