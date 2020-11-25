@@ -199,9 +199,10 @@
             for (let i = 0; i < data.data.data.length; i++) {
                 bound.push([data.data.data[i][0], data.data.data[i][1]])
             }
-            mymap.fitBounds(bound);
-            console.log(mymap.getBoundsZoom(bound))
-            mymap.setView(bound[(bound.length-1)],mymap.getBoundsZoom(bound)-1)
+            //mymap.fitBounds(bound,{padding:[100,100]});
+            mymap.flyToBounds(bound,{padding:[100,100]})
+            //console.log(mymap.getBoundsZoom(bound))
+            //mymap.setZoom(mymap.getBoundsZoom(bound)-1)
             setTimeout(function () {
                 var blueIcon = new L.Icon({
                     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
@@ -252,7 +253,7 @@
                     tileWait: 1500,
                     hideControlContainer: false
                 }).addTo(mymap);
-            }, 500)
+            }, 1000)
             setTimeout(function () {
                 for (let i = 0; i < data.data.data.length - 1; i++) {
                     latlngs = [[data.data.data[i][0], data.data.data[i][1]], [data.data.data[i + 1][0], data.data.data[i + 1][1]]]
@@ -268,7 +269,7 @@
                         L.polyline(latlngs, {color: 'black'}).addTo(mymap)
                     }
                 }
-            }, 1000)
+            }, 2500)
             //  var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
         }
 
@@ -299,7 +300,7 @@
                             mymap.invalidateSize(true)
                         }, 500)
                     })
-                }, 500)
+                },500)
 
             });
         }
