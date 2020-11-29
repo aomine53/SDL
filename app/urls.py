@@ -14,7 +14,10 @@ urlpatterns = [
     path('api/data/archive', views.get_archive_data, name="archive"),
     path('api/data/report', views.GetReport, name="report"),
     path('api/data/report/map', views.get_map_report, name="report_map"),
-    # Matches any html file
-    re_path(r'^.*\.*', views.pages, name='pages'),
+    path('api/data/devicelist', views.device_list, name="device_list"),
+    path('api/data/deviceparameters', views.device_parameters, name="device_parameters"),
+
+         # Matches any html file
+         re_path(r'^.*\.*', views.pages, name='pages'),
 
 ]

@@ -758,12 +758,6 @@
                             <option>VIN</option>
                             <option>VBAT</option>
                             <option>SPDK</option>
-                            <option>TP</option>
-                            <option>APPD</option>
-                            <option>CELV</option>
-                            <option>ES</option>
-                            <option>ECT</option>
-
                         </select>
 
                         <select id="myFilter1" class="multiple_select1 minimal" multiple style="margin-left: 20px;">
@@ -809,12 +803,11 @@
                     var Vbat = document.getElementById("vbat");
                     var Vin = document.getElementById("vin");
                     var Spdk = document.getElementById("spdk")
-                    if (data.data[0].lat !== "" && data.data[0].lng !== "")
-                        latlng(data.data);
+                    latlng(data.data)
                     //let poly = polyline(data.data[i]);
                     //removelayer(marker, poly)
+                    {#console.log(data.data);#}
                     for (let i = 0; i < data.data.length; i++) {
-                        {#console.log(data.data);#}
                         Vbat.textContent = data.data[i].vbat;
                         Rno.textContent = data.data[i].rno;
                         Vin.textContent = data.data[i].vin;
@@ -823,8 +816,6 @@
                 }
             })
         }, 1000)
-
-
         /*
         var polylist = []
         function polyline(data2)
@@ -837,6 +828,20 @@
           return poly
         }*/
         {#console.log("map")#}
+
+        function latlongconverter(t, g) {
+            function lat(t) {
+                t = t.slice(1)
+                return (Number(t.slice(0, 2)) + (Number(t.slice(2, 9)) / 60))
+            }
+
+            function lng(g) {
+                g = g.slice(1)
+                return (Number(g.slice(0, 3)) + (Number(g.slice(3, 10)) / 60))
+            }
+            return [lat(t), lng(g)]
+        }
+
         var mymap = L.map('mymapid', {
             center: [19.7515, 75.7139],
             zoom: 6,
@@ -873,22 +878,33 @@
         });
         //var marker = L.marker([18.446368,73.816035],{icon:myIcon}).addTo(mymap);
         const colors = [redIcon, blueIcon, yellowIcon, greenIcon]
-
+        var bll = []
         function latlng(data) {
+            var ll = []
             for (let i = 0; i < data.length; i++) {
-                let latitude = parseFloat(data[i].lat)
-                let longitude = parseFloat(data[i].lng)
-                {#console.log([latitude, longitude]);#}
-                {#console.log(colors);#}
-                let marker = L.marker([latitude, longitude], {icon: colors[i]}).addTo(mymap);
-                removelayer(marker);
+                if (data[i].lat !== "" && data[i].lng !== "") {
+                    if (data[i].lat[0] === '+' && data[i].lng[0] === '+') {
+                        ll = latlongconverter(data[i].lat, data[i].lng)
+                    } else {
+                        let latitude = parseFloat(data[i].lat)
+                        let longitude = parseFloat(data[i].lng)
+                        ll = [latitude, longitude]
+                    }
+                    bll.push(ll)
+
+                    {#console.log([latitude, longitude]);#}
+                    {#console.log(colors);#}
+                    let marker = L.marker(ll, {icon: colors[i % 4]}).addTo(mymap);
+                    removelayer(marker);
+                }
             }
             //marker.bindPopup(data1.lat+","+data1.lng).openPopup();
             {#return marker#}
         }
+        setTimeout(function (){mymap.flyToBounds(bll)},5000)
 
         async function removelayer(marker) {
-            await sleep(1000)
+            await sleep(5000)
             mymap.removeLayer(marker)
             // mymap.removeLayer(poly)
         }
@@ -1663,11 +1679,6 @@
                         {#addData1(data.data[1]);#}
                         VIN = data.data[1].vin
                         VBAT = data.data[1].vbat
-                        TP = data.data[1].tp
-                        APPD = data.data[1].appd
-                        CELV = data.data[1].celv
-                        ES = data.data[1].es
-                        ECT = data.data[1].ect
                         SPDK = data.data[1].spdk
                         TIME = data.data[1].time
                         oldrno = data.data[1].rno;
@@ -1766,10 +1777,7 @@
                 }
             }
         };
-        console.log(config)
         var chart1 = new Chart(ctx, config)
-        console.log(chart1)
-        console.log(config)
         let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]
         let unit = ["Volt", "Volt", "Kmph", "", "", "", "", ""]
         var colorNames = Object.keys(chartColors);
@@ -2014,7 +2022,19 @@
                         size: 5
                     },
                 }
-            var data = [newd, newd2];
+            var newd3 =
+                {
+                    name: "Celv",
+                    x: value.labels,
+                    y: value.Celv,
+                    type: 'line',
+                    yaxis: 'y2',
+                    marker: {
+                        color: "rgb(57,255,20)",
+                        size: 5
+                    },
+                }
+            var data = [newd, newd2, newd3];
             var layout = {
                 legend: {
                     x: 0.5,
@@ -2107,7 +2127,7 @@
                     for (let i = 0; i < data.daily.length - 1; i++) {
                         let dat = new Date(data.daily[i].dt * 1000)
                         weekelements[dat.getDay()].innerHTML = data.daily[i].temp.max + '<sup>℃</sup>'
-                        weatherid[dat.getDay()].className = "wi wi-owm-"+data.daily[i].weather[0].id
+                        weatherid[dat.getDay()].className = "wi wi-owm-" + data.daily[i].weather[0].id
                     }
                 },
                 error: function (error_data) {

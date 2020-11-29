@@ -32,10 +32,12 @@ def getlivedata():
     cursor = cnx.cursor()
     datalist = []
     device_list = getdevicedata()
-    for _ in device_list:
-        query = "SELECT RNO,VIN,VBAT,EDT,SPDK,LAT,LNG,APPD,TP,CELV,ECT,ES FROM $SLU355000082004871 ORDER BY EDT DESC LIMIT 1"
+    for slu in device_list:
+        query = f"SELECT RNO,VIN,VBAT,EDT,SPD,LAT,LNG FROM {slu} ORDER BY EDT DESC LIMIT 1 "
         cursor.execute(query)
-        datalist.append(cursor.fetchone())
+        data = cursor.fetchone()
+        if data is not None:
+            datalist.append(data)
 
     # print(datalist)
     # rno,vin,vbat,edt,spdk,lat,lng = cursor.fetchone()
@@ -45,36 +47,18 @@ def getlivedata():
     return datalist
 
 
-def searchdata(start, end):
+def searchdata(start, end, parameters):
     cnx = mysql.connector.connect(**config)
     cnx.time_zone = '+05:30'
-
     cursor = cnx.cursor()
-    edt = []
-    vin = []
-    vbat = []
-    appd = []
-    tp = []
-    spdk = []
-    celv = []
-    ect = []
-    es = []
-    query = "SELECT EDT,VIN,VBAT,APPD,TP,SPDK,CELV,ECT,ES FROM $SLU355000082004871 WHERE EDT BETWEEN %s AND %s"
+    parameters = ",".join(parameters)
+    print(parameters)
+    query = f"SELECT EDT,{parameters} FROM $SLU355000082004871 WHERE EDT BETWEEN %s AND %s"
     cursor.execute(query, (start, end))
-    for EDT, VIN, VBAT, APPD, TP, SPDK, CELV, ECT, ES in cursor:
-        edt.append(EDT)
-        vin.append(VIN)
-        vbat.append(VBAT)
-        appd.append(APPD)
-        tp.append(TP)
-        spdk.append(SPDK)
-        celv.append(CELV)
-        ect.append(ECT)
-        es.append(ES)
-
+    data = cursor.fetchall()
     cursor.close()
     cnx.close()
-    return edt, vin, vbat, appd, tp, spdk, celv, ect, es
+    return data
 
 
 def getreport():
@@ -146,7 +130,7 @@ def getmapreport(tripid):
     startedt = result[1].strftime('%Y-%m-%dT%H:%M:%S')
     endedt = result[2].strftime('%Y-%m-%dT%H:%M:%S')
 
-    query = f"SELECT LAT,LNG,WBVSPDK FROM $SLU355000082004871 WHERE '{endedt}' >= EDT and EDT >= '{startedt}'"
+    query = f"SELECT LAT,LONG,WBVSPDK FROM $SLU355000082004871 WHERE '{endedt}' >= EDT and EDT >= '{startedt}'"
     cursor.execute(query)
     result = cursor.fetchall()
     print(result)
@@ -158,8 +142,27 @@ def getmapreport(tripid):
     return data
 
 
+def get_device_parameters(device_id):
+    cnx = mysql.connector.connect(**config)
+    cnx.time_zone = '+05:30'
+    cursor = cnx.cursor()
+    device_parameters = []
+    query = "SELECT PARAM FROM deviceinfo where DEVICEID=%s"
+    cursor.execute(query, (device_id,))
+    device_parameters = [i[0] for i in cursor.fetchall()]
+    device_parameters = device_parameters[0].split(",")
+    cursor.close()
+    cnx.close()
+    return device_parameters
+
+
 if __name__ == "__main__":
-    print(getreport())
+    # print(get_device_parameters('$SLU355000082004871'))
+    print(getdevicedata())
+    print(getlivedata())
+    # parameters = ",".join(get_device_parameters('$SLU355000082004871'))
+    # print(parameters)
+    # print(searchdata("2020-11-05 21:36:00", "2020-11-05 21:37:00",get_device_parameters('$SLU355000082004871')))
 # def getparameters():
 #     mydb = mysql.connector.connect(**config)
 #     mydb.time_zone = '+05:30'
@@ -180,7 +183,7 @@ if __name__ == "__main__":
 #
 #
 # getparameters()
-# searchdata("2020-10-09 21:36:00","2020-10-09 21:37:00")
+#  searchdata("2020-10-09 21:36:00","2020-10-09 21:37:00",)
 # print(type(getdevicedata()))
 # print(getdevicedata())
 # getlivedata()

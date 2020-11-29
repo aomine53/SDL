@@ -6,41 +6,37 @@
 
 {% block content %}
 
-    <div class="col-12 col-md-4  pX-40 pY-120 h-100 bgc-white scrollable pos-a centerXY" style="min-width: 320px;">
-     <div class=" pos-r p-20">
-            <img class="pos-a centerXY" src="/static/assets/static/images/mmlogo.png" alt="">
+    <div class="col-12  pX-40 pY-150 scrollable pos-r centerXY" style="min-width: 320px; background-color: #313131">
+        <div class="pos-r p-20 mB-50 ">
+            <img class="p-20 pos-a centerXY" style="height: 30vh" src="/static/assets/static/images/goldmmlogo.png"
+                 alt="">
         </div>
-        <h3 class="fw-300 c-grey-900 mB-20 mt-5 text-center">
-           <strong>MMWeb-Login</strong>
-        </h3>
-
         {% if msg %}
-            <h4 class="fw-300 c-grey-900 mB-40">{{ msg | safe }}</h4>
+            <h4 class="fw-300 c-white-900 mB-40">{{ msg | safe }}</h4>
         {% else %}
         {% endif %}
-
         <form method="post" action="">
 
             {% csrf_token %}
 
-            <div class="form-group">
-                <label class="text-normal text-dark">Username</label>
+            <div class="form-group col-md-4 centerX">
+                <label class="text-normal text-white">Username</label>
                 {{ form.username }}
             </div>
 
-            <div class="form-group">
-                <label class="text-normal text-dark">Password</label>
+            <div class="form-group col-md-4 centerX">
+                <label class="text-normal text-white">Password</label>
                 {{ form.password }}
             </div>
 
-            <div class="form-group">
+            <div class="form-group col-md-4 centerX">
                 <div class="peers ai-c jc-sb fxw-nw">
                     <div class="peer">
                         <button type="submit" name="login" class="btn btn-primary">Login</button>
 
-{#                        &nbsp;#}
-{#                        <span class="text-small font-weight-semibold">Not a member?</span>#}
-{#                        <a href="{% url 'register' %}" class="text-black text-small">Register</a>#}
+                        &nbsp;
+                        <span class="text-small font-weight-semibold">Not a member?</span>
+                        <a href="{% url 'register' %}" class="text-blue text-small">Register</a>
                     </div>
                 </div>
             </div>

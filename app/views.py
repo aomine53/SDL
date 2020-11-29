@@ -11,10 +11,13 @@ from django import template
 from django.db import connection
 from datetime import datetime, timedelta
 import pytz
-from app.operations import searchdata, getlivedata, getdevicedata, getreport, getmapreport
+from app.operations import searchdata, getlivedata, getdevicedata, getreport, getmapreport, get_device_parameters
+from .decorators import allowed_users, unauthenticated_user,verified_users
 
 
 @login_required(login_url="/login/")
+@allowed_users(allowed_roles=['sysadmin', 'owner'])
+@verified_users()
 def index(request):
     return render(request, "indexsolar.html")
 
@@ -24,12 +27,12 @@ def get_live_data(request):
     datalist = getlivedata()
     dataobj = []
     for data in datalist:
-        rno, vin, vbat, edt, spdk, lat, lng, appd, tp, celv, ect, es = data
+        rno, vin, vbat, edt, spdk, lat, lng = data
         data1 = {"rno": rno, "vbat": vbat, "vin": vin, "spdk": spdk, "time": edt.strftime("%Y-%m-%d %H:%M:%S%z"),
                  "lat": lat,
-                 "lng": lng, "appd": appd, "tp": tp, "celv": celv, "ect": ect, "es": es}
+                 "lng": lng}
         dataobj.append(data1)
-    #print(data1)
+    # print(data1)
     cont = {"data": dataobj}
     return JsonResponse(cont)
 
@@ -48,35 +51,32 @@ def get_archive_data(request):
         newCelv = []
         newEct = []
         newEs = []
+        param = []
+        Time = []
+        Yaxis = []
+        Data = []
         fromData = (datetime.strptime(request.POST["from"], '%Y-%m-%d %H:%M:%S'))
         toData = (datetime.strptime(request.POST["to"], '%Y-%m-%d %H:%M:%S'))
-        edt, vin, vbat, appt, tp, spdk, celv, ect, es = searchdata(fromData, toData)
-        for i in range(0, len(edt) - 2):
-            # if appt[i] is None or tp[i] is None:
-            #     appt[i] = "None"
-            #     tp[i] = "None"
-            if fromData <= edt[i] <= toData:
-                newtime.append(edt[i].strftime('%Y-%m-%d %H:%M:%S%z'))
-                newVin.append(vin[i])
-                newVbat.append(vbat[i])
-                newAppt.append(appt[i])
-                newTp.append(tp[i])
-                newCelv.append(celv[i])
-                newEct.append(ect[i])
-                newEs.append(es[i])
-                if (edt[i + 1] - edt[i]) > timedelta(seconds=5):
-                    difference = int(edt[i + 1].timestamp() - edt[i].timestamp())
+        param = request.POST.getlist("parameters[]")
+        print(param)
+        Data = searchdata(fromData, toData, param)
+        # edt, vin, vbat, appt, tp, spdk, celv, ect, es = searchdata(fromData, toData,param)
+        for _ in range(0, len(param)):
+            Yaxis.append([])
+
+        for i in range(0, len(Data) - 2):
+            if fromData <= Data[i][0] <= toData:
+                Time.append(Data[i][0].strftime('%Y-%m-%d %H:%M:%S%z'))
+                for j in range(0, len(param)):
+                    Yaxis[j].append(Data[i][j + 1])
+                if (Data[i + 1][0] - Data[i][0]) > timedelta(seconds=5):
+                    difference = int(Data[i + 1][0].timestamp() - Data[i][0].timestamp())
                     # print(difference)
                     for sec in range(1, difference):
-                        temptimedate = edt[i] + timedelta(seconds=5)
-                        newtime.append(temptimedate.strftime('%Y-%m-%d %H:%M:%S%z'))
-                        newVin.append(None)
-                        newVbat.append(None)
-                        newAppt.append(None)
-                        newTp.append(None)
-                        newCelv.append(None)
-                        newEct.append(None)
-                        newEs.append(None)
+                        temptimedate = Data[i][0] + timedelta(seconds=5)
+                        Time.append(temptimedate.strftime('%Y-%m-%d %H:%M:%S%z'))
+                        for j in range(0, len(param)):
+                            Yaxis[j].append(None)
 
             # while True:
             #     if(fromData > toData):
@@ -89,9 +89,26 @@ def get_archive_data(request):
             #         newVin.append("s")
             #         fromData += timedelta(seconds=1)
 
-        context = {"fromData": fromData, "toData": toData, "labels": newtime, "Vin": newVin,
-                   "Vbat": newVbat, "Appd": newAppt, "Tp": newTp, "Celv": newCelv, "Ect": newEct, "Es": newEs}
+        context = {"fromData": fromData, "toData": toData, "labels": Time, "selected": Yaxis, "param": param}
         # print(context.get("Vin"))
+        return JsonResponse(context)
+    else:
+        html_template = loader.get_template('page-404.html')
+        return HttpResponse(html_template.render(context, request))
+
+
+@login_required(login_url="/login/")
+def device_list(request):
+    context = {"devicelist": getdevicedata()}
+
+    return JsonResponse(context)
+
+
+@login_required(login_url="/login/")
+def device_parameters(request):
+    context = {}
+    if request.method == "POST":
+        context = {"deviceparameters": get_device_parameters(request.POST["deviceid"])}
         return JsonResponse(context)
     else:
         html_template = loader.get_template('page-404.html')

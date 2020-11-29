@@ -16,11 +16,6 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
     <style>
-        .btn:hover {
-            background-color: RoyalBlue;
-        }
-    </style>
-    <style>
         :root {
             --text: "Select values";
         }
@@ -223,6 +218,13 @@
         <div class="masonry-sizer col-md-6 pos-a"></div>
         <div class="masonry-item col-md-12">
             <div class="p-20 bd" style="background-color: #313131;">
+                    <select class="form-control col-md-1 d-inline-block" id="exampleFormControlSelect1">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
                 <select id="myFilter" class="multiple_select minimal" multiple>
                     <option>VIN</option>
                     <option>VBAT</option>
@@ -738,7 +740,6 @@
     {#        }#}
     {#    </script>#}
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@atlaskit/select@13.0.6/dist/cjs/index.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
@@ -750,6 +751,9 @@
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js"
             integrity="sha512-2JBCbWoMJPH+Uj7Wq5OLub8E5edWHlTM4ar/YJkZh3plwB2INhhOC3eDoqHm1Za/ZOSksrLlURLoyXVdfQXqwg=="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.1/bootbox.min.js"
+            integrity="sha512-eoo3vw71DUo5NRvDXP/26LFXjSFE1n5GQ+jZJhHz+oOTR4Bwt7QBCjsgGvuVMQUMMMqeEvKrQrNEI4xQMXp3uA=="
             crossorigin="anonymous"></script>
     <script type="text/javascript">
         $(function () {
@@ -1044,31 +1048,42 @@
     <script>
         function get_archive_data() {
             console.log($("#fromdata").val() + " " + $("#todata").val())
-            $.ajax({
-                method: "POST",
-                url: "api/data/archive",
-                async: true,
-                data: {'csrfmiddlewaretoken': csrftoken, 'from': $("#fromdata").val(), 'to': $("#todata").val()},
-                success: function (result, status, xhr) {
-                    //clearInterval(clr)
-                    //archive = true
-                    var x = document.getElementById("scatter-chart");
-                    var y = document.getElementById("line-chart");
-                    // search(result)
-                    adjustValue1(result)
-                    if (x.style.display === "block") {
-                        x.style.display = "none"
-                        y.style.display = "block"
-                    } else {
-                        y.style.display = "block"
+            console.log(Object.values(params))
+            if (params.length != 0) {
+                $.ajax({
+                    method: "POST",
+                    url: "api/data/archive",
+                    async: true,
+                    data: {
+                        'csrfmiddlewaretoken': csrftoken,
+                        'from': $("#fromdata").val(),
+                        'to': $("#todata").val(),
+                        'parameters[]': Object.values(params)
+                    },
+                    success: function (result, status, xhr) {
+                        //clearInterval(clr)
+                        //archive = true
+                        var x = document.getElementById("scatter-chart");
+                        var y = document.getElementById("line-chart");
+                        console.log(result)
+                        // search(result)
+                        adjustValue1(result)
+                        if (x.style.display === "block") {
+                            x.style.display = "none"
+                            y.style.display = "block"
+                        } else {
+                            y.style.display = "block"
+                        }
+                    },
+                    error: function (error_data) {
+                        console.log("error")
+                        alert("error")
+                        console.log(error_data)
                     }
-                },
-                error: function (error_data) {
-                    console.log("error")
-                    alert("error")
-                    console.log(error_data)
-                }
-            })
+                })
+            } else {
+                alert("Device Not Selected")
+            }
         }
 
         function refreshdata() {
@@ -1095,31 +1110,18 @@
         {#Plotly.newPlot('line-chart', data, config1);#}
 
         function adjustValue1(value) {
-            var newd =
-                {
-                    name: "Vin",
+            var obj, yaxisobj;
+            var data = [];
+            for (let i = 0; i < value.selected.length; i++) {
+                obj = {
+                    name: value.param[i],
                     x: value.labels,
-                    y: value.Vin,
-                    type: 'line',
-                    marker: {
-                        color: "rgb(255,103,0)",
-                        size: 5
-                    },
+                    y: value.selected[i],
+                    type: 'line'
+                }
+                data.push(obj)
 
-                }
-            var newd2 =
-                {
-                    name: "Vbat",
-                    x: value.labels,
-                    y: value.Vbat,
-                    type: 'line',
-                    yaxis: 'y2',
-                    marker: {
-                        color: "rgb(57,255,20)",
-                        size: 5
-                    },
-                }
-            var data = [newd, newd2];
+            }
             var layout = {
                 legend: {
                     x: 0.5,
@@ -1179,6 +1181,86 @@
                 },
             };
             Plotly.newPlot('line-chart', data, layout, {modeBarButtonsToRemove: ['hoverClosestCartesian', 'zoom2d', 'hoverCompareCartesian', 'zoomIn2d', 'zoomOut2d', 'pan2d', 'toggleSpikelines', 'resetScale2d']});
+        }
+    </script>
+    <script>
+        var params;
+
+        function getdevicelist() {
+            $.ajax({
+                method: "GET",
+                url: 'api/data/devicelist',
+                success: function (data) {
+                    console.log(data.devicelist)
+                    selectDevice(data.devicelist)
+                },
+                error: function (error_data) {
+                    console.log("error")
+                    console.log(error_data)
+                }
+            })
+        }
+
+        function selectDevice(data) {
+            var inputopt = []
+            var obj = {}
+            for (let i = 0; i < data.length; i++) {
+                obj = {
+                    text: data[i],
+                    value: data[i],
+                }
+                inputopt.push(obj)
+            }
+            console.log(inputopt)
+            bootbox.prompt({
+                title: "This is a prompt with a set of checkbox inputs!",
+                inputType: 'radio',
+                inputOptions: inputopt,
+                callback: function (result) {
+                    console.log(result);
+                    getDeviceParameters(result)
+                }
+            });
+        }
+
+        function getDeviceParameters(deviceid) {
+            $.ajax({
+                method: "POST",
+                url: "api/data/deviceparameters",
+                async: true,
+                data: {'csrfmiddlewaretoken': csrftoken, "deviceid": deviceid},
+                success: function (result, status, xhr) {
+                    console.log(result)
+                    selectdeviceParameters(result.deviceparameters)
+                },
+                error: function (error_data) {
+                    console.log("error")
+                    alert("error")
+                    console.log(error_data)
+                }
+            })
+        }
+
+        function selectdeviceParameters(param) {
+            var inputopt = []
+            var obj = {}
+            for (let i = 0; i < param.length; i++) {
+                obj = {
+                    text: param[i],
+                    value: param[i],
+                }
+                inputopt.push(obj)
+            }
+            console.log(inputopt)
+            bootbox.prompt({
+                title: "This is a prompt with a set of checkbox inputs!",
+                inputType: 'checkbox',
+                inputOptions: inputopt,
+                callback: function (result) {
+                    params = Object.values(result);
+                    console.log(params);
+                }
+            });
         }
     </script>
 {% endblock javascripts %}
