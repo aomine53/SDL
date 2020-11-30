@@ -23,6 +23,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template import loader
 from .tokens import account_activation_token
 from django.template.loader import get_template
+from app.models import UserProfile
 
 UserModel = get_user_model()
 
@@ -38,14 +39,19 @@ def login_view(request):
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
             user = authenticate(username=username, password=password)
-            print(len(User.objects.filter(username=username)))
+            profileobj = ""
+            userobj = User.objects.filter(username=username)
+            if len(userobj) != 0:
+                profileobj = UserProfile.objects.get(user=userobj[0])
             if user is not None:
                 login(request, user)
                 return redirect("/")
-            elif len(User.objects.filter(username=username)) != 0:
-                msg = 'Email is not verified'
-            else:
+            elif len(userobj) == 0:
                 msg = 'Invalid credentials'
+            elif userobj[0].check_password(password) is False:
+                msg = 'Invalid credentials'
+            elif profileobj.email_is_verified is False:
+                msg = 'Email is not verified'
         else:
             msg = 'Error validating the form'
 
@@ -73,7 +79,7 @@ def register_user(request):
             username = form.cleaned_data.get("username")
             raw_password = form.cleaned_data.get("password1")
 
-            user = authenticate(username=username, password=raw_password)
+            # user = authenticate(username=username, password=raw_password)
             msg = 'User created - please <a href="/login">login</a>.'
             success = True
             current_site = get_current_site(request)
@@ -116,6 +122,9 @@ def activate(request, uidb64, token):
         user = None
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
+        userobj = UserProfile.objects.get(user=user)
+        userobj.email_is_verified = True
+        userobj.save()
         user.save()
 
         html_template = loader.get_template('page_email_verified.html')

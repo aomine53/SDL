@@ -24,6 +24,7 @@ class UserProfile(models.Model):
         ('SysAdmin', 'SysAdmin')
     )
     usertype = models.CharField(max_length=100, null=True, choices=TYPE)
+    email_is_verified = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username
