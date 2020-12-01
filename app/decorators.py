@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import loader
+from django.contrib.auth.models import User
 
 
 def unauthenticated_user(view_func):
@@ -70,3 +71,14 @@ def admin_only(view_func):
 
         if group == 'admin':
             return view_func(request, *args, **kwargs)
+
+
+def superuser_only(view_func):
+    def wrapper_function(request, *args, **kwargs):
+        if request.user.is_staff is True:
+            return view_func(request, *args, **kwargs)
+        else:
+            html_template = loader.get_template('page-403.html')
+            return HttpResponse(html_template.render({}, request))
+
+    return wrapper_function

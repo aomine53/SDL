@@ -839,6 +839,7 @@
                 g = g.slice(1)
                 return (Number(g.slice(0, 3)) + (Number(g.slice(3, 10)) / 60))
             }
+
             return [lat(t), lng(g)]
         }
 
@@ -879,6 +880,7 @@
         //var marker = L.marker([18.446368,73.816035],{icon:myIcon}).addTo(mymap);
         const colors = [redIcon, blueIcon, yellowIcon, greenIcon]
         var bll = []
+
         function latlng(data) {
             var ll = []
             for (let i = 0; i < data.length; i++) {
@@ -901,7 +903,10 @@
             //marker.bindPopup(data1.lat+","+data1.lng).openPopup();
             {#return marker#}
         }
-        setTimeout(function (){mymap.flyToBounds(bll)},5000)
+
+        setTimeout(function () {
+            mymap.flyToBounds(bll)
+        }, 5000)
 
         async function removelayer(marker) {
             await sleep(5000)
@@ -1951,12 +1956,18 @@
                 method: "POST",
                 url: "api/data/archive",
                 async: true,
-                data: {'csrfmiddlewaretoken': csrftoken, 'from': $("#fromdata").val(), 'to': $("#todata").val()},
+                data: {
+                    'csrfmiddlewaretoken': csrftoken,
+                    'from': $("#fromdata").val(),
+                    'to': $("#todata").val(),
+                    'parameters[]': ["VIN", "VBAT", "SPD"]
+                },
                 success: function (result, status, xhr) {
                     //clearInterval(clr)
                     //archive = true
                     var x = document.getElementById("scatter-chart");
                     var y = document.getElementById("line-chart");
+                    console.log(result)
                     // search(result)
                     adjustValue1(result)
                     if (x.style.display === "block") {
@@ -2002,7 +2013,7 @@
                 {
                     name: "Vin",
                     x: value.labels,
-                    y: value.Vin,
+                    y: value.selected[0],
                     type: 'line',
                     marker: {
                         color: "rgb(255,103,0)",
@@ -2014,7 +2025,7 @@
                 {
                     name: "Vbat",
                     x: value.labels,
-                    y: value.Vbat,
+                    y: value.selected[1],
                     type: 'line',
                     yaxis: 'y2',
                     marker: {
@@ -2024,13 +2035,13 @@
                 }
             var newd3 =
                 {
-                    name: "Celv",
+                    name: "SPDK",
                     x: value.labels,
-                    y: value.Celv,
+                    y: value.selected[2],
                     type: 'line',
-                    yaxis: 'y2',
+                    yaxis: 'y3',
                     marker: {
-                        color: "rgb(57,255,20)",
+                        color: "#8B78E6",
                         size: 5
                     },
                 }
@@ -2067,6 +2078,7 @@
                         size: 14,
                         color: 'white'
                     },
+                    domain:[0.1, 1]
                 },
                 yaxis: {
                     title: 'Vin',
@@ -2078,6 +2090,7 @@
                         size: 14,
                         color: 'white'
                     },
+                    anchor: 'x',
                 },
                 yaxis2: {
                     title: 'Vbat',
@@ -2091,6 +2104,22 @@
                         size: 14,
                         color: 'white'
                     },
+                    anchor: 'x',
+                },
+                yaxis3: {
+                    title: 'SPDK',
+                    gridcolor: '#696969',
+                    linecolor: '#696969',
+                    titlefont: {color: "#8B78E6"},
+                    overlaying: 'y',
+                    side: 'left',
+                    tickfont: {
+                        family: 'Old Standard TT, serif',
+                        size: 14,
+                        color: 'white'
+                    },
+                    position:0.05,
+
                 },
             };
             Plotly.newPlot('line-chart', data, layout, {modeBarButtonsToRemove: ['hoverClosestCartesian', 'zoom2d', 'hoverCompareCartesian', 'zoomIn2d', 'zoomOut2d', 'pan2d', 'toggleSpikelines', 'resetScale2d']});

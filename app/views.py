@@ -12,7 +12,9 @@ from django.db import connection
 from datetime import datetime, timedelta
 import pytz
 from app.operations import searchdata, getlivedata, getdevicedata, getreport, getmapreport, get_device_parameters
-from .decorators import allowed_users, unauthenticated_user,verified_users
+from .decorators import *
+from .models import FirmProfile
+from django.contrib.auth.models import User
 
 
 @login_required(login_url="/login/")
@@ -136,6 +138,12 @@ def get_map_report(request):
 
 
 @login_required(login_url="/login/")
+@superuser_only
+def superuser_page(request):
+    return render(request, "superuser.html")
+
+
+@login_required(login_url="/login/")
 def pages(request):
     context = {"1": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
     # All resource paths end in .html.
@@ -156,3 +164,38 @@ def pages(request):
 
         html_template = loader.get_template('page-500.html')
         return HttpResponse(html_template.render(context, request))
+
+
+def firm_register(request):
+    msg = "Error"
+    if request.method == "POST":
+        company_name = request.POST["name"]
+        company_email = request.POST["email"]
+        company_telephone = request.POST["telephone"]
+        company_address1 = request.POST["address1"]
+        company_address2 = request.POST["address2"]
+        company_country = request.POST["country"]
+        company_state = request.POST["state"]
+        company_city = request.POST["city"]
+        company_zip = request.POST["zip"]
+        company_gstn = request.POST["gstn"]
+        company_owner = request.POST["owner"]
+
+        owner = User.objects.filter(username=company_owner)
+        if len(owner) == 0:
+            msg = "Owner Not Found"
+        elif len(owner[0].groups.filter(name='owner')) == 0:
+            msg = "User is not Owner"
+        else:
+            firm = FirmProfile(user=owner[0], company_name=company_name, company_email=company_email,
+                               company_telephone=company_telephone, company_address1=company_address1,
+                               company_address2=company_address2,
+                               company_country=company_country, company_state=company_state, company_city=company_city,
+                               company_zip=company_zip, company_gstn=company_gstn,
+                               )
+            firm.save()
+            msg = "Form Saved Successfully"
+        return JsonResponse({'msg': msg})
+    else:
+        html_template = loader.get_template('page-404.html')
+        return HttpResponse(html_template.render({"msg": msg}, request))
