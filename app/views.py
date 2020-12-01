@@ -15,6 +15,8 @@ from app.operations import searchdata, getlivedata, getdevicedata, getreport, ge
 from .decorators import *
 from .models import FirmProfile
 from django.contrib.auth.models import User
+import os
+from django.conf import settings
 
 
 @login_required(login_url="/login/")
@@ -22,6 +24,14 @@ from django.contrib.auth.models import User
 @verified_users()
 def index(request):
     return render(request, "indexsolar.html")
+
+
+@login_required(login_url="/login/")
+def tempdevice(requesrt):
+    file = open(os.path.join(settings.BASE_DIR, '../AssetTrack_Backend/log/data.csv'), 'r')
+    lines = file.read().splitlines()
+    lines.reverse()
+    return JsonResponse(lines[0:1000], safe=False)
 
 
 @login_required(login_url="/login/")
