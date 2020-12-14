@@ -16,7 +16,7 @@ PROJECT_DIR = Path(__file__).parent
 SECRET_KEY = config('SECRET_KEY', default='S#perS3crEt_1122')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=True)
+DEBUG = True
 
 # load production server from .env
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1','143.110.187.187', config('SERVER', default='127.0.0.1')]
@@ -24,6 +24,7 @@ ALLOWED_HOSTS = ['127.0.0.1', '143.110.187.187']
 # Application definition
 
 INSTALLED_APPS = [
+    'userforms.apps.UserformsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -126,6 +127,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'core/static'),
 )
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

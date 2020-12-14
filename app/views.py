@@ -23,6 +23,7 @@ from django.conf import settings
 @allowed_users(allowed_roles=['sysadmin', 'owner'])
 @verified_users()
 def index(request):
+
     return render(request, "indexsolar.html")
 
 

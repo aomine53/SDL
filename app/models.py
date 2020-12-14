@@ -16,20 +16,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    TYPE = (
-        ('Driver', 'Driver'),
-        ('Owner', 'Owner'),
-        ('SysAdmin', 'SysAdmin')
-    )
-    usertype = models.CharField(max_length=100, null=True, choices=TYPE)
-    email_is_verified = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.user.username
-
-
 class FirmProfile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     company_name = models.CharField(max_length=300, null=True)
@@ -47,3 +33,18 @@ class FirmProfile(models.Model):
 
     def __str__(self):
         return self.company_name
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    firm_id = models.ForeignKey(FirmProfile, on_delete=models.CASCADE, null=True)
+    TYPE = (
+        ('Driver', 'Driver'),
+        ('Owner', 'Owner'),
+        ('SysAdmin', 'SysAdmin')
+    )
+    usertype = models.CharField(max_length=100, null=True, choices=TYPE)
+    email_is_verified = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.user.username

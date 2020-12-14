@@ -7,6 +7,7 @@ from django.urls import path, re_path
 from app import views
 
 urlpatterns = [
+    #path('', views.formspage, name='formspage'),
     path('', views.index, name='home'),
     path('api/data/live', views.get_live_data, name='api-data'),
     path('api/data/archive', views.get_archive_data, name="archive"),
