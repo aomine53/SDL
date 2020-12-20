@@ -18,6 +18,8 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="/static/assets/weather-icons-master/css/weather-icons.min.css">
+    <link rel="stylesheet"
+          href="/static/assets/jQuery-Multiple-Select-Plugin-For-Bootstrap-Bootstrap-Multiselect/dist/css/bootstrap-multiselect.min.css">
     <style>
         .btn:hover {
             background-color: RoyalBlue;
@@ -27,258 +29,6 @@
 
         #mymapid {
             z-index: 0;
-        }
-
-        :root {
-            --text: "Select Parameter";
-        }
-
-        .multiple_select {
-            height: 35px;
-            width: auto;
-            overflow: hidden;
-            -webkit-appearance: menulist;
-            position: absolute;
-            margin-left: 5px;
-        }
-
-        .multiple_select::before {
-            content: var(--text);
-            display: block;
-            margin-left: 5px;
-            margin-bottom: 2px;
-            margin-right: 5px;
-            margin-top: 5px;
-        }
-
-        .multiple_select_active {
-            overflow: visible !important;
-        }
-
-        .multiple_select option {
-            display: none;
-            height: 30px;
-            background-color: white;
-        }
-
-        .multiple_select_active option {
-            display: block;
-        }
-
-        .multiple_select option::before {
-            content: "\2610";
-        }
-
-        .multiple_select option:checked::before {
-            content: "\2611";
-        }
-    </style>
-    <style>
-        :root {
-            --text1: "Select Device";
-        }
-
-        .multiple_select1 {
-            height: 35px;
-            width: auto;
-            overflow: hidden;
-            -webkit-appearance: menulist;
-            position: absolute;
-            margin-left: 5px;
-        }
-
-        .multiple_select1::before {
-            content: var(--text1);
-            display: block;
-            margin-left: 5px;
-            margin-bottom: 2px;
-            margin-right: 5px;
-            margin-top: 5px;
-        }
-
-        .multiple_select_active1 {
-            overflow: visible !important;
-        }
-
-        .multiple_select1 option {
-            display: none;
-            height: 30px;
-            background-color: white;
-        }
-
-        .multiple_select_active1 option {
-            display: block;
-        }
-
-        .multiple_select1 option::before {
-            content: "\2610";
-        }
-
-        .multiple_select1 option:checked::before {
-            content: "\2611";
-        }
-    </style>
-    <style>
-        :root {
-            --text2: "Weather Parameter";
-        }
-
-        .multiple_select2 {
-            height: 35px;
-            width: auto;
-            overflow: hidden;
-            -webkit-appearance: menulist;
-            position: absolute;
-            margin-left: 5px;
-        }
-
-        .multiple_select2::before {
-            content: var(--text2);
-            display: block;
-            margin-left: 5px;
-            margin-bottom: 2px;
-            margin-right: 5px;
-            margin-top: 5px;
-        }
-
-        .multiple_select_active2 {
-            overflow: visible !important;
-        }
-
-        .multiple_select2 option {
-            display: none;
-            height: 30px;
-            background-color: white;
-        }
-
-        .multiple_select_active2 option {
-            display: block;
-        }
-
-        .multiple_select2 option::before {
-            content: "\2610";
-        }
-
-        .multiple_select2 option:checked::before {
-            content: "\2611";
-        }
-    </style>
-    <style>
-        select {
-
-            /* styling */
-            background-color: white;
-            border: thin solid blue;
-            border-radius: 4px;
-            display: inline-block;
-            font: inherit;
-            line-height: 1.5em;
-            padding-right: 3.5em;
-            padding-left: 1em;
-            padding-top: 0.1em;
-            /* reset */
-
-            margin: 0;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-        }
-
-
-        /* arrows */
-
-        select.classic {
-            background-image: linear-gradient(45deg, transparent 50%, blue 50%),
-            linear-gradient(135deg, blue 50%, transparent 50%),
-            linear-gradient(to right, skyblue, skyblue);
-            background-position: calc(100% - 20px) calc(1em + 2px),
-            calc(100% - 15px) calc(1em + 2px),
-            100% 0;
-            background-size: 5px 5px,
-            5px 5px,
-            2.5em 2.5em;
-            background-repeat: no-repeat;
-        }
-
-        select.classic:focus {
-            background-image: linear-gradient(45deg, white 50%, transparent 50%),
-            linear-gradient(135deg, transparent 50%, white 50%),
-            linear-gradient(to right, gray, gray);
-            background-position: calc(100% - 15px) 1em,
-            calc(100% - 20px) 1em,
-            100% 0;
-            background-size: 5px 5px,
-            5px 5px,
-            2.5em 2.5em;
-            background-repeat: no-repeat;
-            border-color: grey;
-            outline: 0;
-        }
-
-
-        select.round {
-            background-image: linear-gradient(45deg, transparent 50%, gray 50%),
-            linear-gradient(135deg, gray 50%, transparent 50%),
-            radial-gradient(#ddd 70%, transparent 72%);
-            background-position: calc(100% - 20px) calc(1em + 2px),
-            calc(100% - 15px) calc(1em + 2px),
-            calc(100% - .5em) .5em;
-            background-size: 5px 5px,
-            5px 5px,
-            1.5em 1.5em;
-            background-repeat: no-repeat;
-        }
-
-        select.round:focus {
-            background-image: linear-gradient(45deg, white 50%, transparent 50%),
-            linear-gradient(135deg, transparent 50%, white 50%),
-            radial-gradient(gray 70%, transparent 72%);
-            background-position: calc(100% - 15px) 1em,
-            calc(100% - 20px) 1em,
-            calc(100% - .5em) .5em;
-            background-size: 5px 5px,
-            5px 5px,
-            1.5em 1.5em;
-            background-repeat: no-repeat;
-            border-color: green;
-            outline: 0;
-        }
-
-
-        select.minimal {
-            background-image: linear-gradient(45deg, transparent 50%, gray 50%),
-            linear-gradient(135deg, gray 50%, transparent 50%),
-            linear-gradient(to right, #ccc, #ccc);
-            background-position: calc(100% - 20px) calc(1em + 2px),
-            calc(100% - 15px) calc(1em + 2px),
-            calc(100% - 2.5em) 0.5em;
-            background-size: 5px 5px,
-            5px 5px,
-            1px 1.5em;
-            background-repeat: no-repeat;
-        }
-
-        select.minimal:focus {
-            background-image: linear-gradient(45deg, green 50%, transparent 50%),
-            linear-gradient(135deg, transparent 50%, green 50%),
-            linear-gradient(to right, #ccc, #ccc);
-            background-position: calc(100% - 15px) 1em,
-            calc(100% - 20px) 1em,
-            calc(100% - 2.5em) 0.5em;
-            background-size: 5px 5px,
-            5px 5px,
-            1px 1.5em;
-            background-repeat: no-repeat;
-            border-color: green;
-            outline: 0;
-        }
-
-
-        select:-moz-focusring {
-            color: transparent;
-            text-shadow: 0 0 0 #000;
         }
     </style>
 {% endblock stylesheets %}
@@ -711,6 +461,92 @@
                 </div>
             </div>
         </div>
+        <div class="masonry-item col-md-12">
+            <div class="p-20 bd" style="background-color: #313131;">
+                <div class="col mb-20">
+                    <div class="row justify-content-center" style="background-color: #313131;">
+                        <div class="col-lg-9">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class=" input-group date" id="datetimepicker1" data-target-input="nearest">
+                                        <input type="text" id="fromdata" class="form-control datetimepicker-input"
+                                               data-target="#datetimepicker1">
+                                        <div class="input-group-append" data-target="#datetimepicker1"
+                                             data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                                        <input type="text" id="todata" class="form-control datetimepicker-input"
+                                               data-target="#datetimepicker2">
+                                        <div class="input-group-append" data-target="#datetimepicker2"
+                                             data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-primary mb-1 mr-2"
+                                            onclick="get_archive_data()"><i
+                                            class="fa fa-search"></i></button>
+                                    <button type="button" class="btn btn-primary mb-1 " onclick="refreshdata()"><i
+                                            class="fa fa-refresh"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="selectelements" class="row justify-content-around">
+                        <select id="selectplant" name="Select Plant" class="custom-select col-md-3 col-lg-2 "
+                                style="margin-top: 10px; text-align-last: center ">
+                            <option value="none" selected disabled hidden>
+                                Select Plant
+                            </option>
+                            {% for i in device %}
+                                <option value="{{ i.device_id }}">{{ i.device_id }}</option>
+                            {% endfor %}
+                        </select>
+                        <select id="selectdevice" name="Select Device" class="custom-select col-md-3 col-lg-2"
+                                style="margin-top: 10px; text-align-last: center">
+                            <option value="none" selected disabled hidden>
+                                Select Device
+                            </option>
+                            {% for i in device %}
+                                <option value="{{ i.device_id }}">{{ i.device_id }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="col-md-3 col-lg-2" style="margin-top: 10px;">
+                            <select id="myFilter" multiple="multiple">
+                                <option value="none" selected disabled hidden>
+                                    Select Parameters
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 col-lg-2" style="margin-top: 10px;">
+                            <select id="myFilter2" multiple="multiple"
+                                    style="margin-top: 10px;">
+                                <option selected disabled hidden>
+                                    Weather Parameters
+                                </option>
+                                <option>Irradiance</option>
+                                <option>Ambient Temperature</option>
+                                <option>Module Temperature</option>
+                                <option>Wind Speed</option>
+                                <option>Wind Direction</option>
+                                <option>Humidity</option>
+                                <option>Rain</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="line-chart" style="display: none;"></div>
+                <div class="mT-30">
+                    <canvas id="scatter-chart" height="100" style="display: block;margin-top: 10px;">
+                    </canvas>
+                </div>
+            </div>
+        </div>
         <div class="masonry-item col-md-6">
             <!-- #Monthly Stats ==================== -->
             <div class="bd" style="background-color: #313131;">
@@ -728,62 +564,7 @@
                 </div>
             </div>
         </div>
-        <div class="masonry-item col-md-12">
-            <div class="p-20 bd" style="background-color: #313131;">
-                <div class="row" style="background-color: #313131;">
-                    <div class=" col-sm-2 d-inline-block">
-                        <div class=" input-group date" id="datetimepicker1" data-target-input="nearest">
-                            <input type="text" id="fromdata" class="form-control datetimepicker-input"
-                                   data-target="#datetimepicker1">
-                            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-2 d-inline-block">
-                        <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                            <input type="text" id="todata" class="form-control datetimepicker-input"
-                                   data-target="#datetimepicker2">
-                            <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-inline-block p-0 m-0">
-                        <button type="button" class="btn btn-primary mb-1 mr-2" onclick="get_archive_data()"><i
-                                class="fa fa-search"></i></button>
-                        <button type="button" class="btn btn-primary mb-1 " onclick="refreshdata()"><i
-                                class="fa fa-refresh"></i></button>
-                        <select id="myFilter" class="multiple_select minimal" multiple style="margin-left: 200px;">
-                            <option>VIN</option>
-                            <option>VBAT</option>
-                            <option>SPDK</option>
-                        </select>
 
-                        <select id="myFilter1" class="multiple_select1 minimal" multiple style="margin-left: 20px;">
-                            <option>$SLU355000082004871</option>
-                            <option>$SLU352353085992789</option>
-                            <option>$SLU862549047732402</option>
-                        </select>
-
-                        <select id="myFilter2" class="multiple_select2 minimal" multiple style="margin-left: 400px;">
-                            <option>Irradiance</option>
-                            <option>Ambient Temperature</option>
-                            <option>Module Temperature</option>
-                            <option>Wind Speed</option>
-                            <option>Wind Direction</option>
-                            <option>Humidity</option>
-                            <option>Rain</option>
-                        </select>
-                    </div>
-                </div>
-                <div id="line-chart" style="display: none;"></div>
-                <div class="mT-30">
-                    <canvas id="scatter-chart" height="100" style="display: block;margin-top: 10px;">
-                    </canvas>
-                </div>
-            </div>
-        </div>
     </div>
 {% endblock content %}
 
@@ -792,13 +573,13 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
+        var indexofselecteddevice = -1;
         var endpoint = '/api/data/live'
         setInterval(function () {
             $.ajax({
                 method: "GET",
                 url: endpoint,
                 success: function (data) {
-                    //var jsondata = JSON.parse(data)
                     var Rno = document.getElementById("rno")
                     var Vbat = document.getElementById("vbat");
                     var Vin = document.getElementById("vin");
@@ -807,27 +588,25 @@
                     //let poly = polyline(data.data[i]);
                     //removelayer(marker, poly)
                     {#console.log(data.data);#}
-                    for (let i = 0; i < data.data.length; i++) {
-                        Vbat.textContent = data.data[i].vbat;
-                        Rno.textContent = data.data[i].rno;
-                        Vin.textContent = data.data[i].vin;
-                        Spdk.textContent = data.data[i].spdk;
+                    {#for (let i = 0; i < data.data.length; i++) {#}
+                    {#    Vbat.textContent = data.data[i].VBAT;#}
+                    {#    Rno.textContent = data.data[i].RNO;#}
+                    {#    Vin.textContent = data.data[i].VIN;#}
+                    {#    Spdk.textContent = data.data[i].SPD;#}
+                    if (indexofselecteddevice === -1) {
+                        Vbat.textContent = 0;
+                        Rno.textContent = 0;
+                        Vin.textContent = 0;
+                        Spdk.textContent = 0;
+                    } else {
+                        Vbat.textContent = data.data[indexofselecteddevice].VBAT;
+                        Rno.textContent = data.data[indexofselecteddevice].RNO;
+                        Vin.textContent = data.data[indexofselecteddevice].VIN;
+                        Spdk.textContent = data.data[indexofselecteddevice].SPD;
                     }
                 }
             })
         }, 1000)
-        /*
-        var polylist = []
-        function polyline(data2)
-        {
-          var latitude = parseFloat(data2.lat)
-          var longitude = parseFloat(data2.lng)
-          var list = [latitude,longitude]
-          polylist.push(list)
-          let poly = L.polyline(polylist).addTo(mymap)
-          return poly
-        }*/
-        {#console.log("map")#}
 
         function latlongconverter(t, g) {
             function lat(t) {
@@ -884,12 +663,12 @@
         function latlng(data) {
             var ll = []
             for (let i = 0; i < data.length; i++) {
-                if (data[i].lat !== "" && data[i].lng !== "") {
-                    if (data[i].lat[0] === '+' && data[i].lng[0] === '+') {
-                        ll = latlongconverter(data[i].lat, data[i].lng)
+                if (data[i].LAT !== "" && data[i].LNG !== "") {
+                    if (data[i].LAT[0] === '+' && data[i].LNG[0] === '+') {
+                        ll = latlongconverter(data[i].LAT, data[i].LNG)
                     } else {
-                        let latitude = parseFloat(data[i].lat)
-                        let longitude = parseFloat(data[i].lng)
+                        let latitude = parseFloat(data[i].LAT)
+                        let longitude = parseFloat(data[i].LNG)
                         ll = [latitude, longitude]
                     }
                     bll.push(ll)
@@ -1047,57 +826,6 @@
 
         Plotly.newPlot('heatmap', data, layout);
     </script>
-    {#    <script>#}
-    {#        Plotly.d3.json('https://raw.githubusercontent.com/plotly/plotly.js/master/test/image/mocks/sankey_energy.json', function (fig) {#}
-    {##}
-    {#            var data = {#}
-    {#                type: "sankey",#}
-    {#                domain: {#}
-    {#                    x: [0, 1],#}
-    {#                    y: [0, 1]#}
-    {#                },#}
-    {#                orientation: "h",#}
-    {#                valueformat: ".0f",#}
-    {#                valuesuffix: "TWh",#}
-    {#                node: {#}
-    {#                    pad: 15,#}
-    {#                    thickness: 15,#}
-    {#                    line: {#}
-    {#                        color: "black",#}
-    {#                        width: 0.5#}
-    {#                    },#}
-    {#                    label: fig.data[0].node.label,#}
-    {#                    color: fig.data[0].node.color#}
-    {#                },#}
-    {##}
-    {#                link: {#}
-    {#                    source: fig.data[0].link.source,#}
-    {#                    target: fig.data[0].link.target,#}
-    {#                    value: fig.data[0].link.value,#}
-    {#                    label: fig.data[0].link.label#}
-    {#                }#}
-    {#            }#}
-    {##}
-    {##}
-    {#            var layout = {#}
-    {#                title: "Sankey Chart",#}
-    {#                width: 590,#}
-    {#                height: 500,#}
-    {#                font: {#}
-    {#                    size: 10#}
-    {#                },#}
-    {#                paper_bgcolor: '#313131',#}
-    {#                plot_bgcolor: 'rgba(0,0,0,0)',#}
-    {#                titlefont: {#}
-    {#                    family: 'Old Standard TT, serif',#}
-    {#                    size: 14,#}
-    {#                    color: 'white'#}
-    {#                },#}
-    {#            }#}
-    {#            Plotly.newPlot('sankey', data, layout2)#}
-    {#        });#}
-    {##}
-    {#    </script>#}
     <script>
         var data2 = {
             "type": "sankey",
@@ -1525,95 +1253,6 @@
                 size: 14,
                 color: 'white'
             },
-            {#paper_bgcolor: '#313131',#}
-            {#plot_bgcolor: 'rgba(0,0,0,0)',#}
-            {#"updatemenus": [#}
-            {#    {#}
-            {#        "y": 1,#}
-            {#        "buttons": [#}
-            {#            {#}
-            {#                "label": "Light",#}
-            {#                "method": "relayout",#}
-            {#                "args": ["paper_bgcolor", "white"]#}
-            {#            },#}
-            {#            {#}
-            {#                "label": "Dark",#}
-            {#                "method": "relayout",#}
-            {#                "args": ["paper_bgcolor", "black"]#}
-            {#            }#}
-            {#        ]#}
-            {#    },#}
-            {#    {#}
-            {#        "y": 0.9,#}
-            {#        "buttons": [#}
-            {#            {#}
-            {#                "label": "Thick",#}
-            {#                "method": "restyle",#}
-            {#                "args": ["node.thickness", 15]#}
-            {#            },#}
-            {#            {#}
-            {#                "label": "Thin",#}
-            {#                "method": "restyle",#}
-            {#                "args": ["node.thickness", 8]#}
-            {#            }#}
-            {#        ]#}
-            {#    },#}
-            {#    {#}
-            {#        "y": 0.8,#}
-            {#        "buttons": [#}
-            {#            {#}
-            {#                "label": "Small gap",#}
-            {#                "method": "restyle",#}
-            {#                "args": ["node.pad", 15]#}
-            {#            },#}
-            {#            {#}
-            {#                "label": "Large gap",#}
-            {#                "method": "restyle",#}
-            {#                "args": ["node.pad", 20]#}
-            {#            }#}
-            {#        ]#}
-            {#    },#}
-            {#    {#}
-            {#        "y": 0.7,#}
-            {#        "buttons": [#}
-            {#            {#}
-            {#                "label": "Snap",#}
-            {#                "method": "restyle",#}
-            {#                "args": ["arrangement", "snap"]#}
-            {#            },#}
-            {#            {#}
-            {#                "label": "Perpendicular",#}
-            {#                "method": "restyle",#}
-            {#                "args": ["arrangement", "perpendicular"]#}
-            {#            },#}
-            {#            {#}
-            {#                "label": "Freeform",#}
-            {#                "method": "restyle",#}
-            {#                "args": ["arrangement", "freeform"]#}
-            {#            },#}
-            {#            {#}
-            {#                "label": "Fixed",#}
-            {#                "method": "restyle",#}
-            {#                "args": ["arrangement", "fixed"]#}
-            {#            }#}
-            {#        ]#}
-            {#    },#}
-            {#    {#}
-            {#        "y": 0.6,#}
-            {#        "buttons": [#}
-            {#            {#}
-            {#                "label": "Horizontal",#}
-            {#                "method": "restyle",#}
-            {#                "args": ["orientation", "h"]#}
-            {#            },#}
-            {#            {#}
-            {#                "label": "Vertical",#}
-            {#                "method": "restyle",#}
-            {#                "args": ["orientation", "v"]#}
-            {#            }#}
-            {#        ]#}
-            {#    }#}
-            {#]#}
         }
         Plotly.newPlot('sankey', data, layout2)
     </script>
@@ -1622,15 +1261,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-            crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
             integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js"
             integrity="sha512-2JBCbWoMJPH+Uj7Wq5OLub8E5edWHlTM4ar/YJkZh3plwB2INhhOC3eDoqHm1Za/ZOSksrLlURLoyXVdfQXqwg=="
             crossorigin="anonymous"></script>
+    <script src="/static/assets/jQuery-Multiple-Select-Plugin-For-Bootstrap-Bootstrap-Multiselect/dist/js/bootstrap-multiselect.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myFilter').multiselect({
+                buttonWidth: '100%'
+            });
+            $('#myFilter2').multiselect({
+                buttonWidth: '100%'
+            });
+        });
+    </script>
+    <script>
+        $(function () {
+            $('#myFilter2').multiselect();
+        });
+    </script>
     <script type="text/javascript">
         $(function () {
             $('#datetimepicker1').datetimepicker({
@@ -1672,21 +1325,23 @@
     <script>
         var oldrno = -1;
         var clr = 0
-        var VIN, VBAT, TIME, TP, APPD, CELV, ES, ECT, SPDK
+        var VIN, VBAT, TIME, TP, APPD, CELV, ES, ECT, SPD
 
         function livedata() {
             $.ajax({
                 method: "GET",
                 url: 'api/data/live',
                 success: function (data) {
-                    if (data.data[1].rno !== oldrno) {
-                        //  addData(data.data[1]);
-                        {#addData1(data.data[1]);#}
-                        VIN = data.data[1].vin
-                        VBAT = data.data[1].vbat
-                        SPDK = data.data[1].spdk
-                        TIME = data.data[1].time
-                        oldrno = data.data[1].rno;
+                    if (indexofselecteddevice !== -1) {
+                        if (data.data[indexofselecteddevice].RNO !== oldrno) {
+                            //  addData(data.data[1]);
+                            {#addData1(data.data[1]);#}
+                            VIN = data.data[indexofselecteddevice].VIN
+                            VBAT = data.data[indexofselecteddevice].VBAT
+                            SPD = data.data[indexofselecteddevice].SPD
+                            TIME = data.data[indexofselecteddevice].EDT
+                            oldrno = data.data[indexofselecteddevice].RNO;
+                        }
                     }
                     //if (chart.data.labels.length >= 30) {
                     //removedata();
@@ -1717,11 +1372,11 @@
 
 
         function datavar() {
-            return [VIN, VBAT, SPDK, TP, APPD, CELV, ES, ECT]
+            return [VIN, VBAT, SPD, TP, APPD, CELV, ES, ECT]
         }
 
         function onRefresh(chart) {
-            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]
+            let lab = ["VIN", "VBAT", "SPD", "TP", "APPD", "CELV", "ES", "ECT"]
             let i = 0
             let dat = datavar()
             chart.config.data.datasets.forEach(function (dataset) {
@@ -1783,7 +1438,7 @@
             }
         };
         var chart1 = new Chart(ctx, config)
-        let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]
+        let lab = ["VIN", "VBAT", "SPD", "TP", "APPD", "CELV", "ES", "ECT"]
         let unit = ["Volt", "Volt", "Kmph", "", "", "", "", ""]
         var colorNames = Object.keys(chartColors);
 
@@ -1831,7 +1486,7 @@
         }
 
         function removeDatasets(index) {
-            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]
+            let lab = ["VIN", "VBAT", "SPD", "TP", "APPD", "CELV", "ES", "ECT"]
             chart1.config.data.datasets.forEach(function (dataset) {
                 console.log(index)
                 if (dataset.label === lab[index]) {
@@ -1844,7 +1499,7 @@
         };
 
         function addds(selectedarray) {
-            let lab = ["VIN", "VBAT", "SPDK", "TP", "APPD", "CELV", "ES", "ECT"]
+            let lab = ["VIN", "VBAT", "SPD", "TP", "APPD", "CELV", "ES", "ECT"]
             for (var i = 0; i < selectedarray.length; i++) {
                 var flag = 0
                 lab.indexOf(selectedarray[i])
@@ -1881,71 +1536,49 @@
 
     </script>
     <script>
-        $(".multiple_select").mousedown(function (e) {
-            if (e.target.tagName == "OPTION") {
-                return; //don't close dropdown if i select option
-            }
-            $(this).toggleClass('multiple_select_active'); //close dropdown if click inside <select> box
-        });
-        $(".multiple_select").on('blur', function (e) {
-            $(this).removeClass('multiple_select_active'); //close dropdown if click outside <select>
+        $(function () {
+            $('#myFilter').multiselect();
         });
 
-        $('.multiple_select option').mousedown(function (e) { //no ctrl to select multiple
-            e.preventDefault();
-            $(this).prop('selected', $(this).prop('selected') ? false : true); //set selected options on click
-            $(this).parent().change(); //trigger change event
-        });
+        function assign_params(selecteddevice) {
+            $.ajax({
+                method: "GET",
+                url: 'api/data/userinfo',
+                success: function (data) {
+                    console.log(data)
+                    indexofselecteddevice = data.all_devices.indexOf(selecteddevice)
+                    var data2 = [];
+                    for (let i = 0; i < data.all_devices.length; i++) {
+                        if (data.all_devices[i] === selecteddevice) {
+                            console.log(data.all_devices[i])
+                            for (let j = 0; j < data.chartprefrence[i].length; j++) {
+                                data2.push({label: data.chartprefrence[i][j], value: data.chartprefrence[i][j]})
+                            }
+                            $('#myFilter').multiselect('dataprovider', data2);
+                        }
+                    }
+                    {#$('#myFilter').multiselect('reload')#}
+
+                }
+            })
+        }
+
+        var deviceselected = "";
+        $('#selectdevice').change(function () {
+            console.log($(this).val());
+            deviceselected = $(this).val()
+            {#$('#myFilter').empty()#}
+            assign_params($(this).val())
+        })
+
+
+    </script>
+    <script>
+        var selected = []
         $("#myFilter").on('change', function () {
-            var selected = $("#myFilter").val(); //here I get all options and convert to string
+            selected = $("#myFilter").val();
             console.log(selected)
             addds(selected)
-        })
-
-    </script>
-    <script>
-        $(".multiple_select1").mousedown(function (e) {
-            if (e.target.tagName == "OPTION") {
-                return; //don't close dropdown if i select option
-            }
-            $(this).toggleClass('multiple_select_active1'); //close dropdown if click inside <select> box
-        });
-        $(".multiple_select1").on('blur', function (e) {
-            $(this).removeClass('multiple_select_active1'); //close dropdown if click outside <select>
-        });
-
-        $('.multiple_select1 option').mousedown(function (e) { //no ctrl to select multiple
-            e.preventDefault();
-            $(this).prop('selected', $(this).prop('selected') ? false : true); //set selected options on click
-            $(this).parent().change(); //trigger change event
-        });
-        $("#myFilter1").on('change', function () {
-            var selected1 = $("#myFilter1").val(); //here I get all options and convert to string
-            console.log(selected1)
-            // addds(selected1)
-
-        })
-    </script>
-    <script>
-        $(".multiple_select2").mousedown(function (e) {
-            if (e.target.tagName == "OPTION") {
-                return; //don't close dropdown if i select option
-            }
-            $(this).toggleClass('multiple_select_active2'); //close dropdown if click inside <select> box
-        });
-        $(".multiple_select2").on('blur', function (e) {
-            $(this).removeClass('multiple_select_active2'); //close dropdown if click outside <select>
-        });
-
-        $('.multiple_select2 option').mousedown(function (e) { //no ctrl to select multiple
-            e.preventDefault();
-            $(this).prop('selected', $(this).prop('selected') ? false : true); //set selected options on click
-            $(this).parent().change(); //trigger change event
-        });
-        $("#myFilter2").on('change', function () {
-            var selected2 = $("#myFilter2").val(); //here I get all options and convert to string
-            console.log(selected2)
-            // addds(selected2)
         })
     </script>
     <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
@@ -1960,7 +1593,8 @@
                     'csrfmiddlewaretoken': csrftoken,
                     'from': $("#fromdata").val(),
                     'to': $("#todata").val(),
-                    'parameters[]': ["VIN", "VBAT", "SPD"]
+                    'parameters[]': selected,
+                    'device': deviceselected
                 },
                 success: function (result, status, xhr) {
                     //clearInterval(clr)
@@ -2007,45 +1641,64 @@
         {#];#}
         {#var config1 = {responsive: true}#}
         {#Plotly.newPlot('line-chart', data, config1);#}
+        var col = ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)', 'rgb(201, 203, 207)']
 
         function adjustValue1(value) {
-            var newd =
-                {
-                    name: "Vin",
-                    x: value.labels,
-                    y: value.selected[0],
-                    type: 'line',
-                    marker: {
-                        color: "rgb(255,103,0)",
-                        size: 5
-                    },
-
+            var trace = {}
+            var tracedata = []
+            for (let i = 0; i < value.param.length; i++) {
+                trace.name = value.param[i]
+                trace.x = value.labels
+                trace.y = value.selected[i]
+                trace.type = 'line'
+                trace.marker = {
+                    color: col[i],
+                    size: 5
                 }
-            var newd2 =
-                {
-                    name: "Vbat",
-                    x: value.labels,
-                    y: value.selected[1],
-                    type: 'line',
-                    yaxis: 'y2',
-                    marker: {
-                        color: "rgb(57,255,20)",
-                        size: 5
-                    },
+                if (i !== 0) {
+                    trace.yaxis = `y${i + 1}`
                 }
-            var newd3 =
-                {
-                    name: "SPDK",
-                    x: value.labels,
-                    y: value.selected[2],
-                    type: 'line',
-                    yaxis: 'y3',
-                    marker: {
-                        color: "#8B78E6",
-                        size: 5
-                    },
-                }
-            var data = [newd, newd2, newd3];
+                tracedata.push(trace)
+                trace = {}
+            }
+            console.log(tracedata)
+            {#var newd =#}
+            {#    {#}
+            {#        name: "Vin",#}
+            {#        x: value.labels,#}
+            {#        y: value.selected[0],#}
+            {#        type: 'line',#}
+            {#        marker: {#}
+            {#            color: "rgb(255,103,0)",#}
+            {#            size: 5#}
+            {#        },#}
+            {##}
+            {#    }#}
+            {#var newd2 =#}
+            {#    {#}
+            {#        name: "Vbat",#}
+            {#        x: value.labels,#}
+            {#        y: value.selected[1],#}
+            {#        type: 'line',#}
+            {#        yaxis: 'y2',#}
+            {#        marker: {#}
+            {#            color: "rgb(57,255,20)",#}
+            {#            size: 5#}
+            {#        },#}
+            {#    }#}
+            {#var newd3 =#}
+            {#    {#}
+            {#        name: "SPDK",#}
+            {#        x: value.labels,#}
+            {#        y: value.selected[2],#}
+            {#        type: 'line',#}
+            {#        yaxis: 'y3',#}
+            {#        marker: {#}
+            {#            color: "#8B78E6",#}
+            {#            size: 5#}
+            {#        },#}
+            {#    }#}
+            {#var tracedata = [newd, newd2, newd3];#}
             var layout = {
                 legend: {
                     x: 0.5,
@@ -2064,8 +1717,8 @@
                     t: 25,
                 },
                 autosize: true,
-                width: 1120,
-                height: 350,
+                width: 1300,
+                height: 450,
                 paper_bgcolor: '#313131',
                 plot_bgcolor: 'rgba(0,0,0,0)',
                 xaxis: {
@@ -2078,13 +1731,13 @@
                         size: 14,
                         color: 'white'
                     },
-                    domain:[0.1, 1]
+                    domain: [0.1, 1]
                 },
                 yaxis: {
-                    title: 'Vin',
+                    title: value.param[0],
                     gridcolor: '#696969',
                     linecolor: '#696969',
-                    titlefont: {color: "rgb(255,103,0)"},
+                    titlefont: {color: col[0]},
                     tickfont: {
                         family: 'Old Standard TT, serif',
                         size: 14,
@@ -2093,10 +1746,10 @@
                     anchor: 'x',
                 },
                 yaxis2: {
-                    title: 'Vbat',
+                    title: value.param[1],
                     gridcolor: '#696969',
                     linecolor: '#696969',
-                    titlefont: {color: "rgb(57,255,20)"},
+                    titlefont: {color: col[1]},
                     overlaying: 'y',
                     side: 'right',
                     tickfont: {
@@ -2107,10 +1760,10 @@
                     anchor: 'x',
                 },
                 yaxis3: {
-                    title: 'SPDK',
+                    title: value.param[2],
                     gridcolor: '#696969',
                     linecolor: '#696969',
-                    titlefont: {color: "#8B78E6"},
+                    titlefont: {color: col[2]},
                     overlaying: 'y',
                     side: 'left',
                     tickfont: {
@@ -2118,11 +1771,25 @@
                         size: 14,
                         color: 'white'
                     },
-                    position:0.05,
-
+                    anchor: 'free',
+                    position: 0.05,
                 },
+                {#yaxis4: {#}
+                {#    title: value.param[3],#}
+                {#    gridcolor: '#696969',#}
+                {#    linecolor: '#696969',#}
+                {#    titlefont: {color: col[3]},#}
+                {#    overlaying: 'y',#}
+                {#    side: 'right',#}
+                {#    tickfont: {#}
+                {#        family: 'Old Standard TT, serif',#}
+                {#        size: 14,#}
+                {#        color: 'white'#}
+                {#    },#}
+                {#    anchor: 'free',#}
+                {#    position:1},#}
             };
-            Plotly.newPlot('line-chart', data, layout, {modeBarButtonsToRemove: ['hoverClosestCartesian', 'zoom2d', 'hoverCompareCartesian', 'zoomIn2d', 'zoomOut2d', 'pan2d', 'toggleSpikelines', 'resetScale2d']});
+            Plotly.newPlot('line-chart', tracedata, layout, {modeBarButtonsToRemove: ['hoverClosestCartesian', 'zoom2d', 'hoverCompareCartesian', 'zoomIn2d', 'zoomOut2d', 'pan2d', 'toggleSpikelines', 'resetScale2d']});
         }
     </script>
     {#    Weather Api Integration#}
@@ -2169,4 +1836,5 @@
         setInterval(getWeatherData(), 60000)
 
     </script>
+
 {% endblock javascripts %}

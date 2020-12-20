@@ -23,7 +23,8 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template import loader
 from .tokens import account_activation_token
 from django.template.loader import get_template
-from app.models import UserProfile
+from app.models import UserProfile, FirmProfile
+from app.operations import get_all_data
 
 UserModel = get_user_model()
 

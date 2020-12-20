@@ -13,5 +13,6 @@ urlpatterns = [
                   path('admin/', admin.site.urls),  # Django admin route
                   path("", include("authentication.urls")),  # Auth routes - login / register
                   path("", include("userforms.urls")),
-                  path("", include("app.urls"))  # UI Kits Html files
+                  path("", include("reports.urls")),
+                  path("", include("app.urls")),  # UI Kits Html files
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

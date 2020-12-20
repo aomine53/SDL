@@ -1,5 +1,8 @@
 import mysql.connector
+import os
 from datetime import datetime, timedelta
+from app.models import *
+from userforms.models import *
 
 config = {
     "user": 'mmlink',
@@ -7,6 +10,32 @@ config = {
     "host": '143.110.187.187',
     "database": 'mytestdb'
 }
+
+
+def get_all_data(device):
+    cnx = mysql.connector.connect(**config)
+    cnx.time_zone = '+05:30'
+    cursor = cnx.cursor()
+    for i in device:
+        query = f"CREATE TABLE IF NOT EXISTS {i.device_id} (UID varchar(45) DEFAULT NULL,CMD varchar(45) DEFAULT NULL,RNO varchar(45) DEFAULT NULL,EDT datetime NOT NULL,EID varchar(45) DEFAULT NULL,PDT varchar(45) DEFAULT NULL,LAT varchar(45) DEFAULT NULL,LNG varchar(45) DEFAULT NULL,SPD varchar(45) DEFAULT NULL,HEAD varchar(45) DEFAULT NULL,ODO int DEFAULT NULL,LAC varchar(45) DEFAULT NULL,CID varchar(45) DEFAULT NULL,VIN float DEFAULT NULL,VBAT float DEFAULT NULL,TI1 varchar(45) DEFAULT NULL,TS1 varchar(45) DEFAULT NULL,TV1 varchar(45) DEFAULT NULL,TH1 varchar(45) DEFAULT NULL,TD1 varchar(45) DEFAULT NULL,EDSC varchar(45) DEFAULT NULL,TI2 varchar(45) DEFAULT NULL,TS2 varchar(45) DEFAULT NULL,TV2 varchar(45) DEFAULT NULL,TH2 varchar(45) DEFAULT NULL,TD2 varchar(45) DEFAULT NULL,TI3 varchar(45) DEFAULT NULL,TS3 varchar(45) DEFAULT NULL,TV3 varchar(45) DEFAULT NULL,TH3 varchar(45) DEFAULT NULL,TD3 varchar(45) DEFAULT NULL,TI4 varchar(45) DEFAULT NULL,TS4 varchar(45) DEFAULT NULL,TV4 varchar(45) DEFAULT NULL,TH4 varchar(45) DEFAULT NULL,TD4 varchar(45) DEFAULT NULL)"
+        cursor.execute(query)
+    cursor.close()
+    cnx.close()
+
+
+def get_livedata_device(device):
+    cnx = mysql.connector.connect(**config)
+    cnx.time_zone = '+05:30'
+    cursor = cnx.cursor()
+    datalist = []
+    for i in device:
+        query = f"SELECT {i.device_parameters} FROM {i.device_id} ORDER BY EDT DESC LIMIT 1 "
+        cursor.execute(query)
+        data = cursor.fetchone()
+        datalist.append(data)
+    cursor.close()
+    cnx.close()
+    return datalist
 
 
 def getdevicedata():
@@ -28,7 +57,6 @@ def getdevicedata():
 def getlivedata():
     cnx = mysql.connector.connect(**config)
     cnx.time_zone = '+05:30'
-
     cursor = cnx.cursor()
     datalist = []
     device_list = getdevicedata()
@@ -47,13 +75,13 @@ def getlivedata():
     return datalist
 
 
-def searchdata(start, end, parameters):
+def searchdata(start, end, parameters, selecteddevice):
     cnx = mysql.connector.connect(**config)
     cnx.time_zone = '+05:30'
     cursor = cnx.cursor()
     parameters = ",".join(parameters)
     print(parameters)
-    query = f"SELECT EDT,{parameters} FROM $SLU355000082004871 WHERE EDT BETWEEN %s AND %s"
+    query = f"SELECT EDT,{parameters} FROM {selecteddevice} WHERE EDT BETWEEN %s AND %s"
     cursor.execute(query, (start, end))
     data = cursor.fetchall()
     cursor.close()
@@ -159,7 +187,10 @@ def get_device_parameters(device_id):
 if __name__ == "__main__":
     # print(get_device_parameters('$SLU355000082004871'))
     print(getdevicedata())
-    print(getlivedata())
+    # print(getlivedata())
+    device = Device.objects.filter(firm=FirmProfile.objects.get(user=User.objects.get(username="machinemath")))
+    print(get_livedata_device(device))
+    # print(getdeviceinfo("machinemath"))
     # parameters = ",".join(get_device_parameters('$SLU355000082004871'))
     # print(parameters)
     # print(searchdata("2020-11-05 21:36:00", "2020-11-05 21:37:00",get_device_parameters('$SLU355000082004871')))

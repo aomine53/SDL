@@ -1,5 +1,6 @@
 from django.db import models
-from app.models import UserProfile
+from app.models import UserProfile, FirmProfile
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -17,7 +18,7 @@ from app.models import UserProfile
 
 
 class Vehicle(models.Model):
-    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
+    firm = models.ForeignKey(FirmProfile, on_delete=models.CASCADE, null=True)
     license_plate = models.CharField(max_length=100)
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
@@ -31,7 +32,8 @@ class Vehicle(models.Model):
 
 class Driver(models.Model):
     # vehicle = models.ManyToManyField(Vehicle)
-    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
+    firm = models.ForeignKey(FirmProfile, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     phone_number = models.IntegerField()
@@ -48,9 +50,19 @@ class Driver(models.Model):
 class Device(models.Model):
     # owner = models.ForeignKey(Owner, on_delete=models.CASCADE)
     # vehicle = models.OneToOneField(Vehicle, on_delete=models.CASCADE)
-    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
+    firm = models.ForeignKey(FirmProfile, on_delete=models.CASCADE, null=True)
     device_id = models.CharField(max_length=100, primary_key=True)
-    device_parameters = models.TextField()
+    device_parameters = models.TextField(default="EDT,LAT,LNG,RNO,")
+    chart_parameters = models.TextField(null=True)
+    delay = models.IntegerField(default=1)
+    is_UTC = models.BooleanField(default=False)
 
     def __str__(self):
         return self.device_id
+
+
+class Assign(models.Model):
+    firm = models.ForeignKey(FirmProfile, on_delete=models.CASCADE)
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
+    driver = models.ForeignKey(Driver, on_delete=models.CASCADE, null=True)
+    device = models.ForeignKey(Device, on_delete=models.CASCADE)

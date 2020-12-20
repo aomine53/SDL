@@ -18,5 +18,6 @@ urlpatterns = [
     path('superuser', views.superuser_page, name="superuser"),
     path('api/register/firm', views.firm_register, name="firmregister"),
     path('api/data/tempdevice', views.tempdevice, name="tempdevice"),
+    path('api/data/userinfo', views.get_userinfo, name="userinfo"),
     re_path(r'^.*\.*', views.pages, name='pages'),
 ]

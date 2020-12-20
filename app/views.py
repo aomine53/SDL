@@ -11,10 +11,12 @@ from django import template
 from django.db import connection
 from datetime import datetime, timedelta
 import pytz
-from app.operations import searchdata, getlivedata, getdevicedata, getreport, getmapreport, get_device_parameters
+from app.operations import searchdata, getlivedata, getdevicedata, getreport, getmapreport, get_device_parameters, \
+    get_all_data, get_livedata_device
 from .decorators import *
 from .models import FirmProfile
 from django.contrib.auth.models import User
+from userforms.models import *
 import os
 from django.conf import settings
 
@@ -23,12 +25,15 @@ from django.conf import settings
 @allowed_users(allowed_roles=['sysadmin', 'owner'])
 @verified_users()
 def index(request):
-
-    return render(request, "indexsolar.html")
+    print(request.user.username)
+    device = Device.objects.filter(firm=FirmProfile.objects.get(user=User.objects.get(username=request.user.username)))
+    get_all_data(device)
+    context = {'device': device}
+    return render(request, "indexsolar.html", context)
 
 
 @login_required(login_url="/login/")
-def tempdevice(requesrt):
+def tempdevice(request):
     file = open(os.path.join(settings.BASE_DIR, '../AssetTrack_Backend/log/data.csv'), 'r')
     lines = file.read().splitlines()
     lines.reverse()
@@ -37,17 +42,36 @@ def tempdevice(requesrt):
 
 @login_required(login_url="/login/")
 def get_live_data(request):
-    datalist = getlivedata()
+    device = Device.objects.filter(firm=FirmProfile.objects.get(user=User.objects.get(username=request.user.username)))
+    datalist = get_livedata_device(device)
     dataobj = []
-    for data in datalist:
-        rno, vin, vbat, edt, spdk, lat, lng = data
-        data1 = {"rno": rno, "vbat": vbat, "vin": vin, "spdk": spdk, "time": edt.strftime("%Y-%m-%d %H:%M:%S%z"),
-                 "lat": lat,
-                 "lng": lng}
-        dataobj.append(data1)
-    # print(data1)
-    cont = {"data": dataobj}
-    return JsonResponse(cont)
+    arr = []
+    dev = []
+    for k in device:
+        dev.append(k.device_parameters.split(","))
+
+    # print(dev)
+    # if data is none set device params to None
+    for i in range(0, len(dev)):
+        # dev = device[i].device_parameters.split(",")
+        x = {}
+        for j in range(0, len(dev[i])):
+            if datalist[i] is None:
+                x[dev[i][j]] = None
+            else:
+                x[dev[i][j]] = datalist[i][j]
+        arr.append(x)
+    ctx = {"data": arr}
+    # print(ctx)
+    # for data in datalist:
+    #     rno, vin, vbat, edt, spdk, lat, lng = data
+    #     data1 = {"rno": rno, "vbat": vbat, "vin": vin, "spdk": spdk, "time": edt.strftime("%Y-%m-%d %H:%M:%S%z"),
+    #              "lat": lat,
+    #              "lng": lng}
+    #     dataobj.append(data1)
+    # # print(data1)
+    # cont = {"data": dataobj}
+    return JsonResponse(ctx)
 
 
 @login_required(login_url="/login/")
@@ -71,8 +95,9 @@ def get_archive_data(request):
         fromData = (datetime.strptime(request.POST["from"], '%Y-%m-%d %H:%M:%S'))
         toData = (datetime.strptime(request.POST["to"], '%Y-%m-%d %H:%M:%S'))
         param = request.POST.getlist("parameters[]")
+        device = request.POST["device"]
         print(param)
-        Data = searchdata(fromData, toData, param)
+        Data = searchdata(fromData, toData, param, device)
         # edt, vin, vbat, appt, tp, spdk, celv, ect, es = searchdata(fromData, toData,param)
         for _ in range(0, len(param)):
             Yaxis.append([])
@@ -177,6 +202,20 @@ def pages(request):
         return HttpResponse(html_template.render(context, request))
 
 
+@login_required(login_url="/login/")
+def get_userinfo(request):
+    devicelist = []
+    pref = []
+    chart_pref = []
+    device = Device.objects.filter(firm=FirmProfile.objects.get(user=User.objects.get(username=request.user.username)))
+    for i in device:
+        devicelist.append(i.device_id)
+        pref.append(i.device_parameters.split(","))
+        chart_pref.append(i.chart_parameters.split(","))
+    context = {"all_devices": devicelist, "prefrence": pref, "chartprefrence": chart_pref}
+    return JsonResponse(context)
+
+
 def firm_register(request):
     msg = "Error"
     if request.method == "POST":
@@ -191,7 +230,6 @@ def firm_register(request):
         company_zip = request.POST["zip"]
         company_gstn = request.POST["gstn"]
         company_owner = request.POST["owner"]
-
         owner = User.objects.filter(username=company_owner)
         if len(owner) == 0:
             msg = "Owner Not Found"

@@ -12,3 +12,4 @@ whitenoise
 mysql-connector-python==8.0.22
 mysqlclient
 mapbox
+pillow
