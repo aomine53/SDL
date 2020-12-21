@@ -13,6 +13,8 @@ class Report(models.Model):
     ENDEDT = models.DateTimeField(null=True)
     STARTLAT = models.CharField(max_length=100)
     ENDLAT = models.CharField(max_length=100, null=True)
+    STARTLNG = models.CharField(max_length=100)
+    ENDLNG = models.CharField(max_length=100, null=True)
     STARTODO = models.FloatField()
     ENDODO = models.FloatField(null=True)
     STARTADDRESS = models.CharField(max_length=500)
