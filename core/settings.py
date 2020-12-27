@@ -24,6 +24,7 @@ ALLOWED_HOSTS = ['127.0.0.1', '143.110.187.187']
 # Application definition
 
 INSTALLED_APPS = [
+    'djangocms_admin_style',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -140,4 +141,3 @@ EMAIL_HOST_USER = 'codettes.mm123@gmail.com'
 EMAIL_HOST_PASSWORD = 'MachineMath'
 #############################################################
 #############################################################
-

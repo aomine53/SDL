@@ -24,4 +24,4 @@ class Report(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.device.device_id % self.TRIP_ID
+        return '{0} {1}'.format(self.TRIP_ID, self.firm)

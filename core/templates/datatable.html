@@ -65,6 +65,7 @@
 {% block content %}
 
     <div class="text-right">
+        <h3>{{ report.length }}</h3>
         <button id="download-pdf" class="btn btn-outline-danger btn-lg"><i class="fas fa-file-pdf"></i></button>
         {#        <button id="download-json" class="btn btn-outline-light">JSON</button>#}
         <button id="download-xlsx" class="btn btn-outline-success btn-lg"><i class="fas fa-file-excel"></i></button>
@@ -112,17 +113,11 @@
         const csrftoken = getCookie('csrftoken');
     </script>
     <script>
-        {#var tabledata = [#}
-        {#    {id: 1, name: "Oli Bob", age: "12", col: "red", dob: ""},#}
-        {#    {id: 2, name: "Mary May", age: "1", col: "blue", dob: "14/05/1982"},#}
-        {#    {id: 3, name: "Christine Lobowski", age: "42", col: "green", dob: "22/05/1982"},#}
-        {#    {id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980"},#}
-        {#    {id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999"},#}
-        {#];#}
         const viewButton = function (cell, formatterParams, onRendered) { //plain text value
             return "<button class='btn btn-md btn-light' onclick='MapReport()'>View</button>";
         }
         var tripid = 0;
+        var deviceid = 0;
         var tripdetails;
         var table = new Tabulator("#report-table", {
             placeholder: "<i class='fa fa-spin fa-spinner'></i> Loading",
@@ -131,6 +126,7 @@
             autoColumns: false,
             columns: [
                 {title: "TripID", field: "TripID", hozAlign: "center"},
+                {title: "DeviceID", field: "DeviceID", hozAlign: "center"},
                 {title: "StartTime", field: "StartTime", hozAlign: "center"},
                 {title: "EndTime", field: "EndTime", hozAlign: "center"},
                 {title: "Duration", field: "Duration", hozAlign: "center"},
@@ -140,6 +136,7 @@
                 {
                     formatter: viewButton, hozAlign: "center", headerSort: false, cellClick: function (e, cell) {
                         tripid = cell.getRow().getData().TripID
+                        deviceid = cell.getRow().getData().DeviceID
                         console.log(cell.getRow().getData())
                         tripdetails = cell.getRow().getData()
                     }
@@ -200,7 +197,7 @@
                 bound.push([data.data.data[i][0], data.data.data[i][1]])
             }
             //mymap.fitBounds(bound,{padding:[100,100]});
-            mymap.flyToBounds(bound,{padding:[100,100]})
+            mymap.flyToBounds(bound, {padding: [100, 100]})
             //console.log(mymap.getBoundsZoom(bound))
             //mymap.setZoom(mymap.getBoundsZoom(bound)-1)
             setTimeout(function () {
@@ -222,8 +219,8 @@
                 });
                 var marker1 = L.marker(bound[0], {icon: blueIcon}).addTo(mymap);
                 var marker2 = L.marker(bound[bound.length - 1], {icon: redIcon}).addTo(mymap);
-                marker1.bindPopup(tripdetails.StartAddress,{closeOnClick: false, autoClose: false}).openPopup();
-                marker2.bindPopup(tripdetails.EndAddress,{closeOnClick: false, autoClose: false}).openPopup();
+                marker1.bindPopup(tripdetails.StartAddress, {closeOnClick: false, autoClose: false}).openPopup();
+                marker2.bindPopup(tripdetails.EndAddress, {closeOnClick: false, autoClose: false}).openPopup();
                 var legend = L.control({position: 'topright'});
                 legend.onAdd = function (mymap) {
                     var div = L.DomUtil.create('div', 'info legend');
@@ -238,7 +235,7 @@
                 var legend2 = L.control({position: 'bottomleft'});
                 legend2.onAdd = function (mymap) {
                     var div = L.DomUtil.create('div', 'info legend');
-                    div.innerHTML += '<table class="table table-bordered table-sm p-0 m-0"><tr><th><small><strong>TripID</strong></small></th><th><small><strong>StartTime</strong></small></th><th><small><strong>EndTime</strong></small></th><th><small><strong>StartAddress</strong></small></th><th><small><strong>EndAddress</strong></small></th><th><small><strong>Distance</strong></small></th><th><small><strong>Duration</strong></small></th></tr>' + '<tr>' + '<td>' +'<small>'+ tripdetails.TripID+'</small>' + '</td>' + '<td>' + '<small>'+tripdetails.StartTime +'</small>'+ '</td>' + '<td>' +'<small>'+ tripdetails.EndTime +'</small>'+ '</td>' + '<td>' +'<small>'+ tripdetails.StartAddress +'</small>'+ '</td>' + '<td>' +'<small>'+ tripdetails.EndAddress +'</small>'+ '</td>' + '<td>' +'<small>'+ tripdetails.Distance +'</small>'+ '</td>' + '<td>' +'<small>' + tripdetails.Duration+'</small>' + '</td>' + '</tr>' + '</table>'
+                    div.innerHTML += '<table class="table table-bordered table-sm p-0 m-0"><tr><th><small><strong>TripID</strong></small></th><th><small><strong>StartTime</strong></small></th><th><small><strong>EndTime</strong></small></th><th><small><strong>StartAddress</strong></small></th><th><small><strong>EndAddress</strong></small></th><th><small><strong>Distance</strong></small></th><th><small><strong>Duration</strong></small></th></tr>' + '<tr>' + '<td>' + '<small>' + tripdetails.TripID + '</small>' + '</td>' + '<td>' + '<small>' + tripdetails.StartTime + '</small>' + '</td>' + '<td>' + '<small>' + tripdetails.EndTime + '</small>' + '</td>' + '<td>' + '<small>' + tripdetails.StartAddress + '</small>' + '</td>' + '<td>' + '<small>' + tripdetails.EndAddress + '</small>' + '</td>' + '<td>' + '<small>' + tripdetails.Distance + '</small>' + '</td>' + '<td>' + '<small>' + tripdetails.Duration + '</small>' + '</td>' + '</tr>' + '</table>'
                     return div;
                 };
                 legend2.addTo(mymap);
@@ -293,12 +290,12 @@
                     }).addTo(mymap);
                     mymap.whenReady(function () {
                         //plotgraph(mymap,get_map_data(tripid))
-                        get_map_data(tripid, mymap)
+                        get_map_data(tripid, deviceid,mymap)
                         setTimeout(function () {
                             mymap.invalidateSize(true)
                         }, 500)
                     })
-                },500)
+                }, 500)
 
             });
         }
@@ -306,7 +303,7 @@
     <script>
         $.ajax({
             method: "GET",
-            url: 'api/data/report',
+            url: 'reports/',
             success: function (data) {
                 console.log(data)
                 table.setData(data.data)
@@ -318,14 +315,14 @@
         })
     </script>
     <script>
-        function get_map_data(tripid, map) {
+        function get_map_data(tripid,deviceid, map) {
             var data;
             console.log(tripid)
             $.ajax({
                 method: "POST",
-                url: "api/data/report/map",
+                url: "reports/map/",
                 async: true,
-                data: {'csrfmiddlewaretoken': csrftoken, 'tripid': tripid},
+                data: {'csrfmiddlewaretoken': csrftoken, 'tripid': tripid,'deviceid':deviceid},
                 success: function (result, status, xhr) {
                     console.log(result)
                     plotgraph(map, result)

@@ -13,8 +13,8 @@ class ReportsReport(models.Model):
     startedt = models.DateTimeField(db_column='STARTEDT')  # Field name made lowercase.
     endedt = models.DateTimeField(db_column='ENDEDT', blank=True, null=True)  # Field name made lowercase.
     startlat = models.CharField(db_column='STARTLAT', max_length=100)  # Field name made lowercase.
-    startlng = models.CharField(db_column='STARTLNG', max_length=100)  # Field name made lowercase.
     endlat = models.CharField(db_column='ENDLAT', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    startlng = models.CharField(db_column='STARTLNG', max_length=100)  # Field name made lowercase.
     endlng = models.CharField(db_column='ENDLNG', max_length=100, blank=True, null=True)  # Field name made lowercase.
     startodo = models.FloatField(db_column='STARTODO')  # Field name made lowercase.
     endodo = models.FloatField(db_column='ENDODO', blank=True, null=True)  # Field name made lowercase.

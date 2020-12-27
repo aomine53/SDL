@@ -12,7 +12,7 @@ from django.db import connection
 from datetime import datetime, timedelta
 import pytz
 from app.operations import searchdata, getlivedata, getdevicedata, getreport, getmapreport, get_device_parameters, \
-    get_all_data, get_livedata_device
+    get_all_data, get_livedata_device, get_anchortag
 from .decorators import *
 from .models import FirmProfile
 from django.contrib.auth.models import User
@@ -177,6 +177,12 @@ def get_map_report(request):
 @superuser_only
 def superuser_page(request):
     return render(request, "superuser.html")
+
+
+@login_required(login_url="/login/")
+def ac_location(request):
+    ctx = {"atdata": get_anchortag()}
+    return JsonResponse(ctx)
 
 
 @login_required(login_url="/login/")

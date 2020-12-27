@@ -170,6 +170,23 @@ def getmapreport(tripid):
     return data
 
 
+def getmap(deviceid, start, end):
+    startedt = start.strftime('%Y-%m-%dT%H:%M:%S')
+    endedt = end.strftime('%Y-%m-%dT%H:%M:%S')
+    cnx = mysql.connector.connect(**config)
+    cursor = cnx.cursor()
+    query = f"SELECT LAT,LNG,SPD FROM {deviceid} WHERE '{endedt}' >= EDT and EDT >= '{startedt}'"
+    cursor.execute(query)
+    result = cursor.fetchall()
+    print(result)
+    data = {
+        "data": result,
+    }
+    cursor.close()
+    cnx.close()
+    return data
+
+
 def get_device_parameters(device_id):
     cnx = mysql.connector.connect(**config)
     cnx.time_zone = '+05:30'
@@ -184,12 +201,31 @@ def get_device_parameters(device_id):
     return device_parameters
 
 
+def get_anchortag():
+    cnx = mysql.connector.connect(**config)
+    cnx.time_zone = '+05:30'
+    cursor = cnx.cursor()
+    datalist = []
+    query = "SELECT an0,an0_x,an0_y,an0_z,an0_d,an1,an1_x,an1_y,an1_z,an1_d,an2,an2_x,an2_y,an2_z,an2_d,an3,an3_x," \
+            "an3_y,an3_z,an3_d,pos_x,pos_y,pos_z FROM anchor_tag ORDER BY id DESC LIMIT 1 "
+    cursor.execute(query)
+    data = cursor.fetchone()
+    print(data[0])
+    for d in data:
+        datalist.append(d)
+    print(datalist)
+    cursor.close()
+    cnx.close()
+    return datalist
+
+
 if __name__ == "__main__":
     # print(get_device_parameters('$SLU355000082004871'))
-    print(getdevicedata())
-    # print(getlivedata())
-    device = Device.objects.filter(firm=FirmProfile.objects.get(user=User.objects.get(username="machinemath")))
-    print(get_livedata_device(device))
+    get_anchortag()
+    # print(getdevicedata())
+    # # print(getlivedata())
+    # device = Device.objects.filter(firm=FirmProfile.objects.get(user=User.objects.get(username="machinemath")))
+    # print(get_livedata_device(device))
     # print(getdeviceinfo("machinemath"))
     # parameters = ",".join(get_device_parameters('$SLU355000082004871'))
     # print(parameters)

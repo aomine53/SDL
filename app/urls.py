@@ -7,7 +7,7 @@ from django.urls import path, re_path
 from app import views
 
 urlpatterns = [
-    #path('', views.formspage, name='formspage'),
+    # path('', views.formspage, name='formspage'),
     path('', views.index, name='home'),
     path('api/data/live', views.get_live_data, name='api-data'),
     path('api/data/archive', views.get_archive_data, name="archive"),
@@ -19,5 +19,6 @@ urlpatterns = [
     path('api/register/firm', views.firm_register, name="firmregister"),
     path('api/data/tempdevice', views.tempdevice, name="tempdevice"),
     path('api/data/userinfo', views.get_userinfo, name="userinfo"),
+    path('api/data/atdata', views.ac_location, name="atlocation"),
     re_path(r'^.*\.*', views.pages, name='pages'),
 ]
