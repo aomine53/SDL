@@ -175,7 +175,7 @@ def getmap(deviceid, start, end):
     endedt = end.strftime('%Y-%m-%dT%H:%M:%S')
     cnx = mysql.connector.connect(**config)
     cursor = cnx.cursor()
-    query = f"SELECT LAT,LNG,SPD FROM {deviceid} WHERE '{endedt}' >= EDT and EDT >= '{startedt}'"
+    query = f"SELECT LAT,LNG,WBVSPDK FROM {deviceid} WHERE '{endedt}' >= EDT and EDT >= '{startedt}'"
     cursor.execute(query)
     result = cursor.fetchall()
     print(result)
