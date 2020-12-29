@@ -210,7 +210,6 @@ def get_anchortag():
             "an3_y,an3_z,an3_d,pos_x,pos_y,pos_z FROM anchor_tag ORDER BY id DESC LIMIT 1 "
     cursor.execute(query)
     data = cursor.fetchone()
-    print(data[0])
     for d in data:
         datalist.append(d)
     print(datalist)

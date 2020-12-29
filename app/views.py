@@ -181,7 +181,28 @@ def superuser_page(request):
 
 @login_required(login_url="/login/")
 def ac_location(request):
-    ctx = {"atdata": get_anchortag()}
+    loc = get_anchortag()
+    station_1 = [1, 1.5]
+    station_2 = [2, 2.5]
+    station_3 = [3, 3.5]
+    tag_x = loc[20]
+    tag_y = loc[21]
+    msg = ""
+    if tag_y <= station_1[0]:
+        msg = "Vehicle at Entry Point"
+    elif station_1[0] <= tag_y <= station_1[1]:
+        msg = "Reached Station 1"
+    elif station_1[1] <= tag_y <= station_2[0]:
+        msg = "Between Station 1 And Station 2"
+    elif station_2[0] <= tag_y <= station_2[1]:
+        msg = "Reached Station 2"
+    elif station_2[1] <= tag_y <= station_3[0]:
+        msg = "Between Station 2 And Station 3"
+    elif station_3[0] <= tag_y <= station_3[1]:
+        msg = "Reached Station 3"
+    elif tag_y > station_3[1]:
+        msg = "Left Station 3"
+    ctx = {"atdata": loc, "message": msg}
     return JsonResponse(ctx)
 
 
