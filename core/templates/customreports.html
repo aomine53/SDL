@@ -1,9 +1,29 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Datatable {% endblock title %}
+{% block title %} Indoor Location {% endblock title %}
 
 <!-- Specific CSS goes HERE  -->
 {% block stylesheets %}
+    <style>
+        #myform h5, h4, h6 {
+            color: black;
+        }
+
+        #info h6 {
+            font-family: Arial;
+            font-weight: 700;
+        }
+
+        #abc p {
+            font-weight: 400;
+            color: black;
+            margin: 0;
+        }
+
+        #abc span {
+            color: blue;
+        }
+    </style>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -15,10 +35,34 @@
     {#    </div>#}
     <button id="3dview" onclick="View_3D()" class="btn btn-outline-danger">3D</button>
     <button id="2dview" onclick="View_2D()" class="btn btn-outline-danger">2D</button>
-    <div class="row p-0">
+    {#    <small style="color: black;display: inline;text-align: center"><strong> Status: </strong></small>#}
+    <h4 id="status" style="color: greenyellow; display: inline; margin-left: 500px"><strong>--</strong></h4>
+    <div id="abc" class="row p-0">
         <div id='myDiv' style="width: 45vw;height: 80vh"></div>
         <div id='myform' style="width: 45vw;height: 80vh; margin-left:10px;background-color: #fff">
-            <h5 style="color: black;display: inline"><strong> Status: </strong></h5><h5 id="status" style="color: green; display: inline"><strong>--</strong></h5>
+            {#            <h5 style="display: inline">{{ user.username }}</h5>#}
+            {#            <h5 style="display: inline" id="date"></h5>#}
+            <div class="container">
+                <h6 style="text-align: center">Trim Line Traveler-Bolero Pick up</h6>
+                <div class="row">
+                    <div class="col-sm">
+                        <p>Shift-<span id="shift"></span></p>
+                        <p>Date-<span id="date"></span></p>
+                        <p>Vehicle Serial
+                            Number-<span>XXXXXX</span></p>
+                        {#                        <h6 class= "fst-light" id="vehserialno"></h6>#}
+                    </div>
+                    <div id="info" class="col-sm">
+                        <p>Operator:<span>{{ user.username }}</span></p>
+                        <p>Color: <span></span></p>
+                        <p>Key No:<span></span></p>
+                        <p>Stg: <span></span></p>
+                        <p>Use:<span></span></p>
+                        <p>Type:<span></span></p>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 {% endblock content %}
@@ -44,6 +88,8 @@
                 success: function (data1) {
                     updateTag(data1.atdata)
                     document.getElementById('status').textContent = data1.message
+                    document.getElementById('date').textContent = data1.date
+                    document.getElementById("shift").textContent = data1.shift
                 },
                 error: function (error_data) {
                     console.log("error")
@@ -118,7 +164,8 @@
                     color: 'black',
                     size: 18,
                     family: 'Arial'
-                }
+                },
+                showlegend: false
             };
             var data = [trace1, trace2, trace3, trace4, trace5, trace6];
             var layout = {
@@ -299,7 +346,7 @@
                     },
                     opacity: 0.8
                 },
-                type: 'scatter3d'
+                type: 'scatter3d',
             };
             var data = [trace1, trace2, trace3, trace4, trace5];
             var layout = {

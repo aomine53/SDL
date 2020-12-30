@@ -158,7 +158,7 @@ def getmapreport(tripid):
     startedt = result[1].strftime('%Y-%m-%dT%H:%M:%S')
     endedt = result[2].strftime('%Y-%m-%dT%H:%M:%S')
 
-    query = f"SELECT LAT,LNG,WBVSPDK FROM $SLU355000082004871 WHERE '{endedt}' >= EDT and EDT >= '{startedt}'"
+    query = f"SELECT LAT,LNG,SPD FROM $SLU355000082004871 WHERE '{endedt}' >= EDT and EDT >= '{startedt}'"
     cursor.execute(query)
     result = cursor.fetchall()
     print(result)
@@ -212,7 +212,6 @@ def get_anchortag():
     data = cursor.fetchone()
     for d in data:
         datalist.append(d)
-    print(datalist)
     cursor.close()
     cnx.close()
     return datalist

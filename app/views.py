@@ -188,6 +188,7 @@ def ac_location(request):
     tag_x = loc[20]
     tag_y = loc[21]
     msg = ""
+    shift = ""
     if tag_y <= station_1[0]:
         msg = "Vehicle at Entry Point"
     elif station_1[0] <= tag_y <= station_1[1]:
@@ -202,7 +203,15 @@ def ac_location(request):
         msg = "Reached Station 3"
     elif tag_y > station_3[1]:
         msg = "Left Station 3"
-    ctx = {"atdata": loc, "message": msg}
+
+    if 7 <= int(datetime.now().strftime("%H")) < 15:
+        shift = "A"
+    elif 15 <= int(datetime.now().strftime("%H")) < 23:
+        shift = "B"
+    else:
+        shift = "C"
+
+    ctx = {"atdata": loc, "message": msg, "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "shift": shift}
     return JsonResponse(ctx)
 
 
