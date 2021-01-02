@@ -189,18 +189,32 @@ def ac_location(request):
     tag_y = loc[21]
     msg = ""
     shift = ""
+    heading = ""
+    param = []
+    flag = 0
+    vin = "XXXXXXXXX"
+    color = "XXXXXXX"
+    key_no = "XXXXXX"
+    stg = "XXXXXXX"
+    use = "XXXXXXX"
+    typ = "XXXXXXX"
+    station_info = {}
+
     if tag_y <= station_1[0]:
         msg = "Vehicle at Entry Point"
     elif station_1[0] <= tag_y <= station_1[1]:
         msg = "Reached Station 1"
+        flag = 'station1'
     elif station_1[1] <= tag_y <= station_2[0]:
         msg = "Between Station 1 And Station 2"
     elif station_2[0] <= tag_y <= station_2[1]:
         msg = "Reached Station 2"
+        flag = 'station2'
     elif station_2[1] <= tag_y <= station_3[0]:
         msg = "Between Station 2 And Station 3"
     elif station_3[0] <= tag_y <= station_3[1]:
         msg = "Reached Station 3"
+        flag = 'station3'
     elif tag_y > station_3[1]:
         msg = "Left Station 3"
 
@@ -211,7 +225,29 @@ def ac_location(request):
     else:
         shift = "C"
 
-    ctx = {"atdata": loc, "message": msg, "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "shift": shift}
+    if request.user.username == flag:
+        vin = "1212121212"
+        color = "White"
+        key_no = "22332233"
+        stg = "Power"
+        use = "Domestic"
+        typ = "City PKP"
+    station_info["vin"] = vin
+    station_info["color"] = color
+    station_info["key_no"] = key_no
+    station_info["stg"] = stg
+    station_info["use"] = use
+    station_info["typ"] = typ
+
+    if request.user.username == 'station1':
+        heading = "Trim 1 Intermediate Buy Off"
+    elif request.user.username == 'station2':
+        heading = "Trim 1 Final Buy Off"
+    elif request.user.username == 'station3':
+        heading = "Trim 1 Electrical"
+
+    ctx = {"atdata": loc, "message": msg, "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "shift": shift,
+           "heading": heading, "station_info": station_info}
     return JsonResponse(ctx)
 
 

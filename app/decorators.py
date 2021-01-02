@@ -27,6 +27,8 @@ def allowed_users(allowed_roles=None):
 
             if group in allowed_roles:
                 return view_func(request, *args, **kwargs)
+            elif group == 'station':
+                return redirect('customreports.html')
             else:
                 html_template = loader.get_template('page-403.html')
                 return HttpResponse(html_template.render({}, request))

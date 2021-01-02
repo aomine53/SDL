@@ -24,6 +24,49 @@
             color: blue;
         }
     </style>
+    <style>
+        .quotation h1 {
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .quotation h3 {
+            font-weight: bold;
+            text-align: left;
+            font-size: small;
+        }
+
+        table.quotation {
+            width: 100%;
+            border: 1px solid #037547;
+            border-collapse: collapse;
+        }
+
+        .quotation thead, tfoot {
+            border-width: 1px;
+            border-style: solid;
+        }
+
+        .quotation th, .quotation td {
+            border: 1px solid #037547;
+            font-size: x-small;
+            color: #037547;
+        }
+
+        .quotation thead th,
+        .quotation tfoot th {
+            background-color: #E0EBE3;
+        }
+
+        .quotation tbody td {
+            background-color: #FFFBFE;
+        }
+
+        .quotation tr {
+            text-align: center;
+        }
+
+    </style>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -33,38 +76,291 @@
     {#        <div class="col ml-20" id="myForm" style="background-color: #fff3cd">#}
     {#        </div>#}
     {#    </div>#}
-    <button id="3dview" onclick="View_3D()" class="btn btn-outline-danger">3D</button>
-    <button id="2dview" onclick="View_2D()" class="btn btn-outline-danger">2D</button>
-    {#    <small style="color: black;display: inline;text-align: center"><strong> Status: </strong></small>#}
-    <h4 id="status" style="color: greenyellow; display: inline; margin-left: 500px"><strong>--</strong></h4>
+    <div style="position: absolute">
+        <button id="3dview" onclick="View_3D()" class="btn btn-outline-danger">3D</button>
+        <button id="2dview" onclick="View_2D()" class="btn btn-outline-danger">2D</button>
+        <button id="switch" onclick="switchdiv()" class="btn btn-outline-danger">Switch</button>
+        {#    <small style="color: black;display: inline;text-align: center"><strong> Status: </strong></small>#}
+    </div>
+    <h4 id="status" style="color: greenyellow;text-align: center"><strong>--</strong></h4>
     <div id="abc" class="row p-0">
-        <div id='myDiv' style="width: 45vw;height: 80vh"></div>
-        <div id='myform' style="width: 45vw;height: 80vh; margin-left:10px;background-color: #fff">
-            {#            <h5 style="display: inline">{{ user.username }}</h5>#}
-            {#            <h5 style="display: inline" id="date"></h5>#}
-            <div class="container">
-                <h6 style="text-align: center">Trim Line Traveler-Bolero Pick up</h6>
-                <div class="row">
-                    <div class="col-sm">
-                        <p>Shift-<span id="shift"></span></p>
-                        <p>Date-<span id="date"></span></p>
-                        <p>Vehicle Serial
-                            Number-<span>XXXXXX</span></p>
-                        {#                        <h6 class= "fst-light" id="vehserialno"></h6>#}
+        <div class="col-md-6">
+            <div id='myDiv' style="height: 80vh; width:95%;display:block;"></div>
+            <div id="cd" style="background-color: #fff;display: none; padding:12px">
+                <table class="quotation">
+                    <thead>
+                    <th>LOGO</th>
+                    <th>BOLERO BUILD SHEET:U202 TCF TRIM</th>
+                    <th>dd/mm/yyyy hh:mm</th>
+                    </thead>
+                </table>
+                <table class="quotation">
+                    <tr>
+                        <th>Modal Code</th>
+                        <th></th>
+                        <th>Order No</th>
+                    </tr>
+                    <tr>
+                        <td>XXXXXXXXXXXXX</td>
+                        <td>XXXXXXXXXXXXX</td>
+                        <td>XXXXXXXXXXXXX</td>
+                    </tr>
+                    <tr>
+                        <th>BIN</th>
+                        <th></th>
+                        <th>Engine</th>
+                    </tr>
+                    <tr>
+                        <td>XXXXXXXXXXXX</td>
+                        <td></td>
+                        <td>XXXXXXXXXXXX</td>
+                    </tr>
+                    <tr>
+                        <th>VIN</th>
+                        <th></th>
+                        <th>Country</th>
+                    </tr>
+                    <tr>
+                        <td>XXXXXXXXXXXXXX</td>
+                        <td>XXXXXXXXXXXXXX</td>
+                        <td>INDIA</td>
+                    </tr>
+                    <tr>
+                        <th>COLOR</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>WHITE</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table class="quotation">
+                    <thead>
+                    <th colspan="7">CITY PKP WITH CARGO</th>
+                    </thead>
+                    <thead>
+                    <th>2WD</th>
+                    <th>Seater</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th colspan="2"></th>
+                    </thead>
+                    <thead>
+                    <th>XXXXXXX</th>
+                    <th></th>
+                    <th colspan="2">POWER STEERING</th>
+                    <th>BS6</th>
+                    <th>NON ABS</th>
+                    <th>106</th>
+                    </thead>
+                </table>
+                <table class="quotation">
+                    <thead>
+                    <th colspan="1">Part</th>
+                    <th colspan="2">Part Description</th>
+                    <th colspan="1">Part</th>
+                    <!-- <th>Price Inct <br /> VAT per m<sup>2</sup></th> -->
+                    <th colspan="2">Part Description</th>
+                    <!-- <th>Price: <br />less VAT &amp; Discount</th> -->
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <!-- <td></td>
+                        <td></td> -->
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <!-- <td></td>
+                        <td></td> -->
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <!-- <td></td>
+                        <td></td> -->
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <!-- <td></td>
+                        <td></td> -->
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <!-- <td></td>
+                        <td></td> -->
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <thead>
+                    <th>Sub Platform</th>
+                    <th colspan="2">BOM DATA</th>
+                    <th>U202_TCF-TRIM1'.'U202_TCF-TRIM2</th>
+                    <!-- <th>Price Inct <br /> VAT per m<sup>2</sup></th> -->
+                    <th colspan="2">Duplicate</th>
+                    <!-- <th>Price: <br />less VAT &amp; Discount</th> -->
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <!-- <td></td>
+                        <td></td> -->
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <!-- <td></td>
+                        <td></td> -->
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <!-- <td></td>
+                        <td></td> -->
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <!-- <td></td>
+                        <td></td> -->
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                        <!-- <td></td>
+                        <td></td> -->
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    </tbody>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div id='myform' style="background-color: #fff;height: 80vh">
+                {#            <h5 style="display: inline">{{ user.username }}</h5>#}
+                {#            <h5 style="display: inline" id="date"></h5>#}
+                <div class="container">
+                    <h6 style="text-align: center; padding: 10px">Trim Line Traveler-Bolero Pick up</h6>
+                    <div class="row">
+                        <div class="col-sm">
+                            <p>Shift-<span id="shift"></span></p>
+                            <p>Date-<span id="date"></span></p>
+                            <p>Vehicle Serial
+                                Number-<span id="vin"></span></p>
+                            {#                        <h6 class= "fst-light" id="vehserialno"></h6>#}
+
+                        </div>
+                        <div id="info" class="col-sm">
+                            {#                        <p>Operator:<span>{{ user.username }}</span></p>#}
+                            <p>Color: <span id="color"></span></p>
+                            <p>Key No:<span id="keyno"></span></p>
+                            <p>Stg: <span id="stg"></span></p>
+                            <p>Use:<span id="use"></span></p>
+                            <p>Type:<span id="type"></span></p>
+                        </div>
                     </div>
-                    <div id="info" class="col-sm">
-                        <p>Operator:<span>{{ user.username }}</span></p>
-                        <p>Color: <span></span></p>
-                        <p>Key No:<span></span></p>
-                        <p>Stg: <span></span></p>
-                        <p>Use:<span></span></p>
-                        <p>Type:<span></span></p>
+                    <div id="station-info" style="margin-top: 30px">
+                        <h5 id="heading" style="text-align: center;">Heading</h5>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
+
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
@@ -90,6 +386,13 @@
                     document.getElementById('status').textContent = data1.message
                     document.getElementById('date').textContent = data1.date
                     document.getElementById("shift").textContent = data1.shift
+                    document.getElementById('heading').textContent = data1.heading
+                    document.getElementById('vin').textContent = data1.station_info.vin
+                    document.getElementById('color').textContent = data1.station_info.color
+                    document.getElementById('keyno').textContent = data1.station_info.key_no
+                    document.getElementById('stg').textContent = data1.station_info.stg
+                    document.getElementById('use').textContent = data1.station_info.use
+                    document.getElementById('type').textContent = data1.station_info.typ
                 },
                 error: function (error_data) {
                     console.log("error")
@@ -110,7 +413,8 @@
                     color: "#E8290B",
                     size: 15,
                     symbol: 'triangle-up'
-                }
+                },
+                showlegend: false
             };
             var trace2 = {
                 name: "AN1",
@@ -121,7 +425,8 @@
                     color: "#E8290B",
                     size: 15,
                     symbol: 'triangle-up'
-                }
+                },
+                showlegend: false
             };
             var trace3 = {
                 name: "AN2",
@@ -132,7 +437,8 @@
                     color: "#E8290B",
                     size: 15,
                     symbol: 'triangle-up'
-                }
+                },
+                showlegend: false
             };
             var trace4 = {
                 name: "AN4",
@@ -143,7 +449,8 @@
                     color: "#E8290B",
                     size: 15,
                     symbol: 'triangle-up'
-                }
+                },
+                showlegend: false
             };
             var trace5 = {
                 name: "TAG",
@@ -152,7 +459,8 @@
                 type: 'scatter',
                 marker: {
                     color: "#29B966",
-                }
+                },
+                showlegend: false
             };
             var trace6 = {
                 x: [1.5, 1.5, 1.5],
@@ -344,7 +652,7 @@
                         color: 'rgb(204, 204, 204)',
                         width: 1
                     },
-                    opacity: 0.8
+                    opacity: 0.8,
                 },
                 type: 'scatter3d',
             };
@@ -358,6 +666,17 @@
                 }
             };
             Plotly.newPlot('myDiv', data, layout);
+        }
+    </script>
+    <script>
+        function switchdiv() {
+            if (document.getElementById('myDiv').style.display === 'block') {
+                document.getElementById('myDiv').style.display = 'none';
+                document.getElementById('cd').style.display = 'block';
+            } else {
+                document.getElementById('myDiv').style.display = 'block';
+                document.getElementById('cd').style.display = 'none';
+            }
         }
     </script>
 {% endblock javascripts %}
