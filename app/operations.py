@@ -9,7 +9,7 @@ import random
 config = {
     "user": 'mmlink',
     "password": 'Mmlink@271020',
-    "host": '143.110.187.187',
+    "host": '139.59.28.3',
     "database": 'mytestdb'
 }
 
