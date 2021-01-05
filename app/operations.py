@@ -3,6 +3,8 @@ import os
 from datetime import datetime, timedelta
 from app.models import *
 from userforms.models import *
+import string
+import random
 
 config = {
     "user": 'mmlink',
@@ -215,6 +217,12 @@ def get_anchortag():
     cursor.close()
     cnx.close()
     return datalist
+
+
+def random_string(len):
+    res = ''.join(random.choices(string.ascii_uppercase +
+                                 string.digits, k=len))
+    return res
 
 
 if __name__ == "__main__":

@@ -80,7 +80,7 @@ DATABASES = {
         'USER': 'mmlink',
         'PASSWORD': 'Mmlink@271020',
         'PORT': 3306,
-        'HOST': '143.110.187.187',
+        'HOST': '139.59.28.3',
     }
 }
 

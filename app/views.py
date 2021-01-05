@@ -12,7 +12,7 @@ from django.db import connection
 from datetime import datetime, timedelta
 import pytz
 from app.operations import searchdata, getlivedata, getdevicedata, getreport, getmapreport, get_device_parameters, \
-    get_all_data, get_livedata_device, get_anchortag
+    get_all_data, get_livedata_device, get_anchortag,random_string
 from .decorators import *
 from .models import *
 from django.contrib.auth.models import User
@@ -192,16 +192,19 @@ def ac_location(request):
     heading = ""
     param = []
     flag = 0
-    vin = "MA1ZW2TLKL22"
+    vin = "XXXXXXX"
     color = "XXXXXXX"
     key_no = "XXXXXX"
     stg = "XXXXXXX"
     use = "XXXXXXX"
     typ = "XXXXXXX"
     station_info = {}
-    st_report = StationReport.objects.get(vin='MA1ZW2TLKL22')
+    st_report = StationReport.objects.last()
     if tag_y <= station_1[0]:
         msg = "Vehicle at Entry Point"
+        if st_report.s3_end is not None:
+            StationReport.objects.create(vin=random_string(11))
+
     elif station_1[0] <= tag_y <= station_1[1]:
         msg = "Reached Station 1"
         flag = 'station1'
@@ -245,7 +248,7 @@ def ac_location(request):
         shift = "C"
 
     if request.user.username == flag:
-        vin = "1212121212"
+        vin = st_report.vin
         color = "White"
         key_no = "22332233"
         stg = "Power"
@@ -260,8 +263,10 @@ def ac_location(request):
 
     if request.user.username == 'station1':
         heading = "Trim 1 Intermediate Buy Off"
+        param = ['OK', 'NOT OK']
     elif request.user.username == 'station2':
         heading = "Trim 1 Final Buy Off"
+        param = ['OK', 'NOT OK']
     elif request.user.username == 'station3':
         heading = "Trim 1 Electrical"
         param = ['OK', 'NOT OK', 'Hazard', 'Cluster indl.', 'Roof lamp', 'Door Switch', 'Central/Key lock',
