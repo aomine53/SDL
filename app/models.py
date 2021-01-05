@@ -48,3 +48,19 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class StationReport(models.Model):
+    vin = models.CharField(max_length=100)
+    s1_start = models.DateTimeField(null=True, blank=True)
+    s1_end = models.DateTimeField(null=True, blank=True)
+    s1_error = models.CharField(max_length=100, null=True, blank=True)
+    s2_start = models.DateTimeField(null=True, blank=True)
+    s2_end = models.DateTimeField(null=True, blank=True)
+    s2_error = models.CharField(max_length=100, null=True, blank=True)
+    s3_start = models.DateTimeField(null=True, blank=True)
+    s3_end = models.DateTimeField(null=True, blank=True)
+    s3_error = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return self.vin

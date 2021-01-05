@@ -5,7 +5,7 @@
 <!-- Specific CSS goes HERE  -->
 {% block stylesheets %}
     <style>
-        #myform h5, h4, h6 {
+        #myform h5, h4, h6, label {
             color: black;
         }
 
@@ -80,6 +80,8 @@
         <button id="3dview" onclick="View_3D()" class="btn btn-outline-danger">3D</button>
         <button id="2dview" onclick="View_2D()" class="btn btn-outline-danger">2D</button>
         <button id="switch" onclick="switchdiv()" class="btn btn-outline-danger">Switch</button>
+        <button id="Show Report" class="btn btn-outline-danger"><a href="./stationreport.html" style="color: red">Show
+            Report</a></button>
         {#    <small style="color: black;display: inline;text-align: center"><strong> Status: </strong></small>#}
     </div>
     <h4 id="status" style="color: greenyellow;text-align: center"><strong>--</strong></h4>
@@ -330,7 +332,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div id='myform' style="background-color: #fff;height: 80vh">
+            <div id='myform' style="background-color: #fff;height: 80vh;">
                 {#            <h5 style="display: inline">{{ user.username }}</h5>#}
                 {#            <h5 style="display: inline" id="date"></h5>#}
                 <div class="container">
@@ -353,8 +355,63 @@
                             <p>Type:<span id="type"></span></p>
                         </div>
                     </div>
-                    <div id="station-info" style="margin-top: 30px">
+                    <div id="station-info" style="margin-top: 30px;">
                         <h5 id="heading" style="text-align: center;">Heading</h5>
+                        <div id="check" style="text-align: center;display: none">
+                            <div id="radiodiv">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                           id="check1" checked>
+                                    <label class="form-check-label" id="1" for="check1">
+                                        Default radio
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                           id="check2">
+                                    <label class="form-check-label" id="2" for="check2">
+                                        Default checked radio
+                                    </label>
+                                </div>
+                            </div>
+                            <div style="display: none" id="params">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="check3">
+                                    <label id="3" class="form-check-label" for="check3">3</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="check4">
+                                    <label id="4" class="form-check-label" for="check4">4</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="check5">
+                                    <label id="5" class="form-check-label" for="check5">5</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="check6">
+                                    <label id="6" class="form-check-label" for="check6">6</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="check7">
+                                    <label id="7" class="form-check-label" for="check7">7</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="check8">
+                                    <label id="8" class="form-check-label" for="check8">8</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="check9">
+                                    <label id="9" class="form-check-label" for="check9">9</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="check10">
+                                    <label id="10" class="form-check-label" for="check10">10</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="switch" onclick="error_code()" class="btn btn-success"
+                                style="position:absolute;right: 30px;bottom: 15px">Submit
+                        </button>
                     </div>
                 </div>
             </div>
@@ -393,6 +450,16 @@
                     document.getElementById('stg').textContent = data1.station_info.stg
                     document.getElementById('use').textContent = data1.station_info.use
                     document.getElementById('type').textContent = data1.station_info.typ
+                    if (data1.param.length !== 0) {
+                        document.getElementById('check').style.display = 'block'
+                    } else {
+                        document.getElementById('check').style.display = 'none'
+                    }
+                    changediv(data1.flag)
+                    for (let i = 0; i < data1.param.length; i++) {
+                        document.getElementById(i + 1).textContent = data1.param[i]
+                        document.getElementById('check' + (i + 1)).value = data1.param[i]
+                    }
                 },
                 error: function (error_data) {
                     console.log("error")
@@ -669,6 +736,25 @@
         }
     </script>
     <script>
+        $(document).ready(function () {
+            $("#radiodiv") // select the radio by its id
+                .change(function () { // bind a function to the change event
+                    {#if ($(this).is(":checked")) { // check if the radio is checked#}
+                    {#    var val = $(this).val(); // retrieve the value#}
+                    {#    console.log(val)#}
+                    {#    if (val === "NOT OK") {#}
+                    {#        document.getElementById("params").style.display = 'block'#}
+                    {#    }#}
+                    $('#params').toggle()
+                });
+        })
+
+        function changediv(flag) {
+            if (flag === 'station1' || flag === 'station2' || flag === 'station3') {
+                document.getElementById('cd').style.display = 'block';
+            }
+        }
+
         function switchdiv() {
             if (document.getElementById('myDiv').style.display === 'block') {
                 document.getElementById('myDiv').style.display = 'none';
@@ -678,5 +764,53 @@
                 document.getElementById('cd').style.display = 'none';
             }
         }
+
+        function error_code() {
+            var arr = []
+            var vin = document.getElementById('vin').textContent
+            $("#params input[type='checkbox']:checked").each(function () {
+                console.log($(this).val())
+                arr.push($(this).val())
+            })
+            console.log(arr)
+            $.ajax({
+                method: "POST",
+                url: "api/data/error_code",
+                async: true,
+                data: {
+                    'csrfmiddlewaretoken': csrftoken,
+                    'params[]': arr,
+                    'vin':vin,
+                },
+                success: function (result, status, xhr) {
+                    $('#check').reset()
+                    console.log(result.message)
+                },
+                error: function (error_data) {
+                    console.log("error")
+                    alert("error")
+                    console.log(error_data)
+                }
+            })
+        }
+    </script>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
     </script>
 {% endblock javascripts %}

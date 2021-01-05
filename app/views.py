@@ -14,7 +14,7 @@ import pytz
 from app.operations import searchdata, getlivedata, getdevicedata, getreport, getmapreport, get_device_parameters, \
     get_all_data, get_livedata_device, get_anchortag
 from .decorators import *
-from .models import FirmProfile
+from .models import *
 from django.contrib.auth.models import User
 from userforms.models import *
 import os
@@ -192,31 +192,50 @@ def ac_location(request):
     heading = ""
     param = []
     flag = 0
-    vin = "XXXXXXXXX"
+    vin = "MA1ZW2TLKL22"
     color = "XXXXXXX"
     key_no = "XXXXXX"
     stg = "XXXXXXX"
     use = "XXXXXXX"
     typ = "XXXXXXX"
     station_info = {}
-
+    st_report = StationReport.objects.get(vin='MA1ZW2TLKL22')
     if tag_y <= station_1[0]:
         msg = "Vehicle at Entry Point"
     elif station_1[0] <= tag_y <= station_1[1]:
         msg = "Reached Station 1"
         flag = 'station1'
+        if st_report.s1_start is None:
+            st_report.s1_start = datetime.now()
+            st_report.save()
+
     elif station_1[1] <= tag_y <= station_2[0]:
         msg = "Between Station 1 And Station 2"
+        if st_report.s1_end is None:
+            st_report.s1_end = datetime.now()
+            st_report.save()
     elif station_2[0] <= tag_y <= station_2[1]:
         msg = "Reached Station 2"
         flag = 'station2'
+        if st_report.s2_start is None:
+            st_report.s2_start = datetime.now()
+            st_report.save()
     elif station_2[1] <= tag_y <= station_3[0]:
         msg = "Between Station 2 And Station 3"
+        if st_report.s2_end is None:
+            st_report.s2_end = datetime.now()
+            st_report.save()
     elif station_3[0] <= tag_y <= station_3[1]:
         msg = "Reached Station 3"
         flag = 'station3'
+        if st_report.s3_start is None:
+            st_report.s3_start = datetime.now()
+            st_report.save()
     elif tag_y > station_3[1]:
         msg = "Left Station 3"
+        if st_report.s3_end is None:
+            st_report.s3_end = datetime.now()
+            st_report.save()
 
     if 7 <= int(datetime.now().strftime("%H")) < 15:
         shift = "A"
@@ -245,10 +264,44 @@ def ac_location(request):
         heading = "Trim 1 Final Buy Off"
     elif request.user.username == 'station3':
         heading = "Trim 1 Electrical"
+        param = ['OK', 'NOT OK', 'Hazard', 'Cluster indl.', 'Roof lamp', 'Door Switch', 'Central/Key lock',
+                 'Regen Switch', 'Wiper Motor', 'HLLD']
 
     ctx = {"atdata": loc, "message": msg, "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "shift": shift,
-           "heading": heading, "station_info": station_info}
+           "heading": heading, "station_info": station_info, "param": param, "flag": flag}
     return JsonResponse(ctx)
+
+
+@login_required(login_url="/login/")
+def station_report(request):
+    arr = []
+    rep = StationReport.objects.all()
+    for r in rep.values():
+        arr.append(r)
+    return JsonResponse({"data": arr})
+
+
+@login_required(login_url="/login/")
+def error_code(request):
+    if request.method == 'POST':
+        param = request.POST.getlist("params[]")
+        vin = request.POST['vin']
+        user = request.user.username
+
+        rep = StationReport.objects.get(vin=vin)
+        if len(param) == 0:
+            param = "OK"
+        else:
+            print(param)
+            param = ','.join(param)
+        if user == "station1":
+            rep.s1_error = param
+        elif user == "station2":
+            rep.s2_error = param
+        elif user == "station3":
+            rep.s3_error = param
+        rep.save()
+        return JsonResponse({"message": 'Saved'})
 
 
 @login_required(login_url="/login/")
