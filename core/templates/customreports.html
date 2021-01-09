@@ -531,7 +531,13 @@
                     } else {
                         document.getElementById('check').style.display = 'none'
                     }
-                    //      changediv(data1.flag)
+                    if (fl === false && data1.flag === "{{ user }}") {
+                        changediv(data1.flag)
+                        fl=true
+                    }
+                    else if(data1.flag !== "{{ user }}"){
+                        fl=false
+                    }
                     for (let i = 0; i < data1.param.length; i++) {
                         document.getElementById(i + 1).textContent = data1.param[i]
                         document.getElementById('check' + (i + 1)).value = data1.param[i]
@@ -544,7 +550,7 @@
             })
         }
 
-        setInterval(loc, 100)
+        setInterval(loc, 500)
 
         function View_2D() {
             var trace1 = {
@@ -607,7 +613,7 @@
                 mode: 'markers+text',
                 textposition: 'top center',
                 textfont: {
-                    color:'#1f77b4',
+                    color: '#1f77b4',
                 },
                 text: "D632",
             };
@@ -623,7 +629,7 @@
                 mode: 'markers+text',
                 textposition: 'top center',
                 textfont: {
-                    color:'#1f77b4',
+                    color: '#1f77b4',
                 },
                 text: "54B6",
             };
@@ -878,6 +884,7 @@
                     $('#params').toggle()
                 });
         })
+        var fl = false
 
         function changediv(flag) {
             if (flag === 'station1' || flag === 'station2' || flag === 'station3') {
@@ -967,7 +974,7 @@
                 mode: 'markers+text',
                 textposition: 'top center',
                 textfont: {
-                    color:'#1f77b4',
+                    color: '#1f77b4',
                 },
                 text: "D632",
             };
@@ -979,7 +986,7 @@
                 mode: 'markers+text',
                 textposition: 'top center',
                 textfont: {
-                    color:'#1f77b4',
+                    color: '#1f77b4',
                 },
                 text: "54B6",
                 marker: {
