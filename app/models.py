@@ -64,3 +64,12 @@ class StationReport(models.Model):
 
     def __str__(self):
         return self.vin
+
+
+class TagAssign(models.Model):
+    vin = models.CharField(max_length=100, blank=True, null=True)
+    tag_id = models.CharField(max_length=50)
+    station_pos = models.CharField(max_length=200, blank=True, null=True)
+
+    def __str__(self):
+        return self.tag_id

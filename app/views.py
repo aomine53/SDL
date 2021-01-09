@@ -12,7 +12,7 @@ from django.db import connection
 from datetime import datetime, timedelta
 import pytz
 from app.operations import searchdata, getlivedata, getdevicedata, getreport, getmapreport, get_device_parameters, \
-    get_all_data, get_livedata_device, get_anchortag,random_string
+    get_all_data, get_livedata_device, get_anchortag, random_string, get_tag
 from .decorators import *
 from .models import *
 from django.contrib.auth.models import User
@@ -181,12 +181,19 @@ def superuser_page(request):
 
 @login_required(login_url="/login/")
 def ac_location(request):
-    loc = get_anchortag()
+    loc = []
+    id = []
+    tag = TagAssign.objects.all()
+    for t in tag:
+        loc.append(get_tag("tag_" + t.tag_id))
+        id.append(t.tag_id)
+    print(loc)
+
     station_1 = [1, 1.5]
     station_2 = [2, 2.5]
     station_3 = [3, 3.5]
-    tag_x = loc[20]
-    tag_y = loc[21]
+    tag_x = loc[0][0]
+    tag_y = loc[0][1]
     msg = ""
     shift = ""
     heading = ""
@@ -202,43 +209,27 @@ def ac_location(request):
     st_report = StationReport.objects.last()
     if tag_y <= station_1[0]:
         msg = "Vehicle at Entry Point"
-        if st_report.s3_end is not None:
-            StationReport.objects.create(vin=random_string(11))
 
     elif station_1[0] <= tag_y <= station_1[1]:
         msg = "Reached Station 1"
         flag = 'station1'
-        if st_report.s1_start is None:
-            st_report.s1_start = datetime.now()
-            st_report.save()
 
     elif station_1[1] <= tag_y <= station_2[0]:
         msg = "Between Station 1 And Station 2"
-        if st_report.s1_end is None:
-            st_report.s1_end = datetime.now()
-            st_report.save()
+
     elif station_2[0] <= tag_y <= station_2[1]:
         msg = "Reached Station 2"
         flag = 'station2'
-        if st_report.s2_start is None:
-            st_report.s2_start = datetime.now()
-            st_report.save()
+
     elif station_2[1] <= tag_y <= station_3[0]:
         msg = "Between Station 2 And Station 3"
-        if st_report.s2_end is None:
-            st_report.s2_end = datetime.now()
-            st_report.save()
+
     elif station_3[0] <= tag_y <= station_3[1]:
         msg = "Reached Station 3"
         flag = 'station3'
-        if st_report.s3_start is None:
-            st_report.s3_start = datetime.now()
-            st_report.save()
+
     elif tag_y > station_3[1]:
         msg = "Left Station 3"
-        if st_report.s3_end is None:
-            st_report.s3_end = datetime.now()
-            st_report.save()
 
     if 7 <= int(datetime.now().strftime("%H")) < 15:
         shift = "A"
@@ -272,7 +263,8 @@ def ac_location(request):
         param = ['OK', 'NOT OK', 'Hazard', 'Cluster indl.', 'Roof lamp', 'Door Switch', 'Central/Key lock',
                  'Regen Switch', 'Wiper Motor', 'HLLD']
 
-    ctx = {"atdata": loc, "message": msg, "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "shift": shift,
+    ctx = {"atdata": loc, "tagid": id, "message": msg, "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+           "shift": shift,
            "heading": heading, "station_info": station_info, "param": param, "flag": flag}
     return JsonResponse(ctx)
 
@@ -292,21 +284,25 @@ def error_code(request):
         param = request.POST.getlist("params[]")
         vin = request.POST['vin']
         user = request.user.username
-
-        rep = StationReport.objects.get(vin=vin)
-        if len(param) == 0:
-            param = "OK"
+        try:
+            rep = StationReport.objects.get(vin=vin)
+        except:
+            msg = "No vehicle available at your station"
         else:
-            print(param)
-            param = ','.join(param)
-        if user == "station1":
-            rep.s1_error = param
-        elif user == "station2":
-            rep.s2_error = param
-        elif user == "station3":
-            rep.s3_error = param
-        rep.save()
-        return JsonResponse({"message": 'Saved'})
+            if len(param) == 0:
+                param = "OK"
+            else:
+                print(param)
+                param = ','.join(param)
+            if user == "station1":
+                rep.s1_error = param
+            elif user == "station2":
+                rep.s2_error = param
+            elif user == "station3":
+                rep.s3_error = param
+            rep.save()
+            msg = "Saved"
+        return JsonResponse({"message": msg})
 
 
 @login_required(login_url="/login/")

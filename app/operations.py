@@ -219,6 +219,21 @@ def get_anchortag():
     return datalist
 
 
+def get_tag(tag):
+    cnx = mysql.connector.connect(**config)
+    cnx.time_zone = '+05:30'
+    cursor = cnx.cursor()
+    datalist = []
+    query = f"SELECT tag_x,tag_y,tag_z FROM {tag} ORDER BY id DESC LIMIT 1 "
+    cursor.execute(query)
+    data = cursor.fetchone()
+    for d in data:
+        datalist.append(d)
+    cursor.close()
+    cnx.close()
+    return datalist
+
+
 def random_string(len):
     res = ''.join(random.choices(string.ascii_uppercase +
                                  string.digits, k=len))

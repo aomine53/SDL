@@ -4,6 +4,8 @@
 
 <!-- Specific CSS goes HERE  -->
 {% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <style>
         #myform h5, h4, h6, label {
             color: black;
@@ -79,6 +81,7 @@
     <div style="position: absolute">
         <button id="3dview" onclick="View_3D()" class="btn btn-outline-danger">3D</button>
         <button id="2dview" onclick="View_2D()" class="btn btn-outline-danger">2D</button>
+        <button id="xyzview" onclick="View_xyz()" class="btn btn-outline-danger">xy-xz</button>
         <button id="switch" onclick="switchdiv()" class="btn btn-outline-danger">Switch</button>
         <button id="Show Report" class="btn btn-outline-danger"><a href="./stationreport.html" style="color: red">Show
             Report</a></button>
@@ -86,9 +89,9 @@
     </div>
     <h4 id="status" style="color: greenyellow;text-align: center"><strong>--</strong></h4>
     <div id="abc" class="row p-0">
-        <div class="col-md-6">
+        <div class="col-md-6" id="2d" style="display: block">
             <div id='myDiv' style="height: 80vh; width:95%;display:block;"></div>
-            <div id="cd" style="background-color: #fff;display: none; padding:12px">
+            <div id="cd" style="background-color: #fff;display: none; padding:12px;height: 80vh">
                 <table class="quotation">
                     <thead>
                     <th>LOGO</th>
@@ -326,9 +329,51 @@
                         <td></td>
                         <td colspan="2"></td>
                     </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
                     </tbody>
                     </tfoot>
                 </table>
+            </div>
+        </div>
+        <div class="col-md-6" id="xyz" style="display: none">
+            <div class="row">
+                <div id='myDiv1' style="height: 80vh;display:block;width: 450px"></div>
+                <div id='myDivz' style="height: 80vh;display:block;width: 450px"></div>
             </div>
         </div>
         <div class="col-md-6">
@@ -416,6 +461,15 @@
                 </div>
             </div>
         </div>
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="30000"
+             style="background-color: deeppink;position: absolute; bottom:5% ; right: 5%;  ">
+            <div class="toast-body" style="color: #ff0033; font-weight: 600; font-size: medium;">
+                <button type="button" class="ml-3 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span id="msg" style="color:white "></span>
+            </div>
+        </div>
     </div>
 
 {% endblock content %}
@@ -427,11 +481,32 @@
     <script>
         function updateTag(point) {
             var data_update = {
-                x: [[point[20]]],
-                y: [[point[21]]],
-                z: [[point[22]]]
+                x: [[point[0][0]]],
+                y: [[point[0][1]]],
+                z: [[point[0][2]]]
+            }
+            var data_update1 = {
+                x: [[point[1][0]]],
+                y: [[point[1][1]]],
+                z: [[point[1][2]]]
             }
             Plotly.restyle('myDiv', data_update, 4)
+            Plotly.restyle('myDiv', data_update1, 5)
+            Plotly.restyle('myDiv1', data_update, 4)
+            Plotly.restyle('myDiv1', data_update1, 5)
+        }
+
+        function updateTag1(point) {
+            var data_update = {
+                x: [[point[0][0]]],
+                y: [[point[0][2]]],
+            }
+            var data_update2 = {
+                x: [[point[1][0]]],
+                y: [[point[1][2]]],
+            }
+            Plotly.restyle('myDivz', data_update, 4)
+            Plotly.restyle('myDivz', data_update2, 5)
         }
 
         function loc() {
@@ -440,6 +515,7 @@
                 url: 'api/data/atdata',
                 success: function (data1) {
                     updateTag(data1.atdata)
+                    updateTag1(data1.atdata)
                     document.getElementById('status').textContent = data1.message
                     document.getElementById('date').textContent = data1.date
                     document.getElementById("shift").textContent = data1.shift
@@ -455,7 +531,7 @@
                     } else {
                         document.getElementById('check').style.display = 'none'
                     }
-                    changediv(data1.flag)
+                    //      changediv(data1.flag)
                     for (let i = 0; i < data1.param.length; i++) {
                         document.getElementById(i + 1).textContent = data1.param[i]
                         document.getElementById('check' + (i + 1)).value = data1.param[i]
@@ -520,16 +596,38 @@
                 showlegend: false
             };
             var trace5 = {
-                name: "TAG",
+                name: "D632",
                 x: [],
                 y: [],
                 type: 'scatter',
                 marker: {
                     color: "#29B966",
                 },
-                showlegend: false
+                showlegend: false,
+                mode: 'markers+text',
+                textposition: 'top center',
+                textfont: {
+                    color:'#1f77b4',
+                },
+                text: "D632",
             };
             var trace6 = {
+                name: "54B6",
+                x: [],
+                y: [],
+                type: 'scatter',
+                marker: {
+                    color: "#29B966",
+                },
+                showlegend: false,
+                mode: 'markers+text',
+                textposition: 'top center',
+                textfont: {
+                    color:'#1f77b4',
+                },
+                text: "54B6",
+            };
+            var trace7 = {
                 x: [1.5, 1.5, 1.5],
                 y: [1.25, 2.25, 3.25],
                 type: 'scatter',
@@ -542,8 +640,15 @@
                 },
                 showlegend: false
             };
-            var data = [trace1, trace2, trace3, trace4, trace5, trace6];
+            var data = [trace1, trace2, trace3, trace4, trace5, trace6, trace7];
             var layout = {
+                title: {
+                    text: 'Top View',
+                    font: {
+                        color: '#111',
+                        size: 20
+                    },
+                },
                 shapes: [
                     {
                         type: 'rect',
@@ -627,6 +732,7 @@
 
             };
             Plotly.newPlot('myDiv', data, layout);
+            Plotly.newPlot('myDiv1', data, layout);
         }
 
         View_2D()
@@ -710,7 +816,7 @@
                 y: [],
                 z: [],
                 mode: 'markers',
-                name: 'TAG',
+                name: 'D632',
                 marker: {
                     color: '#29B966',
                     size: 6,
@@ -723,7 +829,25 @@
                 },
                 type: 'scatter3d',
             };
-            var data = [trace1, trace2, trace3, trace4, trace5];
+            var trace6 = {
+                x: [],
+                y: [],
+                z: [],
+                mode: 'markers',
+                name: '54B6',
+                marker: {
+                    color: '#29B966',
+                    size: 6,
+                    symbol: 'circle',
+                    line: {
+                        color: 'rgb(204, 204, 204)',
+                        width: 1
+                    },
+                    opacity: 0.8,
+                },
+                type: 'scatter3d',
+            };
+            var data = [trace1, trace2, trace3, trace4, trace5, trace6];
             var layout = {
                 margin: {
                     l: 0,
@@ -735,6 +859,12 @@
             Plotly.newPlot('myDiv', data, layout);
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
     <script>
         $(document).ready(function () {
             $("#radiodiv") // select the radio by its id
@@ -752,6 +882,7 @@
         function changediv(flag) {
             if (flag === 'station1' || flag === 'station2' || flag === 'station3') {
                 document.getElementById('cd').style.display = 'block';
+                document.getElementById('myDiv').style.display = 'none';
             }
         }
 
@@ -764,6 +895,206 @@
                 document.getElementById('cd').style.display = 'none';
             }
         }
+
+        function View_xyz() {
+            if (document.getElementById('2d').style.display === 'block') {
+                document.getElementById('xyz').style.display = 'block';
+                document.getElementById('2d').style.display = 'none';
+            } else {
+                document.getElementById('xyz').style.display = 'none';
+                document.getElementById('2d').style.display = 'block';
+            }
+        }
+
+        function View_xz() {
+            var trace1 = {
+                name: "AN0",
+                x: [0],
+                y: [0],
+                type: 'scatter',
+                marker: {
+                    color: "#E8290B",
+                    size: 15,
+                    symbol: 'triangle-up'
+                },
+                showlegend: false
+            };
+            var trace2 = {
+                name: "AN1",
+                x: [2.99],
+                y: [0],
+                type: 'scatter',
+                marker: {
+                    color: "#E8290B",
+                    size: 15,
+                    symbol: 'triangle-up'
+                },
+                showlegend: false
+            };
+            var trace3 = {
+                name: "AN2",
+                x: [0.44],
+                y: [0],
+                type: 'scatter',
+                marker: {
+                    color: "#E8290B",
+                    size: 15,
+                    symbol: 'triangle-up'
+                },
+                showlegend: false
+            };
+            var trace4 = {
+                name: "AN4",
+                x: [2.42],
+                y: [0],
+                type: 'scatter',
+                marker: {
+                    color: "#E8290B",
+                    size: 15,
+                    symbol: 'triangle-up'
+                },
+                showlegend: false
+            };
+            var trace5 = {
+                name: "D632",
+                x: [],
+                y: [],
+                type: 'scatter',
+                marker: {
+                    color: "#29B966",
+                },
+                showlegend: false,
+                mode: 'markers+text',
+                textposition: 'top center',
+                textfont: {
+                    color:'#1f77b4',
+                },
+                text: "D632",
+            };
+            var trace6 = {
+                name: "54B6",
+                x: [],
+                y: [],
+                type: 'scatter',
+                mode: 'markers+text',
+                textposition: 'top center',
+                textfont: {
+                    color:'#1f77b4',
+                },
+                text: "54B6",
+                marker: {
+                    color: "#29B966",
+                },
+                showlegend: false
+            };
+            var trace7 = {
+                x: [1.5, 1.5, 1.5],
+                y: [2.25, 1.5, 0.75],
+                type: 'scatter',
+                mode: 'text',
+                text: ['Rack 1', 'Rack 2', 'Rack 3'],
+                textfont: {
+                    color: 'black',
+                    size: 18,
+                    family: 'Arial'
+                },
+                showlegend: false
+            };
+            var data = [trace1, trace2, trace3, trace4, trace5, trace6, trace7];
+            var layout = {
+                title: {
+                    text: 'Front View',
+                    font: {
+                        color: '#111',
+                        size: 20
+                    },
+                },
+                shapes: [
+                    {
+                        type: 'rect',
+                        xref: 'paper',
+                        yref: 'y',
+                        x0: 0,
+                        y0: 1,
+                        x1: 1,
+                        y1: 0.5,
+                        fillcolor: '#000',
+                        opacity: 0.2,
+                        line: {
+                            width: 0
+                        }
+                    },
+                    {
+                        type: 'rect',
+                        xref: 'paper',
+                        yref: 'y',
+                        x0: 0,
+                        y0: 1.25,
+                        x1: 1,
+                        y1: 1.75,
+                        fillcolor: '#000',
+                        opacity: 0.2,
+                        line: {
+                            width: 0
+                        }
+                    },
+                    {
+                        type: 'rect',
+                        xref: 'paper',
+                        yref: 'y',
+                        x0: 0,
+                        y0: 2,
+                        x1: 1,
+                        y1: 2.5,
+                        fillcolor: '#000',
+                        opacity: 0.2,
+                        line: {
+                            width: 0
+                        }
+                    },
+                ],
+                xaxis: {
+                    showgrid: true,
+                    zeroline: false,
+                    showline: true,
+                    mirror: 'ticks',
+                    gridcolor: '#edeeef ',
+                    gridwidth: 0.5,
+                    zerolinecolor: '#969696',
+                    zerolinewidth: 4,
+                    linecolor: '#636363',
+                    autotick: false,
+                    ticks: 'outside',
+                    tick0: 0,
+                    dtick: 0.25,
+                    ticklen: 4,
+                    tickwidth: 1,
+                    tickcolor: '#000'
+                },
+                yaxis: {
+                    showgrid: true,
+                    zeroline: false,
+                    showline: true,
+                    mirror: 'ticks',
+                    gridcolor: '#edeeef',
+                    gridwidth: 0.5,
+                    zerolinecolor: '#969696',
+                    zerolinewidth: 4,
+                    linecolor: '#636363',
+                    autotick: false,
+                    ticks: 'outside',
+                    tick0: 0,
+                    dtick: 0.25,
+                    ticklen: 4,
+                    tickwidth: 1,
+                    tickcolor: '#000',
+                },
+
+            };
+            Plotly.newPlot('myDivz', data, layout);
+        }
+
+        View_xz()
 
         function error_code() {
             var arr = []
@@ -780,11 +1111,12 @@
                 data: {
                     'csrfmiddlewaretoken': csrftoken,
                     'params[]': arr,
-                    'vin':vin,
+                    'vin': vin,
                 },
                 success: function (result, status, xhr) {
-                    $('#check').reset()
                     console.log(result.message)
+                    document.getElementById('msg').textContent = result.message
+                    $('.toast').toast('show');
                 },
                 error: function (error_data) {
                     console.log("error")
@@ -792,6 +1124,7 @@
                     console.log(error_data)
                 }
             })
+
         }
     </script>
     <script>

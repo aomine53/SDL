@@ -83,12 +83,9 @@
                 title: "Trip Report", //add title to report
                 autoTable: { //advanced table styling
                     styles: {
-                        cellWidth: 'wrap',
+                        cellWidth: 'nowrap',
                     },
-                    columnStyles: {
-                        4: {columnWidth: 'auto'},
-                        5: {columnWidth: 'auto'}
-                    }
+                    margin:{left:0,right:0},
                 },
             });
         });
@@ -99,6 +96,7 @@
         });
     </script>
     <script>
+    function showreport() {
         $.ajax({
             method: "GET",
             url: 'api/data/stationreport',
@@ -111,5 +109,7 @@
                 console.log(error_data)
             }
         })
+    }
+    setInterval(showreport,1000)
     </script>
 {% endblock javascripts %}
