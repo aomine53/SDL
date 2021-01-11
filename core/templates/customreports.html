@@ -69,6 +69,9 @@
         }
 
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+          integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+          crossorigin="anonymous"/>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -79,12 +82,18 @@
     {#        </div>#}
     {#    </div>#}
     <div style="position: absolute">
+    <div class="form-inline">
         <button id="3dview" onclick="View_3D()" class="btn btn-outline-danger">3D</button>
         <button id="2dview" onclick="View_2D()" class="btn btn-outline-danger">2D</button>
         <button id="xyzview" onclick="View_xyz()" class="btn btn-outline-danger">xy-xz</button>
         <button id="switch" onclick="switchdiv()" class="btn btn-outline-danger">Switch</button>
         <button id="Show Report" class="btn btn-outline-danger"><a href="./stationreport.html" style="color: red">Show
             Report</a></button>
+            <input class="form-control m-3" type="text" id="searchinput" placeholder="Enter TagID"
+                   aria-label="default input example">
+                <button id="change" onclick="tracecolorchange()" class="btn btn-primary "><i class="fas fa-search"></i></button>
+
+        </div>
         {#    <small style="color: black;display: inline;text-align: center"><strong> Status: </strong></small>#}
     </div>
     <h4 id="status" style="color: greenyellow;text-align: center"><strong>--</strong></h4>
@@ -533,10 +542,9 @@
                     }
                     if (fl === false && data1.flag === "{{ user }}") {
                         changediv(data1.flag)
-                        fl=true
-                    }
-                    else if(data1.flag !== "{{ user }}"){
-                        fl=false
+                        fl = true
+                    } else if (data1.flag !== "{{ user }}") {
+                        fl = false
                     }
                     for (let i = 0; i < data1.param.length; i++) {
                         document.getElementById(i + 1).textContent = data1.param[i]
@@ -655,6 +663,18 @@
                         size: 20
                     },
                 },
+                images: [{
+                    "source": "http://127.0.0.1:8000/media/driverimage/2020/warehouse.png",
+                    "xref": "paper",
+                    "yref": "paper",
+                    "x": 0,
+                    "y": 1,
+                    "sizex": 1,
+                    "sizey": 1,
+                    "sizing": "stretch",
+                    "opacity": 0.4,
+                    "layer": "below"
+                },],
                 shapes: [
                     {
                         type: 'rect',
@@ -1152,5 +1172,24 @@
         }
 
         const csrftoken = getCookie('csrftoken');
+    </script>
+    <script>
+        function changecolor(traceindex) {
+            var update = {
+                'marker.color': '#fe7701'
+            };
+            Plotly.restyle(myDiv, update, traceindex);
+        }
+
+        function tracecolorchange() {
+            var inputid = document.getElementById("searchinput").value
+            console.log(inputid)
+            if (inputid === "D632") {
+                changecolor(4)
+            } else if (inputid === "54B6") {
+                changecolor(5)
+            }
+        }
+
     </script>
 {% endblock javascripts %}
