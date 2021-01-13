@@ -540,8 +540,8 @@
                         </div>
                     </div>
                 </div>
-                <div id="line-chart" style="display: none;"></div>
                 <div class="mT-30">
+                    <div id="line-chart" style="display: none;width: 90vw; height: 60vh"></div>
                     <canvas id="scatter-chart" height="100" style="display: block;margin-top: 10px;">
                     </canvas>
                 </div>
@@ -1376,7 +1376,7 @@
         }
 
         function onRefresh(chart) {
-            let lab = ["VIN", "VBAT", "SPD", "TP", "APPD", "CELV", "ES", "ECT","V3"]
+            let lab = ["VIN", "VBAT", "SPD", "TP", "APPD", "CELV", "ES", "ECT", "V3"]
             let i = 0
             let dat = datavar()
             chart.config.data.datasets.forEach(function (dataset) {
@@ -1440,8 +1440,8 @@
             }
         };
         var chart1 = new Chart(ctx, config)
-        let lab = ["VIN", "VBAT", "SPD", "TP", "APPD", "CELV", "ES", "ECT","V3"]
-        let unit = ["Volt", "Volt", "Kmph", "", "", "", "", "","mAmp"]
+        let lab = ["VIN", "VBAT", "SPD", "TP", "APPD", "CELV", "ES", "ECT", "V3"]
+        let unit = ["Volt", "Volt", "Kmph", "", "", "", "", "", "mAmp"]
         var colorNames = Object.keys(chartColors);
 
         function addDatasets1(index) {
@@ -1488,7 +1488,7 @@
         }
 
         function removeDatasets(index) {
-            let lab = ["VIN", "VBAT", "SPD", "TP", "APPD", "CELV", "ES", "ECT","V3"]
+            let lab = ["VIN", "VBAT", "SPD", "TP", "APPD", "CELV", "ES", "ECT", "V3"]
             chart1.config.data.datasets.forEach(function (dataset) {
                 console.log(index)
                 if (dataset.label === lab[index]) {
@@ -1501,7 +1501,7 @@
         };
 
         function addds(selectedarray) {
-            let lab = ["VIN", "VBAT", "SPD", "TP", "APPD", "CELV", "ES", "ECT","V3"]
+            let lab = ["VIN", "VBAT", "SPD", "TP", "APPD", "CELV", "ES", "ECT", "V3"]
             for (var i = 0; i < selectedarray.length; i++) {
                 var flag = 0
                 lab.indexOf(selectedarray[i])
@@ -1719,8 +1719,6 @@
                     t: 25,
                 },
                 autosize: true,
-                width: 1300,
-                height: 450,
                 paper_bgcolor: '#313131',
                 plot_bgcolor: 'rgba(0,0,0,0)',
                 xaxis: {
