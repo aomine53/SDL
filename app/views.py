@@ -44,6 +44,7 @@ def tempdevice(request):
 def get_live_data(request):
     device = Device.objects.filter(firm=FirmProfile.objects.get(user=User.objects.get(username=request.user.username)))
     datalist = get_livedata_device(device)
+    # print(datalist)
     dataobj = []
     arr = []
     dev = []

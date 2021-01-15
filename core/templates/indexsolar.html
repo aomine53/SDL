@@ -1325,7 +1325,7 @@
     <script>
         var oldrno = -1;
         var clr = 0
-        var VIN, VBAT, TIME, TP, APPD, CELV, ES, ECT, SPD
+        var VIN, VBAT, TIME, TP, APPD, CELV, ES, ECT, SPD,V3
 
         function livedata() {
             $.ajax({
@@ -1339,6 +1339,7 @@
                             VIN = data.data[indexofselecteddevice].VIN
                             VBAT = data.data[indexofselecteddevice].VBAT
                             SPD = data.data[indexofselecteddevice].SPD
+                            V3 = data.data[indexofselecteddevice].V3
                             TIME = data.data[indexofselecteddevice].EDT
                             oldrno = data.data[indexofselecteddevice].RNO;
                         }
@@ -1372,13 +1373,14 @@
 
 
         function datavar() {
-            return [VIN, VBAT, SPD, TP, APPD, CELV, ES, ECT]
+            return [VIN, VBAT, V3,SPD, TP, APPD, CELV, ES, ECT]
         }
 
         function onRefresh(chart) {
-            let lab = ["VIN", "VBAT", "SPD", "TP", "APPD", "CELV", "ES", "ECT", "V3"]
+            let lab = ["VIN", "VBAT", "V3","SPD", "TP", "APPD", "CELV", "ES", "ECT"]
             let i = 0
             let dat = datavar()
+            {#console.log(dat)#}
             chart.config.data.datasets.forEach(function (dataset) {
                 dataset.data.push({
                     x: TIME,
@@ -1414,11 +1416,11 @@
                     xAxes: [{
                         type: 'realtime',
                         realtime: {
-                            duration: 30000,
+                            duration: 300000,
                             //20000
-                            refresh: 500,
+                            refresh: 2000,
                             //1000
-                            delay: 120000,
+                            delay: 30000,
                             //7000
                             onRefresh: onRefresh
                         },
@@ -1440,8 +1442,8 @@
             }
         };
         var chart1 = new Chart(ctx, config)
-        let lab = ["VIN", "VBAT", "SPD", "TP", "APPD", "CELV", "ES", "ECT", "V3"]
-        let unit = ["Volt", "Volt", "Kmph", "", "", "", "", "", "mAmp"]
+        let lab = ["VIN", "VBAT", "V3","SPD", "TP", "APPD", "CELV", "ES", "ECT"]
+        let unit = ["Volt", "Volt", "mAmp","Kmph", "", "", "", "", ""]
         var colorNames = Object.keys(chartColors);
 
         function addDatasets1(index) {
@@ -1488,7 +1490,7 @@
         }
 
         function removeDatasets(index) {
-            let lab = ["VIN", "VBAT", "SPD", "TP", "APPD", "CELV", "ES", "ECT", "V3"]
+            let lab = ["VIN", "VBAT", "V3","SPD", "TP", "APPD", "CELV", "ES", "ECT"]
             chart1.config.data.datasets.forEach(function (dataset) {
                 console.log(index)
                 if (dataset.label === lab[index]) {
@@ -1501,7 +1503,7 @@
         };
 
         function addds(selectedarray) {
-            let lab = ["VIN", "VBAT", "SPD", "TP", "APPD", "CELV", "ES", "ECT", "V3"]
+            let lab = ["VIN", "VBAT", "V3","SPD", "TP", "APPD", "CELV", "ES", "ECT" ]
             for (var i = 0; i < selectedarray.length; i++) {
                 var flag = 0
                 lab.indexOf(selectedarray[i])
