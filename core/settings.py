@@ -16,7 +16,7 @@ PROJECT_DIR = Path(__file__).parent
 SECRET_KEY = config('SECRET_KEY', default='S#perS3crEt_1122')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=True)
+DEBUG = config('DEBUG', default=False)
 
 # load production server from .env
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1','143.110.187.187', config('SERVER', default='127.0.0.1')]
