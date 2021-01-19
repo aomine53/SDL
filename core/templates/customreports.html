@@ -499,10 +499,18 @@
                 y: [[point[1][1]]],
                 z: [[point[1][2]]]
             }
+            var data_update2 = {
+                x: [[point[2][0]]],
+                y: [[point[2][1]]],
+                z: [[point[2][2]]]
+            }
+
             Plotly.restyle('myDiv', data_update, 4)
             Plotly.restyle('myDiv', data_update1, 5)
+            Plotly.restyle('myDiv', data_update2, 6)
             Plotly.restyle('myDiv1', data_update, 4)
             Plotly.restyle('myDiv1', data_update1, 5)
+            Plotly.restyle('myDiv1', data_update2, 6)
         }
 
         function updateTag1(point) {
@@ -514,8 +522,13 @@
                 x: [[point[1][0]]],
                 y: [[point[1][2]]],
             }
+            var data_update3 = {
+                x: [[point[2][0]]],
+                y: [[point[2][2]]],
+            }
             Plotly.restyle('myDivz', data_update, 4)
             Plotly.restyle('myDivz', data_update2, 5)
+            Plotly.restyle('myDivz', data_update3, 6)
         }
 
         function loc() {
@@ -642,6 +655,22 @@
                 text: "54B6",
             };
             var trace7 = {
+                name: "D70B",
+                x: [],
+                y: [],
+                type: 'scatter',
+                marker: {
+                    color: "#29B966",
+                },
+                showlegend: false,
+                mode: 'markers+text',
+                textposition: 'top center',
+                textfont: {
+                    color: '#1f77b4',
+                },
+                text: "D70B",
+            };
+            var trace8 = {
                 x: [1.5, 1.5, 1.5],
                 y: [1.25, 2.25, 3.25],
                 type: 'scatter',
@@ -654,7 +683,7 @@
                 },
                 showlegend: false
             };
-            var data = [trace1, trace2, trace3, trace4, trace5, trace6, trace7];
+            var data = [trace1, trace2, trace3, trace4, trace5, trace6, trace7, trace8];
             var layout = {
                 title: {
                     text: 'Top View',
@@ -664,8 +693,8 @@
                     },
                 },
                 images: [{
-                    "source": "http://machinemath.co.in/media/driverimage/2020/warehouse.png",
-                    {#"source": "http://127.0.0.1:8000/media/driverimage/2020/warehouse.png",#}
+<!--                    "source": "http://machinemath.co.in/media/driverimage/2020/warehouse.png",-->
+                    "source": "http://127.0.0.1:8000/media/driverimage/2020/warehouse.png",
                     "xref": "paper",
                     "yref": "paper",
                     "x": 0,
@@ -874,7 +903,25 @@
                 },
                 type: 'scatter3d',
             };
-            var data = [trace1, trace2, trace3, trace4, trace5, trace6];
+            var trace7 = {
+                x: [],
+                y: [],
+                z: [],
+                mode: 'markers',
+                name: 'D70B',
+                marker: {
+                    color: '#29B966',
+                    size: 6,
+                    symbol: 'circle',
+                    line: {
+                        color: 'rgb(204, 204, 204)',
+                        width: 1
+                    },
+                    opacity: 0.8,
+                },
+                type: 'scatter3d',
+            };
+            var data = [trace1, trace2, trace3, trace4, trace5, trace6, trace7];
             var layout = {
                 margin: {
                     l: 0,
@@ -1016,6 +1063,22 @@
                 showlegend: false
             };
             var trace7 = {
+                name: "D70B",
+                x: [],
+                y: [],
+                type: 'scatter',
+                mode: 'markers+text',
+                textposition: 'top center',
+                textfont: {
+                    color: '#1f77b4',
+                },
+                text: "D70B",
+                marker: {
+                    color: "#29B966",
+                },
+                showlegend: false
+            };
+            var trace8 = {
                 x: [1.5, 1.5, 1.5],
                 y: [2.25, 1.5, 0.75],
                 type: 'scatter',
@@ -1028,7 +1091,7 @@
                 },
                 showlegend: false
             };
-            var data = [trace1, trace2, trace3, trace4, trace5, trace6, trace7];
+            var data = [trace1, trace2, trace3, trace4, trace5, trace6, trace7, trace8];
             var layout = {
                 title: {
                     text: 'Front View',
@@ -1189,6 +1252,9 @@
                 changecolor(4)
             } else if (inputid === "54B6") {
                 changecolor(5)
+            }
+            else if (inputid === "D70B") {
+                changecolor(6)
             }
         }
 
