@@ -82,16 +82,17 @@
     {#        </div>#}
     {#    </div>#}
     <div style="position: absolute">
-    <div class="form-inline">
-        <button id="3dview" onclick="View_3D()" class="btn btn-outline-danger">3D</button>
-        <button id="2dview" onclick="View_2D()" class="btn btn-outline-danger">2D</button>
-        <button id="xyzview" onclick="View_xyz()" class="btn btn-outline-danger">xy-xz</button>
-        <button id="switch" onclick="switchdiv()" class="btn btn-outline-danger">Switch</button>
-        <button id="Show Report" class="btn btn-outline-danger"><a href="./stationreport.html" style="color: red">Show
-            Report</a></button>
+        <div class="form-inline">
+            <button id="3dview" onclick="View_3D()" class="btn btn-outline-danger">3D</button>
+            <button id="2dview" onclick="View_2D()" class="btn btn-outline-danger">2D</button>
+            <button id="xyzview" onclick="View_xyz()" class="btn btn-outline-danger">xy-xz</button>
+            <button id="switch" onclick="switchdiv()" class="btn btn-outline-danger">Switch</button>
+            <button id="Show Report" class="btn btn-outline-danger"><a href="./stationreport.html" style="color: red">Show
+                Report</a></button>
             <input class="form-control m-3" type="text" id="searchinput" placeholder="Enter TagID"
                    aria-label="default input example">
-                <button id="change" onclick="tracecolorchange()" class="btn btn-primary "><i class="fas fa-search"></i></button>
+            <button id="change" onclick="tracecolorchange()" class="btn btn-primary "><i class="fas fa-search"></i>
+            </button>
 
         </div>
         {#    <small style="color: black;display: inline;text-align: center"><strong> Status: </strong></small>#}
@@ -693,8 +694,8 @@
                     },
                 },
                 images: [{
-<!--                    "source": "http://machinemath.co.in/media/driverimage/2020/warehouse.png",-->
-                    "source": "http://127.0.0.1:8000/media/driverimage/2020/warehouse.png",
+                    "source": "http://machinemath.co.in/media/driverimage/2020/warehouse.png",
+                    {#"source": "http://127.0.0.1:8000/media/driverimage/2020/warehouse.png",#}
                     "xref": "paper",
                     "yref": "paper",
                     "x": 0,
@@ -1252,8 +1253,7 @@
                 changecolor(4)
             } else if (inputid === "54B6") {
                 changecolor(5)
-            }
-            else if (inputid === "D70B") {
+            } else if (inputid === "D70B") {
                 changecolor(6)
             }
         }
