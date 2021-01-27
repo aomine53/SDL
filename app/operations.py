@@ -5,6 +5,7 @@ from app.models import *
 from userforms.models import *
 import string
 import random
+import pytz
 
 config = {
     "user": 'mmlink',
@@ -234,6 +235,84 @@ def get_tag(tag):
     return datalist
 
 
+# Archive Data for solardevice
+# def get_solar_data(SCB, fromdate, todate):
+#     cnx = mysql.connector.connect(**config)
+#     cursor = cnx.cursor(buffered=True)
+#     query = f"SELECT * FROM {SCB}  where  '{fromdate}' <= Date and Date <= '{todate}' "
+#     cursor.execute(query)
+#     data = cursor.fetchall()
+#     print(data)
+#     cursor.close()
+#     cnx.close()
+#     return data
+
+
+def search_solardata(start, end, parameters, selecteddevice):
+    cnx = mysql.connector.connect(**config)
+    cnx.time_zone = '+05:30'
+    cursor = cnx.cursor()
+    print(parameters)
+    parameters = "`,`".join(parameters)
+    # {'`%s`' + (',`%s`' * (len(parameters) - 1))}
+    query = f"SELECT Date,`{parameters}` FROM {selecteddevice} WHERE Date BETWEEN '{start}' AND '{end}'"
+    # print(query)
+    cursor.execute(query)
+    data = cursor.fetchall()
+    cursor.close()
+    cnx.close()
+    return data
+
+
+# Live data of solardevice
+def get_livedata_solar(device):
+    cnx = mysql.connector.connect(**config)
+    cnx.time_zone = '+05:30'
+    cursor = cnx.cursor(buffered=True)
+    datalist = []
+    IST = pytz.timezone('Asia/Kolkata')
+    # print(datetime.now(IST).strftime('%Y-%m-%d %H:%M:%S'))
+    if int(datetime.now(IST).strftime('%M')) % 5 == 0:
+        date = datetime.now(IST)
+    elif int(datetime.now(IST).strftime('%M')) % 5 <= 5:
+        date = datetime.now(IST) - timedelta(minutes=int(datetime.now(IST).strftime('%M')) % 5)
+
+    updateddate = "2021-01-23 " + date.strftime('%H:%M') + ":00"
+
+    for i in device:
+        # device_parameters = (",").join(get_solar_column_name(i))
+        # print(device_parameters)
+        # {'%s' + (',%s' * (len(get_solar_column_name(i)) - 1))}
+        query = f"SELECT * FROM {i} where Date = '{updateddate}'"
+        cursor.execute(query)
+        data = cursor.fetchone()
+        data = list(data)
+        data[0] = data[0].replace(day=datetime.now(IST).day, month=datetime.now().month, year=datetime.now().year)
+        # print(data[0])
+        datalist.append(data)
+    cursor.close()
+    cnx.close()
+    return datalist
+
+
+# to get the parameter names of device
+def get_solar_column_name(devicename):
+    cnx = mysql.connector.connect(**config)
+    cursor = cnx.cursor(buffered=True)
+    query = f"SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='mytestdb' AND `TABLE_NAME`='{devicename}' ORDER BY ORDINAL_POSITION    "
+    cursor.execute(query)
+    col_name = []
+    data = cursor.fetchall()
+    # [('Date',), ('STB 2.2.2 - 1 - I1 [A]',), ('STB 2.2.2 - 1 - I10 [A]',), ('STB 2.2.2 - 1 - I11 [A]',), ('STB 2.2.2 - 1 - I12 [A]',), ('STB 2.2.2 - 1 - I13 [A]',), ('STB 2.2.2 - 1 - I14 [A]',), ('STB 2.2.2 - 1 - I15 [A]',), ('STB 2.2.2 - 1 - I16 [A]',), ('STB 2.2.2 - 1 - I2 [A]',), ('STB 2.2.2 - 1 - I3 [A]',), ('STB 2.2.2 - 1 - I4 [A]',), ('STB 2.2.2 - 1 - I5 [A]',), ('STB 2.2.2 - 1 - I6 [A]',), ('STB 2.2.2 - 1 - I7 [A]',), ('STB 2.2.2 - 1 - I8 [A]',), ('STB 2.2.2 - 1 - I9 [A]',), ('STB 2.2.2 - 1 - Total power [W]',), ('STB 2.2.2 - 1 - Total voltage [V]',)]
+    for d in range(0, len(data)):
+        # print(d[0])
+        col_name.append(data[d][0])
+    # print(col_name)
+    cursor.close()
+    cnx.close()
+    return col_name
+
+
 def random_string(len):
     res = ''.join(random.choices(string.ascii_uppercase +
                                  string.digits, k=len))
@@ -242,7 +321,12 @@ def random_string(len):
 
 if __name__ == "__main__":
     # print(get_device_parameters('$SLU355000082004871'))
-    get_anchortag()
+    # # get_anchortag()
+    # get_solar_data('SCB2', '2021-01-23 09:55:00', '2021-01-23 12:55:00')
+    # print((',').join(get_solar_column_name('inv_1')))
+    # print(get_livedata_solar(["SCB1", "SCB2", "SCB3", "inv_1"]))
+    print(search_solardata("2021-01-23 14:35:00", "2021-01-23 19:35:00",
+                           ['STB 2.2.1 - 1 - I1 [A]', 'STB 2.2.1 - 1 - I10 [A]'], "SCB1"))
     # print(getdevicedata())
     # # print(getlivedata())
     # device = Device.objects.filter(firm=FirmProfile.objects.get(user=User.objects.get(username="machinemath")))

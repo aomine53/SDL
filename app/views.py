@@ -12,7 +12,8 @@ from django.db import connection
 from datetime import datetime, timedelta
 import pytz
 from app.operations import searchdata, getlivedata, getdevicedata, getreport, getmapreport, get_device_parameters, \
-    get_all_data, get_livedata_device, get_anchortag, random_string, get_tag
+    get_all_data, get_livedata_device, get_anchortag, random_string, get_tag, get_solar_column_name, \
+    get_livedata_solar,search_solardata
 from .decorators import *
 from .models import *
 from django.contrib.auth.models import User
@@ -42,14 +43,21 @@ def tempdevice(request):
 
 @login_required(login_url="/login/")
 def get_live_data(request):
-    device = Device.objects.filter(firm=FirmProfile.objects.get(user=User.objects.get(username=request.user.username)))
-    datalist = get_livedata_device(device)
-    # print(datalist)
-    dataobj = []
     arr = []
     dev = []
-    for k in device:
-        dev.append(k.device_parameters.split(","))
+    if request.user.username == 'solar':
+        devicelist = ["SCB1", "SCB2", "SCB3", "inv_1"]
+        datalist = get_livedata_solar(devicelist)
+        for d in devicelist:
+            dev.append(get_solar_column_name(d))
+
+    else:
+        device = Device.objects.filter(firm=FirmProfile.objects.get(user=User.objects.get(username=request.user.username)))
+        datalist = get_livedata_device(device)
+        # print(datalist)
+
+        for k in device:
+            dev.append(k.device_parameters.split(","))
 
     # print(dev)
     # if data is none set device params to None
@@ -81,24 +89,22 @@ def get_archive_data(request):
     utc = pytz.UTC
 
     if request.method == "POST":
-        newtime = []
-        newVin = []
-        newVbat = []
-        newAppt = []
-        newTp = []
-        newCelv = []
-        newEct = []
-        newEs = []
-        param = []
         Time = []
         Yaxis = []
-        Data = []
+        delay = 0
         fromData = (datetime.strptime(request.POST["from"], '%Y-%m-%d %H:%M:%S'))
         toData = (datetime.strptime(request.POST["to"], '%Y-%m-%d %H:%M:%S'))
         param = request.POST.getlist("parameters[]")
         device = request.POST["device"]
-        print(param)
-        Data = searchdata(fromData, toData, param, device)
+        # print(param)
+        if request.user.username == 'solar':
+            fromData = fromData.replace(day=23, month=1, year=2021)
+            toData = toData.replace(day=23, month=1, year=2021)
+            Data = search_solardata(fromData, toData, param, device)
+            delay = 300
+        else:
+            Data = searchdata(fromData, toData, param, device)
+            delay = 5
         # edt, vin, vbat, appt, tp, spdk, celv, ect, es = searchdata(fromData, toData,param)
         for _ in range(0, len(param)):
             Yaxis.append([])
@@ -108,11 +114,11 @@ def get_archive_data(request):
                 Time.append(Data[i][0].strftime('%Y-%m-%d %H:%M:%S%z'))
                 for j in range(0, len(param)):
                     Yaxis[j].append(Data[i][j + 1])
-                if (Data[i + 1][0] - Data[i][0]) > timedelta(seconds=5):
+                if (Data[i + 1][0] - Data[i][0]) > timedelta(seconds=delay):
                     difference = int(Data[i + 1][0].timestamp() - Data[i][0].timestamp())
                     # print(difference)
                     for sec in range(1, difference):
-                        temptimedate = Data[i][0] + timedelta(seconds=5)
+                        temptimedate = Data[i][0] + timedelta(seconds=delay)
                         Time.append(temptimedate.strftime('%Y-%m-%d %H:%M:%S%z'))
                         for j in range(0, len(param)):
                             Yaxis[j].append(None)
@@ -334,13 +340,22 @@ def get_userinfo(request):
     devicelist = []
     pref = []
     chart_pref = []
-    device = Device.objects.filter(firm=FirmProfile.objects.get(user=User.objects.get(username=request.user.username)))
-    for i in device:
-        devicelist.append(i.device_id)
-        pref.append(i.device_parameters.split(","))
-        chart_pref.append(i.chart_parameters.split(","))
+    if request.user.username == 'solar':
+        devicelist = ["SCB1", "SCB2", "SCB3", "inv_1"]
+        for d in devicelist:
+            pref.append(get_solar_column_name(d))
+            chart_pref.append(get_solar_column_name(d)[1:])
+    else:
+        device = Device.objects.filter(
+            firm=FirmProfile.objects.get(user=User.objects.get(username=request.user.username)))
+        for i in device:
+            devicelist.append(i.device_id)
+            pref.append(i.device_parameters.split(","))
+            chart_pref.append(i.chart_parameters.split(","))
     context = {"all_devices": devicelist, "prefrence": pref, "chartprefrence": chart_pref}
     return JsonResponse(context)
+
+
 
 
 def firm_register(request):
