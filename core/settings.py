@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'app',
     'userforms',
     'reports',
+    'chartjs',
 ]
 
 MIDDLEWARE = [

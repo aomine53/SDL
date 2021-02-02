@@ -218,13 +218,13 @@
         <div class="masonry-sizer col-md-6 pos-a"></div>
         <div class="masonry-item col-md-12">
             <div class="p-20 bd" style="background-color: #313131;">
-                    <select class="form-control col-md-1 d-inline-block" id="exampleFormControlSelect1">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
+                <select class="form-control col-md-1 d-inline-block" id="exampleFormControlSelect1">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
                 <select id="myFilter" class="multiple_select minimal" multiple>
                     <option>VIN</option>
                     <option>VBAT</option>
@@ -280,7 +280,8 @@
             <div class="p-20 bd" style="background-color: #313131;">
                 <h6 class="c-grey-900">Bar Chart</h6>
                 <div class="mT-30">
-                    <canvas id="bar-chart" height="220"></canvas>
+                    {#                    <canvas id="bar-chart" height="220"></canvas>#}
+                    <div id="bar"></div>
                 </div>
             </div>
         </div>
@@ -1262,5 +1263,49 @@
                 }
             });
         }
+    </script>
+    <script>
+        function rand() {
+            return Math.random();
+        }
+
+        var time = new Date();
+
+        var data = [{
+            x: [time],
+            y: [rand],
+            mode: 'lines',
+            line: {color: '#80CAF6'}
+        },
+        ]
+
+        Plotly.plot('bar', data);
+
+        var cnt = 0;
+
+        var interval = setInterval(function () {
+
+            var time = new Date();
+
+            var update = {
+                x: [[time]],
+                y: [[rand()]]
+            }
+
+            var olderTime = time.setMinutes(time.getMinutes() - 1);
+            var futureTime = time.setMinutes(time.getMinutes() + 1);
+
+            var minuteView = {
+                xaxis: {
+                    type: 'date',
+                    range: [olderTime, futureTime]
+                }
+            };
+
+            Plotly.relayout('bar', minuteView);
+            Plotly.extendTraces('bar', update, [0])
+
+            if (cnt === 100) clearInterval(interval);
+        }, 100);
     </script>
 {% endblock javascripts %}

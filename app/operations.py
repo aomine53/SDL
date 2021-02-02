@@ -248,17 +248,24 @@ def get_tag(tag):
 #     return data
 
 
-def search_solardata(start, end, parameters, selecteddevice):
+def search_solardata(start, end, parameters, selecteddevice, weather):
     cnx = mysql.connector.connect(**config)
     cnx.time_zone = '+05:30'
     cursor = cnx.cursor()
     print(parameters)
+    data = []
     parameters = "`,`".join(parameters)
     # {'`%s`' + (',`%s`' * (len(parameters) - 1))}
-    query = f"SELECT Date,`{parameters}` FROM {selecteddevice} WHERE Date BETWEEN '{start}' AND '{end}'"
-    # print(query)
-    cursor.execute(query)
-    data = cursor.fetchall()
+    for device in selecteddevice:
+        query = f"SELECT Date,`{parameters}` FROM {device} WHERE Date BETWEEN '{start}' AND '{end}'"
+        # print(query)
+        cursor.execute(query)
+        data.append(cursor.fetchall())
+    if len(weather) != 0:
+        weather = "`,`".join(weather)
+        query1 = f"SELECT Date,`{weather}` FROM wms WHERE Date BETWEEN '{start}' AND '{end}'"
+        cursor.execute(query1)
+        data.append(cursor.fetchall())
     cursor.close()
     cnx.close()
     return data
@@ -308,9 +315,70 @@ def get_solar_column_name(devicename):
         # print(d[0])
         col_name.append(data[d][0])
     # print(col_name)
+
     cursor.close()
     cnx.close()
     return col_name
+
+
+def solar_genration():
+    cnx = mysql.connector.connect(**config)
+    cursor = cnx.cursor(buffered=True)
+    query = f"SELECT `Power AC (Inv 5.1) [W]` FROM inv_1"
+    cursor.execute(query)
+    data = cursor.fetchall()
+    newdata = []
+    solardata = [0 for i in range(24)]
+    for d, in data:
+        newdata.append(d)
+    for i in range(0, len(newdata)):
+        solardata[i // 12] += newdata[i]/12000
+
+    cursor.close()
+    cnx.close()
+    return solardata
+
+
+#
+# def abcd(devices, parameters):
+#     cnx = mysql.connector.connect(**config)
+#     cnx.time_zone = '+05:30'
+#     cursor = cnx.cursor(buffered=True)
+#     # devices = ["SCB1",SCB2]
+#     # params = ["I1"]
+#
+#     IST = pytz.timezone('Asia/Kolkata')
+#     # print(datetime.now(IST).strftime('%Y-%m-%d %H:%M:%S'))
+#     if int(datetime.now(IST).strftime('%M')) % 5 == 0:
+#         date = datetime.now(IST)
+#     elif int(datetime.now(IST).strftime('%M')) % 5 <= 5:
+#         date = datetime.now(IST) - timedelta(minutes=int(datetime.now(IST).strftime('%M')) % 5)
+#
+#     updateddate = "2021-01-23 " + date.strftime('%H:%M') + ":00"
+#
+#     str1 = []
+#     for d in devices:
+#         for p in parameters:
+#             # print(d + "." + p)
+#             str = d + "." + p
+#             str1.append(str)
+#
+#     # convert into tuple
+#     str2 = tuple(str1)
+#     # to get SCB1.I1,SCB1.I2,SCB2.I1,SCB2.I2
+#     str3 = ",".join(str2)
+#     print(str3)
+#     # to get device list like SCB1,SCB2
+#     str4 = tuple(devices)
+#     str5 = ",".join(str4)
+#     print(str5)
+#
+#     query = f"SELECT {str3} from {str5} where %s.Date = %s.Date"
+#     cursor.execute(query)
+#     data = cursor.fetchall()
+#     print(data)
+#     cursor.close()
+#     cnx.close()
 
 
 def random_string(len):
@@ -325,8 +393,10 @@ if __name__ == "__main__":
     # get_solar_data('SCB2', '2021-01-23 09:55:00', '2021-01-23 12:55:00')
     # print((',').join(get_solar_column_name('inv_1')))
     # print(get_livedata_solar(["SCB1", "SCB2", "SCB3", "inv_1"]))
-    print(search_solardata("2021-01-23 14:35:00", "2021-01-23 19:35:00",
-                           ['STB 2.2.1 - 1 - I1 [A]', 'STB 2.2.1 - 1 - I10 [A]'], "SCB1"))
+    # print(search_solardata("2021-01-23 14:35:00", "2021-01-23 14:45:00",
+    #                        ['I1', 'I10'], ["SCB1", "SCB2"], ["Ambient Temp", "Irradiance"]))
+    # abcd(['SCB1', 'SCB2'], ["I1", "I2"])
+    print(solar_genration())
     # print(getdevicedata())
     # # print(getlivedata())
     # device = Device.objects.filter(firm=FirmProfile.objects.get(user=User.objects.get(username="machinemath")))

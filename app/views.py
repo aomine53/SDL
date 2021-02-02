@@ -13,7 +13,7 @@ from datetime import datetime, timedelta
 import pytz
 from app.operations import searchdata, getlivedata, getdevicedata, getreport, getmapreport, get_device_parameters, \
     get_all_data, get_livedata_device, get_anchortag, random_string, get_tag, get_solar_column_name, \
-    get_livedata_solar,search_solardata
+    get_livedata_solar, search_solardata, solar_genration
 from .decorators import *
 from .models import *
 from django.contrib.auth.models import User
@@ -52,7 +52,8 @@ def get_live_data(request):
             dev.append(get_solar_column_name(d))
 
     else:
-        device = Device.objects.filter(firm=FirmProfile.objects.get(user=User.objects.get(username=request.user.username)))
+        device = Device.objects.filter(
+            firm=FirmProfile.objects.get(user=User.objects.get(username=request.user.username)))
         datalist = get_livedata_device(device)
         # print(datalist)
 
@@ -95,46 +96,90 @@ def get_archive_data(request):
         fromData = (datetime.strptime(request.POST["from"], '%Y-%m-%d %H:%M:%S'))
         toData = (datetime.strptime(request.POST["to"], '%Y-%m-%d %H:%M:%S'))
         param = request.POST.getlist("parameters[]")
-        device = request.POST["device"]
+        weather = request.POST.getlist("weather[]")
         # print(param)
         if request.user.username == 'solar':
+            device = request.POST.getlist("device[]")
             fromData = fromData.replace(day=23, month=1, year=2021)
             toData = toData.replace(day=23, month=1, year=2021)
-            Data = search_solardata(fromData, toData, param, device)
+            Data = search_solardata(fromData, toData, param, device, weather)
             delay = 300
+            param1 = []
+            params = []
+            end = len(param)
+            for d in device:
+                for p in param:
+                    params.append(f"{d} - {p}")
+                    param1.append(p)
+            for w in weather:
+                params.append(w)
+
+            param1.extend(weather)
+            for data in Data:
+                yaxis = []
+                time = []
+                if Data.index(data) > len(device) - 1:
+                    end = len(weather)
+                for _ in range(0, end):
+                    yaxis.append([])
+                for i in range(0, len(data) - 2):
+                    if fromData <= data[i][0] <= toData:
+                        time.append(data[i][0].strftime('%Y-%m-%d %H:%M:%S%z'))
+                        for j in range(0, end):
+                            yaxis[j].append(data[i][j + 1])
+                        if (data[i + 1][0] - data[i][0]) > timedelta(seconds=delay):
+                            difference = int(data[i + 1][0].timestamp() - data[i][0].timestamp())
+
+                            # print(difference)
+                            for sec in range(1, difference):
+                                temptimedate = data[i][0] + timedelta(seconds=delay)
+                                time.append(temptimedate.strftime('%Y-%m-%d %H:%M:%S%z'))
+                                for j in range(0, end):
+                                    yaxis[j].append(None)
+
+                Yaxis.extend(yaxis)
+                Time = time
+                # print(len(Yaxis[0]))
+                # print(len(Time))
+
+            context = {"fromData": fromData, "toData": toData, "labels": Time, "selected": Yaxis, "param": param1,
+                       "legends": params, "yaxislabel": param + weather}
+
         else:
+            device = request.POST["device"]
             Data = searchdata(fromData, toData, param, device)
             delay = 5
+            for _ in range(0, len(param)):
+                Yaxis.append([])
+
+            for i in range(0, len(Data) - 2):
+                if fromData <= Data[i][0] <= toData:
+                    Time.append(Data[i][0].strftime('%Y-%m-%d %H:%M:%S%z'))
+                    for j in range(0, len(param)):
+                        Yaxis[j].append(Data[i][j + 1])
+                    if (Data[i + 1][0] - Data[i][0]) > timedelta(seconds=delay):
+                        difference = int(Data[i + 1][0].timestamp() - Data[i][0].timestamp())
+                        # print(difference)
+                        for sec in range(1, difference):
+                            temptimedate = Data[i][0] + timedelta(seconds=delay)
+                            Time.append(temptimedate.strftime('%Y-%m-%d %H:%M:%S%z'))
+                            for j in range(0, len(param)):
+                                Yaxis[j].append(None)
+            context = {"fromData": fromData, "toData": toData, "labels": Time, "selected": Yaxis, "param": param, }
         # edt, vin, vbat, appt, tp, spdk, celv, ect, es = searchdata(fromData, toData,param)
-        for _ in range(0, len(param)):
-            Yaxis.append([])
 
-        for i in range(0, len(Data) - 2):
-            if fromData <= Data[i][0] <= toData:
-                Time.append(Data[i][0].strftime('%Y-%m-%d %H:%M:%S%z'))
-                for j in range(0, len(param)):
-                    Yaxis[j].append(Data[i][j + 1])
-                if (Data[i + 1][0] - Data[i][0]) > timedelta(seconds=delay):
-                    difference = int(Data[i + 1][0].timestamp() - Data[i][0].timestamp())
-                    # print(difference)
-                    for sec in range(1, difference):
-                        temptimedate = Data[i][0] + timedelta(seconds=delay)
-                        Time.append(temptimedate.strftime('%Y-%m-%d %H:%M:%S%z'))
-                        for j in range(0, len(param)):
-                            Yaxis[j].append(None)
+        # while True:
+        #     if(fromData > toData):
+        #         break
+        #     elif(fromData == i.edt):
+        #         newtime.append(i.edt.strftime("%H:%M:%S"))
+        #         newVin.append(i.vin)
+        #     else:
+        #         newtime.append(fromData.strftime("%H:%M:%S"))
+        #         newVin.append("s")
+        #         fromData += timedelta(seconds=1)
 
-            # while True:
-            #     if(fromData > toData):
-            #         break
-            #     elif(fromData == i.edt):
-            #         newtime.append(i.edt.strftime("%H:%M:%S"))
-            #         newVin.append(i.vin)
-            #     else:
-            #         newtime.append(fromData.strftime("%H:%M:%S"))
-            #         newVin.append("s")
-            #         fromData += timedelta(seconds=1)
-
-        context = {"fromData": fromData, "toData": toData, "labels": Time, "selected": Yaxis, "param": param}
+        # print(context)
         # print(context.get("Vin"))
         return JsonResponse(context)
     else:
@@ -194,7 +239,7 @@ def ac_location(request):
     for t in tag:
         loc.append(get_tag("tag_" + t.tag_id))
         id.append(t.tag_id)
-    print(loc)
+    # print(loc)
 
     station_1 = [1, 1.5]
     station_2 = [2, 2.5]
@@ -299,7 +344,7 @@ def error_code(request):
             if len(param) == 0:
                 param = "OK"
             else:
-                print(param)
+                # print(param)
                 param = ','.join(param)
             if user == "station1":
                 rep.s1_error = param
@@ -356,8 +401,6 @@ def get_userinfo(request):
     return JsonResponse(context)
 
 
-
-
 def firm_register(request):
     msg = "Error"
     if request.method == "POST":
@@ -390,3 +433,8 @@ def firm_register(request):
     else:
         html_template = loader.get_template('page-404.html')
         return HttpResponse(html_template.render({"msg": msg}, request))
+
+
+def get_solar_genration(request):
+    return JsonResponse({"power": solar_genration()})
+

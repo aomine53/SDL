@@ -20,6 +20,7 @@ urlpatterns = [
     path('api/data/tempdevice', views.tempdevice, name="tempdevice"),
     path('api/data/userinfo', views.get_userinfo, name="userinfo"),
     path('api/data/atdata', views.ac_location, name="atlocation"),
+    path('api/data/power', views.get_solar_genration, name="solargenration"),
     path('api/data/stationreport', views.station_report, name="stationreport"),
     path('api/data/error_code', views.error_code, name="error_code"),
     re_path(r'^.*\.*', views.pages, name='pages'),
