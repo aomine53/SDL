@@ -1314,7 +1314,7 @@
         var dat = [];
         let d = [];
         var indicesofselecteddevices = []
-        var weather_param_names = ['Ambient Temp', 'Module temperature', 'Irradiance', ' Wind direction', ' Wind speed']
+        var weather_param_names = ['Ambient Temp', 'Module temperature', 'Irradiance', 'Wind direction', 'Wind speed']
 
         function livedata() {
             $.ajax({
@@ -1501,7 +1501,7 @@
                 }
             }
             for (let k = 0; k < selectedweather.length; k++) {
-                addDatasets1(parseInt(selectedweather[k]) + selected.length - 1, weather_param_names[k], weather_param_names[k])
+                addDatasets1(parseInt(selectedweather[k]) + selected.length - 1, weather_param_names[parseInt(selectedweather[k])-1], weather_param_names[parseInt(selectedweather[k])-1])
             }
             chart1.update()
         }
