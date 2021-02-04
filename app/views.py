@@ -13,7 +13,7 @@ from datetime import datetime, timedelta
 import pytz
 from app.operations import searchdata, getlivedata, getdevicedata, getreport, getmapreport, get_device_parameters, \
     get_all_data, get_livedata_device, get_anchortag, random_string, get_tag, get_solar_column_name, \
-    get_livedata_solar, search_solardata, solar_genration
+    get_livedata_solar, search_solardata, solar_genration, get_live_weatherparam_data
 from .decorators import *
 from .models import *
 from django.contrib.auth.models import User
@@ -45,11 +45,15 @@ def tempdevice(request):
 def get_live_data(request):
     arr = []
     dev = []
+    weather = []
     if request.user.username == 'solar':
         devicelist = ["SCB1", "SCB2", "SCB3", "inv_1"]
         datalist = get_livedata_solar(devicelist)
+        weatherdata = get_live_weatherparam_data()
         for d in devicelist:
             dev.append(get_solar_column_name(d))
+        for w in weatherdata:
+            weather.append(w)
 
     else:
         device = Device.objects.filter(
@@ -71,16 +75,7 @@ def get_live_data(request):
             else:
                 x[dev[i][j]] = datalist[i][j]
         arr.append(x)
-    ctx = {"data": arr}
-    # print(ctx)
-    # for data in datalist:
-    #     rno, vin, vbat, edt, spdk, lat, lng = data
-    #     data1 = {"rno": rno, "vbat": vbat, "vin": vin, "spdk": spdk, "time": edt.strftime("%Y-%m-%d %H:%M:%S%z"),
-    #              "lat": lat,
-    #              "lng": lng}
-    #     dataobj.append(data1)
-    # # print(data1)
-    # cont = {"data": dataobj}
+    ctx = {"data": arr, "weather": weather}
     return JsonResponse(ctx)
 
 
@@ -437,4 +432,3 @@ def firm_register(request):
 
 def get_solar_genration(request):
     return JsonResponse({"power": solar_genration()})
-

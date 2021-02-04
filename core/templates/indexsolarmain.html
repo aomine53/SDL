@@ -523,7 +523,7 @@
                                 <option value="SCB1">SCB1</option>
                                 <option value="SCB2">SCB2</option>
                                 <option value="SCB3">SCB3</option>
-                                <option value="inv_1">SCB1</option>
+                                <option value="inv_1">inv_1</option>
                             </select>
                         </div>
                         <div class="col-md-3 col-lg-2" style="margin-top: 10px;">
@@ -539,11 +539,11 @@
                                 <option selected disabled hidden>
                                     Weather Parameters
                                 </option>
-                                <option value="Irradiance">Irradiance</option>
-                                <option value="Ambient Temp">Ambient Temp</option>
-                                <option value="Module temperature">Module temperature</option>
-                                <option value="Wind speed">Wind speed</option>
-                                <option value="Wind direction">Wind direction</option>
+                                <option value=1>Ambient Temp</option>
+                                <option value=2>Module temperature</option>
+                                <option value=3>Irradiance</option>
+                                <option value=4>Wind direction</option>
+                                <option value=5>Wind speed</option>
                             </select>
                         </div>
                     </div>
@@ -1314,6 +1314,7 @@
         var dat = [];
         let d = [];
         var indicesofselecteddevices = []
+        var weather_param_names = ['Ambient Temp', 'Module temperature', 'Irradiance', ' Wind direction', ' Wind speed']
 
         function livedata() {
             $.ajax({
@@ -1322,6 +1323,7 @@
                 success: function (data) {
                     dat = []
                     {#console.log(indicesofselecteddevices)#}
+                    TIME = data.weather[0]
                     if (indicesofselecteddevices.length !== 0) {
                         TIME = data.data[indicesofselecteddevices[0]]["Date"]
                         for (let i = 0; i < indicesofselecteddevices.length; i++) {
@@ -1331,9 +1333,11 @@
                             dat.push(d)
                             d = []
                         }
+
                         {#console.log(dat)#}
                         {#console.log(TIME)#}
                     }
+                      dat.push(data.weather)
                 },
                 error: function (error_data) {
                     console.log("error")
@@ -1356,19 +1360,28 @@
             livedata()
             {#console.log(chart.config.data.datasets)#}
             for (let i = 0; i < chart.config.data.datasets.length; i++) {
-                let l = lab.indexOf(chart.config.data.datasets[i].label.split(' - ')[1])
-                if(chart.config.data.datasets[i].data.length === 0) {
+                let l;
+                let ydata;
+                if (i >= deviceselected.length * selected.length) {
+                    l = weather_param_names.indexOf(chart.config.data.datasets[i].label)
+                    l+=1
+                    ydata = dat.length - 1
+                } else {
+                    l = lab.indexOf(chart.config.data.datasets[i].label.split(' - ')[1])
+                    ydata = Math.floor(i / selected.length)
+                }
+                if (chart.config.data.datasets[i].data.length === 0) {
                     chart.config.data.datasets[i].data.push({
                         x: TIME,
-                        y: dat[Math.floor(i / selected.length)][l]
+                        y: dat[ydata][l]
                     })
-                }
-                else if(chart.config.data.datasets[i].data[chart.config.data.datasets[i].data.length-1].x !== TIME) {
-                     chart.config.data.datasets[i].data.push({
+                } else if (chart.config.data.datasets[i].data[chart.config.data.datasets[i].data.length - 1].x !== TIME) {
+                    chart.config.data.datasets[i].data.push({
                         x: TIME,
-                        y: dat[Math.floor(i / selected.length)][l]
+                        y: dat[ydata][l]
                     })
                 }
+
             }
             {% comment %}     chart.config.data.datasets.forEach(function (dataset) {
                      dataset.data.push({
@@ -1433,11 +1446,11 @@
         var chart1 = new Chart(ctx, config)
         var colorNames = Object.keys(chartColors);
 
-        function addDatasets1(index, device) {
+        function addDatasets1(index, devicelabel, labelstring) {
             var colorName = colorNames[config.data.datasets.length % colorNames.length];
             var newColor = chartColors[colorName];
             var newDataset = {
-                label: device+" - "+lab[index],
+                label: devicelabel,
                 backgroundColor: color(newColor).alpha(0.5).rgbString(),
                 borderColor: newColor,
                 fill: false,
@@ -1448,17 +1461,17 @@
             };
 
             config.data.datasets.push(newDataset);
-            addScale(index)
+            addScale(index, labelstring)
             {#console.log('y-axis-' + index)#}
         };
 
-        function addScale(index) {
+        function addScale(index, labelstring) {
 
             var newScale = {
                 id: 'y-axis-' + index,
                 scaleLabel: {
                     display: true,
-                    labelString: lab[index]
+                    labelString: labelstring
                 },
                 gridLines: {color: "#696969"},
                 ticks: {
@@ -1481,51 +1494,16 @@
 
         function show_live_data() {
             removeDatasets()
-            ind = []
             for (let j = 0; j < deviceselected.length; j++) {
                 for (let i = 0; i < selected.length; i++) {
-                    ind.push(lab.indexOf(selected[i]))
-                    addDatasets1(lab.indexOf(selected[i]), deviceselected[j])
+                    addDatasets1(lab.indexOf(selected[i]), deviceselected[j] + " - " + selected[i], selected[i])
                 }
+            }
+            for (let k = 0; k < selectedweather.length; k++) {
+                addDatasets1(parseInt(selectedweather[k]) + selected.length - 1, weather_param_names[k], weather_param_names[k])
             }
             chart1.update()
         }
-
-        {% comment %}  function addds(selectedarray) {
-              for (var i = 0; i < selectedarray.length; i++) {
-                  var flag = 0
-                  lab.indexOf(selectedarray[i])
-                  {#console.log(chart1.config.data.datasets.length)#}
-                  for (var j = 0; j < chart1.data.datasets.length; j++) {
-                      if (chart1.data.datasets[j].label === selectedarray[i]) {
-                          flag = 1
-                          break
-                      } else if (chart1.data.datasets[j].label !== selectedarray[i]) {
-                          flag = 0
-                      }
-                  }
-                  if (flag === 0) {
-                      addDatasets1(lab.indexOf(selectedarray[i]))
-                  }
-              }
-              for (var k = 0; k < chart1.config.data.datasets.length; k++) {
-                  var flag = 0
-                  lab.indexOf(selectedarray[k])
-                  console.log(chart1.config.data.datasets.length)
-                  for (var l = 0; l < selectedarray.length; l++) {
-                      if (chart1.data.datasets[k].label === selectedarray[l]) {
-                          flag = 1
-                          break
-                      } else if (chart1.data.datasets[k].label !== selectedarray[l]) {
-                          flag = 0
-                      }
-                  }
-                  if (flag === 0) {
-                      removeDatasets(lab.indexOf(chart1.config.data.datasets[k].label))
-                  }
-              }
-          }{% endcomment %}
-
 
     </script>
     <script>
@@ -1568,6 +1546,7 @@
             deviceselected = $(this).val()
             {#$('#myFilter').empty()#}
             assign_params($(this).val())
+            show_live_data()
         })
 
 
@@ -1585,6 +1564,7 @@
         $("#myFilter2").on('change', function () {
             selectedweather = $("#myFilter2").val();
             {#console.log(selectedweather)#}
+            show_live_data()
         })
     </script>
     <script>

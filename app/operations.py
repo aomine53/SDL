@@ -302,6 +302,28 @@ def get_livedata_solar(device):
     return datalist
 
 
+def get_live_weatherparam_data():
+    cnx = mysql.connector.connect(**config)
+    cnx.time_zone = '+05:30'
+    cursor = cnx.cursor(buffered=True)
+    IST = pytz.timezone('Asia/Kolkata')
+    # print(datetime.now(IST).strftime('%Y-%m-%d %H:%M:%S'))
+    if int(datetime.now(IST).strftime('%M')) % 5 == 0:
+        date = datetime.now(IST)
+    elif int(datetime.now(IST).strftime('%M')) % 5 <= 5:
+        date = datetime.now(IST) - timedelta(minutes=int(datetime.now(IST).strftime('%M')) % 5)
+
+    updateddate = "2021-01-23 " + date.strftime('%H:%M') + ":00"
+    query = f"SELECT * FROM wms where Date = '{updateddate}'"
+    cursor.execute(query)
+    datalist = cursor.fetchone()
+    datalist = list(datalist)
+    datalist[0] = datalist[0].replace(day=datetime.now(IST).day, month=datetime.now().month, year=datetime.now().year)
+    cursor.close()
+    cnx.close()
+    return datalist
+
+
 # to get the parameter names of device
 def get_solar_column_name(devicename):
     cnx = mysql.connector.connect(**config)
@@ -332,53 +354,11 @@ def solar_genration():
     for d, in data:
         newdata.append(d)
     for i in range(0, len(newdata)):
-        solardata[i // 12] += newdata[i]/12000
+        solardata[i // 12] += newdata[i] / 12000
 
     cursor.close()
     cnx.close()
     return solardata
-
-
-#
-# def abcd(devices, parameters):
-#     cnx = mysql.connector.connect(**config)
-#     cnx.time_zone = '+05:30'
-#     cursor = cnx.cursor(buffered=True)
-#     # devices = ["SCB1",SCB2]
-#     # params = ["I1"]
-#
-#     IST = pytz.timezone('Asia/Kolkata')
-#     # print(datetime.now(IST).strftime('%Y-%m-%d %H:%M:%S'))
-#     if int(datetime.now(IST).strftime('%M')) % 5 == 0:
-#         date = datetime.now(IST)
-#     elif int(datetime.now(IST).strftime('%M')) % 5 <= 5:
-#         date = datetime.now(IST) - timedelta(minutes=int(datetime.now(IST).strftime('%M')) % 5)
-#
-#     updateddate = "2021-01-23 " + date.strftime('%H:%M') + ":00"
-#
-#     str1 = []
-#     for d in devices:
-#         for p in parameters:
-#             # print(d + "." + p)
-#             str = d + "." + p
-#             str1.append(str)
-#
-#     # convert into tuple
-#     str2 = tuple(str1)
-#     # to get SCB1.I1,SCB1.I2,SCB2.I1,SCB2.I2
-#     str3 = ",".join(str2)
-#     print(str3)
-#     # to get device list like SCB1,SCB2
-#     str4 = tuple(devices)
-#     str5 = ",".join(str4)
-#     print(str5)
-#
-#     query = f"SELECT {str3} from {str5} where %s.Date = %s.Date"
-#     cursor.execute(query)
-#     data = cursor.fetchall()
-#     print(data)
-#     cursor.close()
-#     cnx.close()
 
 
 def random_string(len):
@@ -396,7 +376,8 @@ if __name__ == "__main__":
     # print(search_solardata("2021-01-23 14:35:00", "2021-01-23 14:45:00",
     #                        ['I1', 'I10'], ["SCB1", "SCB2"], ["Ambient Temp", "Irradiance"]))
     # abcd(['SCB1', 'SCB2'], ["I1", "I2"])
-    print(solar_genration())
+    # print(solar_genration())
+    print(get_live_weatherparam_data())
     # print(getdevicedata())
     # # print(getlivedata())
     # device = Device.objects.filter(firm=FirmProfile.objects.get(user=User.objects.get(username="machinemath")))
