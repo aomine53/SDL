@@ -252,20 +252,22 @@ def search_solardata(start, end, parameters, selecteddevice, weather):
     cnx = mysql.connector.connect(**config)
     cnx.time_zone = '+05:30'
     cursor = cnx.cursor()
-    print(parameters)
     data = []
-    parameters = "`,`".join(parameters)
-    # {'`%s`' + (',`%s`' * (len(parameters) - 1))}
-    for device in selecteddevice:
-        query = f"SELECT Date,`{parameters}` FROM {device} WHERE Date BETWEEN '{start}' AND '{end}'"
-        # print(query)
-        cursor.execute(query)
-        data.append(cursor.fetchall())
+    if len(parameters) != 0 and len(selecteddevice) != 0:
+        parameters = "`,`".join(parameters)
+        for device in selecteddevice:
+            query = f"SELECT Date,`{parameters}` FROM {device} WHERE Date BETWEEN '{start}' AND '{end}'"
+            # print(query)
+            cursor.execute(query)
+            data.append(cursor.fetchall())
+    else:
+        data.append([])
     if len(weather) != 0:
         weather = "`,`".join(weather)
         query1 = f"SELECT Date,`{weather}` FROM wms WHERE Date BETWEEN '{start}' AND '{end}'"
         cursor.execute(query1)
         data.append(cursor.fetchall())
+
     cursor.close()
     cnx.close()
     return data

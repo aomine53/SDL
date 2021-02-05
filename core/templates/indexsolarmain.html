@@ -1575,8 +1575,9 @@
             let weather = []
             for (let i=0;i<selectedweather.length;i++)
             {
-                weather.push(weather_param_names[parseInt(selectedweather[i])])
+                weather.push(weather_param_names[parseInt(selectedweather[i])-1])
             }
+            {#console.log(weather)#}
             $.ajax({
                 method: "POST",
                 url: "api/data/archive",
@@ -1733,7 +1734,7 @@
                         size: 14,
                         color: 'white'
                     },
-                    domain: [0.10, 0.90]
+                    domain: [0.15, 0.85]
                 },
                 yaxis: {
                     title: value.yaxislabel[0],
@@ -1759,7 +1760,7 @@
                         color: 'white'
                     },
                     anchor: 'free',
-                    position: 0.05
+                    position: 0.10
                 },
                 yaxis3: {
                     title: value.yaxislabel[2],
@@ -1777,6 +1778,36 @@
                 },
                 yaxis4: {
                     title: value.yaxislabel[3],
+                    gridcolor: '#696969',
+                    linecolor: '#696969',
+                    titlefont: {color: "#FFF"},
+                    overlaying: 'y',
+                    side: 'right',
+                    tickfont: {
+                        family: 'Old Standard TT, serif',
+                        size: 14,
+                        color: 'white'
+                    },
+                    anchor: 'free',
+                    position: 0.90
+                },
+                 yaxis5: {
+                    title: value.yaxislabel[4],
+                    gridcolor: '#696969',
+                    linecolor: '#696969',
+                    titlefont: {color: "#FFF"},
+                    overlaying: 'y',
+                    side: 'left',
+                    tickfont: {
+                        family: 'Old Standard TT, serif',
+                        size: 14,
+                        color: 'white'
+                    },
+                    anchor: 'free',
+                    position: 0.05
+                },
+                yaxis6: {
+                    title: value.yaxislabel[5],
                     gridcolor: '#696969',
                     linecolor: '#696969',
                     titlefont: {color: "#FFF"},
