@@ -20,8 +20,10 @@ urlpatterns = [
     path('api/data/tempdevice', views.tempdevice, name="tempdevice"),
     path('api/data/userinfo', views.get_userinfo, name="userinfo"),
     path('api/data/atdata', views.ac_location, name="atlocation"),
+    path('api/data/unity', views.unity_api, name="unitydata"),
     path('api/data/power', views.get_solar_genration, name="solargenration"),
     path('api/data/stationreport', views.station_report, name="stationreport"),
     path('api/data/error_code', views.error_code, name="error_code"),
+    path('3d', views.show_3d, name="3d"),
     re_path(r'^.*\.*', views.pages, name='pages'),
 ]

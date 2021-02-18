@@ -1541,7 +1541,7 @@
             })
         }
 
-        var deviceselected = "";
+        var deviceselected = [];
         $('#selectdevice').change(function () {
             {#console.log($(this).val());#}
             deviceselected = $(this).val()
@@ -1595,7 +1595,7 @@
                     //archive = true
                     var x = document.getElementById("scatter-chart");
                     var y = document.getElementById("line-chart");
-                    {#console.log(result)#}
+                    console.log(result)
                     // search(result)
                     adjustValue1(result)
                     if (x.style.display === "block") {

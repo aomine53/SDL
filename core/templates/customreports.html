@@ -87,6 +87,7 @@
             <button id="2dview" onclick="View_2D()" class="btn btn-outline-danger">2D</button>
             <button id="xyzview" onclick="View_xyz()" class="btn btn-outline-danger">xy-xz</button>
             <button id="switch" onclick="switchdiv()" class="btn btn-outline-danger">Switch</button>
+            <a href="unity.html"><button id="simuation" class="btn btn-outline-danger">3D Simulation</button></a>
             <button id="Show Report" class="btn btn-outline-danger"><a href="./stationreport.html" style="color: red">Show
                 Report</a></button>
             <input class="form-control m-3" type="text" id="searchinput" placeholder="Enter TagID"
@@ -385,6 +386,10 @@
                 <div id='myDiv1' style="height: 80vh;display:block;width: 450px"></div>
                 <div id='myDivz' style="height: 80vh;display:block;width: 450px"></div>
             </div>
+{#            <div class="row">#}
+{#                <div id='myDiv1' style="height: 80vh;display:block;width: 650px"></div>#}
+{#                <div id='myDivz' style="height: 80vh;display:block;width: 200px"></div>#}
+{#            </div>#}
         </div>
         <div class="col-md-6">
             <div id='myform' style="background-color: #fff;height: 80vh;">
@@ -997,7 +1002,7 @@
             };
             var trace2 = {
                 name: "AN1",
-                x: [2.99],
+                x: [3.01],
                 y: [0],
                 type: 'scatter',
                 marker: {
@@ -1009,7 +1014,7 @@
             };
             var trace3 = {
                 name: "AN2",
-                x: [0.44],
+                x: [3.01],
                 y: [0],
                 type: 'scatter',
                 marker: {
@@ -1021,8 +1026,8 @@
             };
             var trace4 = {
                 name: "AN4",
-                x: [2.42],
-                y: [0],
+                x: [0.43],
+                y: [-3],
                 type: 'scatter',
                 marker: {
                     color: "#E8290B",

@@ -113,8 +113,10 @@ def get_archive_data(request):
             for data in Data:
                 yaxis = []
                 time = []
+
                 if Data.index(data) > len(device) - 1:
                     end = len(weather)
+
                 for _ in range(0, end):
                     yaxis.append([])
                 for i in range(0, len(data) - 2):
@@ -316,6 +318,21 @@ def ac_location(request):
     return JsonResponse(ctx)
 
 
+def unity_api(request):
+    loc = []
+    ctx = {}
+    tag = TagAssign.objects.all()
+    for t in tag:
+        loc.append(get_tag("tag_" + t.tag_id))
+        if t.tag_id == "54B6":
+            ctx["_54B6"] = get_tag("tag_" + t.tag_id)
+        else:
+            ctx[t.tag_id] = get_tag("tag_" + t.tag_id)
+    # print(loc)
+    # print(ctx)
+    return JsonResponse(ctx)
+
+
 @login_required(login_url="/login/")
 def station_report(request):
     arr = []
@@ -432,3 +449,7 @@ def firm_register(request):
 
 def get_solar_genration(request):
     return JsonResponse({"power": solar_genration()})
+
+
+def show_3d(request):
+    return render(request, "unity.html")

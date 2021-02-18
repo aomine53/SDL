@@ -35,12 +35,14 @@ INSTALLED_APPS = [
     'userforms',
     'reports',
     'chartjs',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -140,5 +142,7 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'codettes.mm123@gmail.com'
 EMAIL_HOST_PASSWORD = 'MachineMath'
+
+CORS_ORIGIN_ALLOW_ALL = True
 #############################################################
 #############################################################

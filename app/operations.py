@@ -260,8 +260,8 @@ def search_solardata(start, end, parameters, selecteddevice, weather):
             # print(query)
             cursor.execute(query)
             data.append(cursor.fetchall())
-    else:
-        data.append([])
+    # else:
+    #     data.append([])
     if len(weather) != 0:
         weather = "`,`".join(weather)
         query1 = f"SELECT Date,`{weather}` FROM wms WHERE Date BETWEEN '{start}' AND '{end}'"
@@ -379,7 +379,8 @@ if __name__ == "__main__":
     #                        ['I1', 'I10'], ["SCB1", "SCB2"], ["Ambient Temp", "Irradiance"]))
     # abcd(['SCB1', 'SCB2'], ["I1", "I2"])
     # print(solar_genration())
-    print(get_live_weatherparam_data())
+    # print(get_live_weatherparam_data())
+    print(get_tag('tag_D632'))
     # print(getdevicedata())
     # # print(getlivedata())
     # device = Device.objects.filter(firm=FirmProfile.objects.get(user=User.objects.get(username="machinemath")))
