@@ -15,3 +15,5 @@ mapbox
 pillow
 djangocms-admin-style
 django-chartjs
+django-cors-headers
+
