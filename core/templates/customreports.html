@@ -84,10 +84,13 @@
     <div style="position: absolute">
         <div class="form-inline">
             <button id="3dview" onclick="View_3D()" class="btn btn-outline-danger">3D</button>
-            <button id="2dview" onclick="View_2D()" class="btn btn-outline-danger">2D</button>
+            <button id="2dview" onclick="Show_2D()" class="btn btn-outline-danger">2D</button>
             <button id="xyzview" onclick="View_xyz()" class="btn btn-outline-danger">xy-xz</button>
             <button id="switch" onclick="switchdiv()" class="btn btn-outline-danger">Switch</button>
-            <a href="unity.html"><button id="simuation" class="btn btn-outline-danger">3D Simulation</button></a>
+            <button id="overview" onclick="overview()" class="btn btn-outline-danger">Overview</button>
+            <a href="unity.html">
+                <button id="simuation" class="btn btn-outline-danger">3D Simulation</button>
+            </a>
             <button id="Show Report" class="btn btn-outline-danger"><a href="./stationreport.html" style="color: red">Show
                 Report</a></button>
             <input class="form-control m-3" type="text" id="searchinput" placeholder="Enter TagID"
@@ -386,10 +389,12 @@
                 <div id='myDiv1' style="height: 80vh;display:block;width: 450px"></div>
                 <div id='myDivz' style="height: 80vh;display:block;width: 450px"></div>
             </div>
-{#            <div class="row">#}
-{#                <div id='myDiv1' style="height: 80vh;display:block;width: 650px"></div>#}
-{#                <div id='myDivz' style="height: 80vh;display:block;width: 200px"></div>#}
-{#            </div>#}
+        </div>
+        <div class="col-md-6" id="xyz1" style="display: none">
+            <div class="row">
+                <div id='myDiv3' style="height: 80vh;display:block;width: 700px"></div>
+                <div id='myDiv4' style="height: 80vh;display:block;width: 200px"></div>
+            </div>
         </div>
         <div class="col-md-6">
             <div id='myform' style="background-color: #fff;height: 80vh;">
@@ -492,7 +497,9 @@
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-       <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/1.58.4/plotly.min.js" integrity="sha512-odxyOOOwpEgYQnS+TzF/P33O+DfGNGqyh89pJ/u2addhMw9ZIef3M8aw/otYSgsPxLdZi3HQhlI9IiX3H5SxpA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/1.58.4/plotly.min.js"
+            integrity="sha512-odxyOOOwpEgYQnS+TzF/P33O+DfGNGqyh89pJ/u2addhMw9ZIef3M8aw/otYSgsPxLdZi3HQhlI9IiX3H5SxpA=="
+            crossorigin="anonymous"></script>
     <script>
         function updateTag(point) {
             var data_update = {
@@ -517,6 +524,9 @@
             Plotly.restyle('myDiv1', data_update, 4)
             Plotly.restyle('myDiv1', data_update1, 5)
             Plotly.restyle('myDiv1', data_update2, 6)
+            Plotly.restyle('myDiv3', data_update, 0)
+            Plotly.restyle('myDiv3', data_update1, 1)
+            Plotly.restyle('myDiv3', data_update2, 2)
         }
 
         function updateTag1(point) {
@@ -532,9 +542,25 @@
                 x: [[point[2][0]]],
                 y: [[point[2][2]]],
             }
+            var data_update_overview = {
+                x: [[1]],
+                y: [[point[0][2]]],
+            }
+            var data_update2_overview = {
+                x: [[1]],
+                y: [[point[1][2]]],
+            }
+            var data_update3_overview = {
+                x: [[1]],
+                y: [[point[2][2]]],
+            }
             Plotly.restyle('myDivz', data_update, 4)
             Plotly.restyle('myDivz', data_update2, 5)
             Plotly.restyle('myDivz', data_update3, 6)
+
+            Plotly.restyle('myDiv4', data_update_overview, 0)
+            Plotly.restyle('myDiv4', data_update2_overview, 1)
+            Plotly.restyle('myDiv4', data_update3_overview, 2)
         }
 
         function loc() {
@@ -799,6 +825,336 @@
 
         View_2D()
 
+        {#Overview Function Starts here #}
+
+        function overview_2D() {
+            {% comment %} var trace1 = {
+                 name: "AN0",
+                 x: [0],
+                 y: [0],
+                 type: 'scatter',
+                 marker: {
+                     color: "#E8290B",
+                     size: 15,
+                     symbol: 'triangle-up'
+                 },
+                 showlegend: false
+             };
+             var trace2 = {
+                 name: "AN1",
+                 x: [2.99],
+                 y: [0],
+                 type: 'scatter',
+                 marker: {
+                     color: "#E8290B",
+                     size: 15,
+                     symbol: 'triangle-up'
+                 },
+                 showlegend: false
+             };
+             var trace3 = {
+                 name: "AN2",
+                 x: [0.44],
+                 y: [3.88],
+                 type: 'scatter',
+                 marker: {
+                     color: "#E8290B",
+                     size: 15,
+                     symbol: 'triangle-up'
+                 },
+                 showlegend: false
+             };
+             var trace4 = {
+                 name: "AN4",
+                 x: [2.42],
+                 y: [4.35],
+                 type: 'scatter',
+                 marker: {
+                     color: "#E8290B",
+                     size: 15,
+                     symbol: 'triangle-up'
+                 },
+                 showlegend: false
+             };{% endcomment %}
+            var trace5 = {
+                name: "D632",
+                x: [],
+                y: [],
+                type: 'scatter',
+                marker: {
+                    color: "#29B966",
+                },
+                showlegend: false,
+                mode: 'markers+text',
+                textposition: 'top center',
+                textfont: {
+                    color: '#1f77b4',
+                },
+                text: "D632",
+            };
+            var trace6 = {
+                name: "54B6",
+                x: [],
+                y: [],
+                type: 'scatter',
+                marker: {
+                    color: "#29B966",
+                },
+                showlegend: false,
+                mode: 'markers+text',
+                textposition: 'top center',
+                textfont: {
+                    color: '#1f77b4',
+                },
+                text: "54B6",
+            };
+            var trace7 = {
+                name: "D70B",
+                x: [],
+                y: [],
+                type: 'scatter',
+                marker: {
+                    color: "#29B966",
+                },
+                showlegend: false,
+                mode: 'markers+text',
+                textposition: 'top center',
+                textfont: {
+                    color: '#1f77b4',
+                },
+                text: "D70B",
+            };
+            {% comment %}       var trace8 = {
+                       x: [1.5, 1.5, 1.5],
+                       y: [1.25, 2.25, 3.25],
+                       type: 'scatter',
+                       mode: 'text',
+                       text: ['Station 1', 'Station 2', 'Station 3'],
+                       textfont: {
+                           color: 'black',
+                           size: 18,
+                           family: 'Arial'
+                       },
+                       showlegend: false
+                   };{% endcomment %}
+            var data = [trace5, trace6, trace7];
+            var layout = {
+                title: {
+                    text: 'Top View',
+                    font: {
+                        color: '#111',
+                        size: 20
+                    },
+                },
+                {% comment %}      images: [{
+                          "source": "http://machinemath.co.in/media/driverimage/2020/warehouse.png",
+                          {#"source": "http://127.0.0.1:8000/media/driverimage/2020/warehouse.png",#}
+                          "xref": "paper",
+                          "yref": "paper",
+                          "x": 0,
+                          "y": 1,
+                          "sizex": 1,
+                          "sizey": 1,
+                          "sizing": "stretch",
+                          "opacity": 0.4,
+                          "layer": "below"
+                      },],{% endcomment %}
+                shapes: [
+                    {
+                        type: 'rect',
+                        xref: 'paper',
+                        yref: 'y',
+                        x0: 0,
+                        y0: 0,
+                        x1: 1,
+                        y1: 0.5,
+                        fillcolor: '#000',
+                        opacity: 0.2,
+                        line: {
+                            width: 0
+                        }
+                    },
+                    {
+                        type: 'rect',
+                        xref: 'paper',
+                        yref: 'y',
+                        x0: 0,
+                        y0: 0.75,
+                        x1: 1,
+                        y1: 1.25,
+                        fillcolor: '#000',
+                        opacity: 0.2,
+                        line: {
+                            width: 0
+                        }
+                    },
+                    {
+                        type: 'rect',
+                        xref: 'paper',
+                        yref: 'y',
+                        x0: 0,
+                        y0: 1.5,
+                        x1: 1,
+                        y1: 2,
+                        fillcolor: '#000',
+                        opacity: 0.2,
+                        line: {
+                            width: 0
+                        }
+                    },
+                    {
+                        type: 'rect',
+                        xref: 'paper',
+                        yref: 'y',
+                        x0: 0,
+                        y0: 2.25,
+                        x1: 1,
+                        y1: 2.75,
+                        fillcolor: '#000',
+                        opacity: 0.2,
+                        line: {
+                            width: 0
+                        }
+                    },
+                    {
+                        type: 'rect',
+                        xref: 'paper',
+                        yref: 'y',
+                        x0: 0,
+                        y0: 3,
+                        x1: 1,
+                        y1: 3.5,
+                        fillcolor: '#000',
+                        opacity: 0.2,
+                        line: {
+                            width: 0
+                        }
+                    },
+                    {
+                        type: 'rect',
+                        xref: 'paper',
+                        yref: 'y',
+                        x0: 0,
+                        y0: 3.75,
+                        x1: 1,
+                        y1: 4.25,
+                        fillcolor: '#000',
+                        opacity: 0.2,
+                        line: {
+                            width: 0
+                        }
+                    },
+                    {
+                        type: 'line',
+                        x0: 0.25,
+                        y0: 0,
+                        x1: 0.25,
+                        y1: 4.25,
+                        line: {
+                            color: 'white',
+                            width: 1
+                        }
+                    },
+                    {
+                        type: 'line',
+                        x0: 0.75,
+                        y0: 0,
+                        x1: 0.75,
+                        y1: 4.25,
+                        line: {
+                            color: 'white',
+                            width: 1
+                        }
+                    },
+                    {
+                        type: 'line',
+                        x0: 1.25,
+                        y0: 0,
+                        x1: 1.25,
+                        y1: 4.25,
+                        line: {
+                            color: 'white',
+                            width: 1
+                        }
+                    },
+                    {
+                        type: 'line',
+                        x0: 1.75,
+                        y0: 0,
+                        x1: 1.75,
+                        y1: 4.25,
+                        line: {
+                            color: 'white',
+                            width: 1
+                        }
+                    },
+                    {
+                        type: 'line',
+                        x0: 2.25,
+                        y0: 0,
+                        x1: 2.25,
+                        y1: 4.25,
+                        line: {
+                            color: 'white',
+                            width: 1
+                        }
+                    },
+                ],
+                xaxis: {
+                    title: "Bay",
+                    titlefont: {color: "#E21717"},
+                    showgrid: false,
+                    zeroline: false,
+                    showline: false,
+                    mirror: 'ticks',
+                    gridcolor: '#edeeef ',
+                    gridwidth: 0.5,
+                    zerolinecolor: '#969696',
+                    zerolinewidth: 4,
+                    linecolor: '#636363',
+                    {#autotick: false,#}
+                    ticks: 'outside',
+                    {#tick0: 0.5,#}
+                    {#dtick: 0.25,#}
+                    ticklen: 4,
+                    tickwidth: 1,
+                    tickcolor: '#000',
+                    tickmode: "array",
+                    tickvals: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3, 5],
+                    ticktext: ["01", "02", '03', '04', '05', '06', '08'],
+                },
+                yaxis: {
+                    title: "Rack",
+                    titlefont: {color: "#E07C24"},
+                    showgrid: false,
+                    zeroline: false,
+                    showline: false,
+                    mirror: 'ticks',
+                    gridcolor: '#edeeef',
+                    gridwidth: 0.5,
+                    zerolinecolor: '#969696',
+                    zerolinewidth: 4,
+                    linecolor: '#636363',
+                    autotick: false,
+                    ticks: 'outside',
+                    tick0: 0,
+                    dtick: 0.25,
+                    ticklen: 4,
+                    tickwidth: 1,
+                    tickcolor: '#000',
+                    tickmode: "array",
+                    tickvals: [0.25, 1, 1.75, 2.5, 3.25, 4],
+                    ticktext: ["A", "B", 'C', 'D', 'E', 'F'],
+                },
+
+            };
+            Plotly.newPlot('myDiv3', data, layout);
+        }
+
+        overview_2D()
+
+        {#View for Overview function ends here#}
+
         function View_3D() {
             var trace1 = {
                 x: [0],
@@ -964,6 +1320,7 @@
             if (flag === 'station1' || flag === 'station2' || flag === 'station3') {
                 document.getElementById('cd').style.display = 'block';
                 document.getElementById('myDiv').style.display = 'none';
+                document.getElementById('myDiv').style.display = 'none';
             }
         }
 
@@ -978,12 +1335,37 @@
         }
 
         function View_xyz() {
-            if (document.getElementById('2d').style.display === 'block') {
+            if (document.getElementById('2d').style.display === 'block' ||  document.getElementById('xyz1').style.display === 'block') {
                 document.getElementById('xyz').style.display = 'block';
                 document.getElementById('2d').style.display = 'none';
+                document.getElementById('xyz1').style.display = 'none';
             } else {
                 document.getElementById('xyz').style.display = 'none';
                 document.getElementById('2d').style.display = 'block';
+                document.getElementById('xyz1').style.display = 'none';
+            }
+        }
+
+        function overview() {
+            if (document.getElementById('2d').style.display === 'block' ||  document.getElementById('xyz').style.display === 'block') {
+                document.getElementById('xyz1').style.display = 'block';
+                document.getElementById('xyz').style.display = 'none';
+                document.getElementById('2d').style.display = 'none';
+            } else {
+                document.getElementById('xyz1').style.display = 'none';
+                document.getElementById('2d').style.display = 'block';
+                document.getElementById('xyz').style.display = 'none';
+            }
+        }
+        function Show_2D(){
+            if (document.getElementById('xyz1').style.display === 'block' ||  document.getElementById('xyz').style.display === 'block') {
+                document.getElementById('xyz1').style.display = 'none';
+                document.getElementById('xyz').style.display = 'none';
+                document.getElementById('2d').style.display = 'block';
+            } else {
+                document.getElementById('xyz1').style.display = 'none';
+                document.getElementById('2d').style.display = 'none';
+                document.getElementById('xyz').style.display = 'block';
             }
         }
 
@@ -1192,6 +1574,266 @@
         }
 
         View_xz()
+        {#Overview function for xz Starts here#}
+
+        function overview_xz() {
+            {% comment %} var trace1 = {
+                 name: "AN0",
+                 x: [1],
+                 y: [0],
+                 type: 'scatter',
+                 marker: {
+                     color: "#E8290B",
+                     size: 15,
+                     symbol: 'triangle-up'
+                 },
+                 showlegend: false
+             };
+             var trace2 = {
+                 name: "AN1",
+                 x: [1],
+                 y: [0],
+                 type: 'scatter',
+                 marker: {
+                     color: "#E8290B",
+                     size: 15,
+                     symbol: 'triangle-up'
+                 },
+                 showlegend: false
+             };
+             var trace3 = {
+                 name: "AN2",
+                 x: [1],
+                 y: [0],
+                 type: 'scatter',
+                 marker: {
+                     color: "#E8290B",
+                     size: 15,
+                     symbol: 'triangle-up'
+                 },
+                 showlegend: false
+             };
+             var trace4 = {
+                 name: "AN4",
+                 x: [1],
+                 y: [-3],
+                 type: 'scatter',
+                 marker: {
+                     color: "#E8290B",
+                     size: 15,
+                     symbol: 'triangle-up'
+                 },
+                 showlegend: false
+             };{% endcomment %}
+            var trace5 = {
+                name: "D632",
+                x: [],
+                y: [],
+                type: 'scatter',
+                marker: {
+                    color: "#29B966",
+                },
+                showlegend: false,
+                mode: 'markers+text',
+                textposition: 'top center',
+                textfont: {
+                    color: '#1f77b4',
+                },
+                text: "D632",
+            };
+            var trace6 = {
+                name: "54B6",
+                x: [],
+                y: [],
+                type: 'scatter',
+                mode: 'markers+text',
+                textposition: 'top center',
+                textfont: {
+                    color: '#1f77b4',
+                },
+                text: "54B6",
+                marker: {
+                    color: "#29B966",
+                },
+                showlegend: false
+            };
+            var trace7 = {
+                name: "D70B",
+                x: [],
+                y: [],
+                type: 'scatter',
+                mode: 'markers+text',
+                textposition: 'top center',
+                textfont: {
+                    color: '#1f77b4',
+                },
+                text: "D70B",
+                marker: {
+                    color: "#29B966",
+                },
+                showlegend: false
+            };
+            {% comment %}var trace8 = {
+                x: [1.5, 1.5, 1.5],
+                y: [2.25, 1.5, 0.75],
+                type: 'scatter',
+                mode: 'text',
+                text: ['Rack 1', 'Rack 2', 'Rack 3'],
+                textfont: {
+                    color: 'black',
+                    size: 18,
+                    family: 'Arial'
+                },
+                showlegend: false
+            };{% endcomment %}
+            var data = [trace5, trace6, trace7];
+            var layout = {
+                title: {
+                    text: 'Front View',
+                    font: {
+                        color: '#111',
+                        size: 20
+                    },
+                },
+                 shapes: [
+                     {
+                         type: 'rect',
+                         xref: 'paper',
+                         yref: 'y',
+                         x0: 0,
+                         y0: 0,
+                         x1: 1,
+                         y1: -0.5,
+                         fillcolor: 'red',
+                         opacity: 0.2,
+                         line: {
+                             width: 0
+                         }
+                     },
+                     {
+                         type: 'rect',
+                         xref: 'paper',
+                         yref: 'y',
+                         x0: 0,
+                         y0: -0.5,
+                         x1: 1,
+                         y1: -1,
+                         fillcolor: 'orange',
+                         opacity: 0.2,
+                         line: {
+                             width: 0
+                         }
+                     },
+                     {
+                         type: 'rect',
+                         xref: 'paper',
+                         yref: 'y',
+                         x0: 0,
+                         y0: -1,
+                         x1: 1,
+                         y1: -1.5,
+                         fillcolor: 'yellow',
+                         opacity: 0.2,
+                         line: {
+                             width: 0
+                         }
+                     },
+                        {
+                         type: 'rect',
+                         xref: 'paper',
+                         yref: 'y',
+                         x0: 0,
+                         y0: -1.5,
+                         x1: 1,
+                         y1: -2,
+                         fillcolor: 'green',
+                         opacity: 0.2,
+                         line: {
+                             width: 0
+                         }
+                     },
+                        {
+                         type: 'rect',
+                         xref: 'paper',
+                         yref: 'y',
+                         x0: 0,
+                         y0: -2,
+                         x1: 1,
+                         y1: -2.5,
+                         fillcolor: 'blue',
+                         opacity: 0.2,
+                         line: {
+                             width: 0
+                         }
+                     },
+                     {
+                         type: 'rect',
+                         xref: 'paper',
+                         yref: 'y',
+                         x0: 0,
+                         y0: -2.5,
+                         x1: 1,
+                         y1: -3,
+                         fillcolor: 'purple',
+                         opacity: 0.2,
+                         line: {
+                             width: 0
+                         }
+                     },
+                 ],
+                xaxis: {
+                    showticklabels: false,
+                    zeroline: false,
+                    showgrid: false,
+                    {% comment %}  showgrid: false,
+                      zeroline: false,
+                      showline: false,
+                      mirror: 'ticks',
+                      gridcolor: '#edeeef ',
+                      gridwidth: 0.5,
+                      zerolinecolor: '#969696',
+                      zerolinewidth: 4,
+                      linecolor: '#636363',
+                      autotick: false,
+                      ticks: 'outside',
+                      tick0: 0,
+                      dtick: 1,
+                      {#ticklen: 4,#}
+                      nticks: 3,
+                      tickwidth: 1,
+                      tickcolor: '#000'{% endcomment %}
+                },
+                yaxis: {
+                    showgrid: false,
+                    zeroline: false,
+                    showline: false,
+                    mirror: 'ticks',
+                    gridcolor: '#edeeef',
+                    gridwidth: 0.5,
+                    zerolinecolor: '#969696',
+                    zerolinewidth: 4,
+                    linecolor: '#636363',
+                    autotick: true,
+                    ticks: 'outside',
+                    tick0: 0,
+                    dtick: 0.25,
+                    fixedrange: true,
+                    range: [0, -3],
+                    ticklen: 4,
+                    tickwidth: 1,
+                    tickcolor: '#000',
+                    tickmode: "array",
+                    tickvals: [-0.25, -0.75, -1.25, -1.75, -2.25,-2.75],
+                    ticktext: ["L1", "L2", 'L3', 'L4', 'L5',"L6"],
+                },
+
+            };
+            Plotly.newPlot('myDiv4', data, layout);
+        }
+
+        overview_xz()
+
+        {#Overview function for xz ends here#}
 
         function error_code() {
             var arr = []
