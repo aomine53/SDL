@@ -654,6 +654,18 @@
                 },
                 showlegend: false
             };
+            var trace9 = {
+                name: "AN5",
+                x: [3.75],
+                y: [5.50],
+                type: 'scatter',
+                marker: {
+                    color: "#E8290B",
+                    size: 15,
+                    symbol: 'triangle-up'
+                },
+                showlegend: false
+            };
             var trace5 = {
                 name: "D632",
                 x: [],
@@ -715,7 +727,7 @@
                 },
                 showlegend: false
             };
-            var data = [trace1, trace2, trace3, trace4, trace5, trace6, trace7, trace8];
+            var data = [trace1, trace2, trace3, trace4, trace5, trace6, trace7, trace8,trace9];
             var layout = {
                 title: {
                     text: 'Top View',
@@ -1099,6 +1111,17 @@
                             width: 1
                         }
                     },
+                      {
+                        type: 'line',
+                        x0: 2.75,
+                        y0: 0,
+                        x1: 2.75,
+                        y1: 4.25,
+                        line: {
+                            color: 'white',
+                            width: 1
+                        }
+                    },
                 ],
                 xaxis: {
                     title: "Bay",
@@ -1114,14 +1137,16 @@
                     linecolor: '#636363',
                     {#autotick: false,#}
                     ticks: 'outside',
+                    fixedrange: true,
+                    range: [-0.25, 3.25],
                     {#tick0: 0.5,#}
                     {#dtick: 0.25,#}
                     ticklen: 4,
                     tickwidth: 1,
                     tickcolor: '#000',
                     tickmode: "array",
-                    tickvals: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3, 5],
-                    ticktext: ["01", "02", '03', '04', '05', '06', '08'],
+                    tickvals: [0, 0.5, 1, 1.5, 2, 2.5, 3],
+                    ticktext: ["01", "02", '03', '04', '05', '06','07'],
                 },
                 yaxis: {
                     title: "Rack",
@@ -1131,6 +1156,8 @@
                     showline: false,
                     mirror: 'ticks',
                     gridcolor: '#edeeef',
+                    fixedrange: true,
+                    range: [0, 4.25],
                     gridwidth: 0.5,
                     zerolinecolor: '#969696',
                     zerolinewidth: 4,
