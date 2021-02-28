@@ -13,7 +13,7 @@ from datetime import datetime, timedelta
 import pytz
 from app.operations import searchdata, getlivedata, getdevicedata, getreport, getmapreport, get_device_parameters, \
     get_all_data, get_livedata_device, get_anchortag, random_string, get_tag, get_solar_column_name, \
-    get_livedata_solar, search_solardata, solar_genration, get_live_weatherparam_data
+    get_livedata_solar, search_solardata, solar_genration, get_live_weatherparam_data, get_tag_location
 from .decorators import *
 from .models import *
 from django.contrib.auth.models import User
@@ -77,6 +77,25 @@ def get_live_data(request):
         arr.append(x)
     ctx = {"data": arr, "weather": weather}
     return JsonResponse(ctx)
+
+
+@login_required(login_url="/login/")
+def search_tag(request):
+    loc = []
+    if request.method == "POST":
+        index = 0
+        tagid = request.POST["tag"]
+        print(tagid)
+        tags = TagAssign.objects.all()
+        for t in tags:
+            loc.append(get_tag("tag_" + t.tag_id))
+        for i in range(0, len(tags)):
+            if tags[i].tag_id == tagid:
+                index = i
+        print(loc[index][0], loc[index][1], loc[index][2])
+        ctx = {"position": get_tag_location(loc[index][1], loc[index][0], loc[index][2])}
+        print(ctx)
+        return JsonResponse(ctx)
 
 
 @login_required(login_url="/login/")
@@ -243,6 +262,7 @@ def ac_location(request):
     station_3 = [3, 3.5]
     tag_x = loc[0][0]
     tag_y = loc[0][1]
+    tag_z = loc[0][2]
     msg = ""
     shift = ""
     heading = ""

@@ -369,6 +369,62 @@ def random_string(len):
     return res
 
 
+# For Getting the Location of tag in rack system
+def get_tag_location(x, y, z):
+    # to find in which rack tag is present
+    if -0.5 <= x <= 0:
+        rack = "A"
+    elif 0.25 <= x <= 0.75:
+        rack = "B"
+    elif 1 <= x <= 1.5:
+        rack = "C"
+    elif 1.75 <= x <= 2.25:
+        rack = "D"
+    elif 2.5 <= x <= 3:
+        rack = "E"
+    elif 3.25 <= x <= 3.75:
+        rack = "F"
+    else:
+        rack = "Outside"
+
+    # to Find in which bay tag is present
+
+    if -0.25 <= y <= 0.25:
+        bay = "01"
+    elif 0.25 <= y <= 0.75:
+        bay = "02"
+    elif 0.75 <= y <= 1.25:
+        bay = "03"
+    elif 1.25 <= y <= 1.75:
+        bay = "04"
+    elif 1.75 <= y <= 2.25:
+        bay = "05"
+    elif 2.25 <= y <= 2.75:
+        bay = "06"
+    elif 2.75 <= y <= 3.25:
+        bay = "07"
+    else:
+        bay = "Outside"
+
+    # to find at which height tag is present
+    if 0 >= z >= -0.5:
+        height = "L1"
+    elif -0.5 >= z >= -1:
+        height = "L2"
+    elif -1 >= z >= -1.5:
+        height = "L3"
+    elif -1.5 >= z >= -2:
+        height = "L4"
+    elif -2 >= z >= -2.5:
+        height = "L5"
+    elif -2.5 >= z >= -3:
+        height = "L6"
+    else:
+        height = "Outside"
+
+    return rack + "-" + bay + "-" + height
+
+
 if __name__ == "__main__":
     # print(get_device_parameters('$SLU355000082004871'))
     # # get_anchortag()
@@ -381,6 +437,7 @@ if __name__ == "__main__":
     # print(solar_genration())
     # print(get_live_weatherparam_data())
     print(get_tag('tag_D632'))
+    print(get_tag_location(1.06, 2.04, -2.75))
     # print(getdevicedata())
     # # print(getlivedata())
     # device = Device.objects.filter(firm=FirmProfile.objects.get(user=User.objects.get(username="machinemath")))

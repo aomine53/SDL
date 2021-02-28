@@ -91,8 +91,11 @@
             <a href="unity.html">
                 <button id="simuation" class="btn btn-outline-danger">3D Simulation</button>
             </a>
-            <button id="Show Report" class="btn btn-outline-danger"><a href="./stationreport.html" style="color: red">Show
-                Report</a></button>
+            <a href="./stationreport.html">
+                <button id="Show Report" class="btn btn-outline-danger">Show
+                    Report
+                </button>
+            </a>
             <input class="form-control m-3" type="text" id="searchinput" placeholder="Enter TagID"
                    aria-label="default input example">
             <button id="change" onclick="tracecolorchange()" class="btn btn-primary "><i class="fas fa-search"></i>
@@ -392,9 +395,11 @@
         </div>
         <div class="col-md-6" id="xyz1" style="display: none">
             <div class="row">
-                <div id='myDiv3' style="height: 80vh;display:block;width: 700px"></div>
+                <div id='myDiv3' style="height: 80vh;display:block;width: 700px">
+                </div>
                 <div id='myDiv4' style="height: 80vh;display:block;width: 200px"></div>
             </div>
+            <h1 id="tag_pos"></h1>
         </div>
         <div class="col-md-6">
             <div id='myform' style="background-color: #fff;height: 80vh;">
@@ -570,7 +575,9 @@
                 success: function (data1) {
                     updateTag(data1.atdata)
                     updateTag1(data1.atdata)
-                    document.getElementById('status').textContent = data1.message
+                    if (document.getElementById('xyz1').style.display !== 'block') {
+                        document.getElementById('status').textContent = data1.message
+                    }
                     document.getElementById('date').textContent = data1.date
                     document.getElementById("shift").textContent = data1.shift
                     document.getElementById('heading').textContent = data1.heading
@@ -666,6 +673,18 @@
                 },
                 showlegend: false
             };
+            var trace10 = {
+                name: "AN6",
+                x: [0],
+                y: [5],
+                type: 'scatter',
+                marker: {
+                    color: "#E8290B",
+                    size: 15,
+                    symbol: 'triangle-up'
+                },
+                showlegend: false
+            };
             var trace5 = {
                 name: "D632",
                 x: [],
@@ -727,7 +746,7 @@
                 },
                 showlegend: false
             };
-            var data = [trace1, trace2, trace3, trace4, trace5, trace6, trace7, trace8,trace9];
+            var data = [trace1, trace2, trace3, trace4, trace5, trace6, trace7, trace8, trace9, trace10];
             var layout = {
                 title: {
                     text: 'Top View',
@@ -958,28 +977,15 @@
                         size: 20
                     },
                 },
-                {% comment %}      images: [{
-                          "source": "http://machinemath.co.in/media/driverimage/2020/warehouse.png",
-                          {#"source": "http://127.0.0.1:8000/media/driverimage/2020/warehouse.png",#}
-                          "xref": "paper",
-                          "yref": "paper",
-                          "x": 0,
-                          "y": 1,
-                          "sizex": 1,
-                          "sizey": 1,
-                          "sizing": "stretch",
-                          "opacity": 0.4,
-                          "layer": "below"
-                      },],{% endcomment %}
                 shapes: [
                     {
                         type: 'rect',
                         xref: 'paper',
                         yref: 'y',
                         x0: 0,
-                        y0: 0,
+                        y0: -0.5,
                         x1: 1,
-                        y1: 0.5,
+                        y1: 0,
                         fillcolor: '#000',
                         opacity: 0.2,
                         line: {
@@ -991,9 +997,9 @@
                         xref: 'paper',
                         yref: 'y',
                         x0: 0,
-                        y0: 0.75,
+                        y0: 0.25,
                         x1: 1,
-                        y1: 1.25,
+                        y1: 0.75,
                         fillcolor: '#000',
                         opacity: 0.2,
                         line: {
@@ -1005,9 +1011,9 @@
                         xref: 'paper',
                         yref: 'y',
                         x0: 0,
-                        y0: 1.5,
+                        y0: 1,
                         x1: 1,
-                        y1: 2,
+                        y1: 1.5,
                         fillcolor: '#000',
                         opacity: 0.2,
                         line: {
@@ -1019,9 +1025,9 @@
                         xref: 'paper',
                         yref: 'y',
                         x0: 0,
-                        y0: 2.25,
+                        y0: 1.75,
                         x1: 1,
-                        y1: 2.75,
+                        y1: 2.25,
                         fillcolor: '#000',
                         opacity: 0.2,
                         line: {
@@ -1033,9 +1039,9 @@
                         xref: 'paper',
                         yref: 'y',
                         x0: 0,
-                        y0: 3,
+                        y0: 2.5,
                         x1: 1,
-                        y1: 3.5,
+                        y1: 3,
                         fillcolor: '#000',
                         opacity: 0.2,
                         line: {
@@ -1047,9 +1053,9 @@
                         xref: 'paper',
                         yref: 'y',
                         x0: 0,
-                        y0: 3.75,
+                        y0: 3.25,
                         x1: 1,
-                        y1: 4.25,
+                        y1: 3.75,
                         fillcolor: '#000',
                         opacity: 0.2,
                         line: {
@@ -1059,9 +1065,9 @@
                     {
                         type: 'line',
                         x0: 0.25,
-                        y0: 0,
+                        y0: -0.5,
                         x1: 0.25,
-                        y1: 4.25,
+                        y1: 3.75,
                         line: {
                             color: 'white',
                             width: 1
@@ -1070,9 +1076,9 @@
                     {
                         type: 'line',
                         x0: 0.75,
-                        y0: 0,
+                        y0: -0.5,
                         x1: 0.75,
-                        y1: 4.25,
+                        y1: 3.75,
                         line: {
                             color: 'white',
                             width: 1
@@ -1081,9 +1087,9 @@
                     {
                         type: 'line',
                         x0: 1.25,
-                        y0: 0,
+                        y0: -0.5,
                         x1: 1.25,
-                        y1: 4.25,
+                        y1: 3.75,
                         line: {
                             color: 'white',
                             width: 1
@@ -1092,9 +1098,9 @@
                     {
                         type: 'line',
                         x0: 1.75,
-                        y0: 0,
+                        y0: -0.5,
                         x1: 1.75,
-                        y1: 4.25,
+                        y1: 3.75,
                         line: {
                             color: 'white',
                             width: 1
@@ -1103,20 +1109,20 @@
                     {
                         type: 'line',
                         x0: 2.25,
-                        y0: 0,
+                        y0: -0.5,
                         x1: 2.25,
-                        y1: 4.25,
+                        y1: 3.75,
                         line: {
                             color: 'white',
                             width: 1
                         }
                     },
-                      {
+                    {
                         type: 'line',
                         x0: 2.75,
-                        y0: 0,
+                        y0: -0.5,
                         x1: 2.75,
-                        y1: 4.25,
+                        y1: 3.75,
                         line: {
                             color: 'white',
                             width: 1
@@ -1146,7 +1152,7 @@
                     tickcolor: '#000',
                     tickmode: "array",
                     tickvals: [0, 0.5, 1, 1.5, 2, 2.5, 3],
-                    ticktext: ["01", "02", '03', '04', '05', '06','07'],
+                    ticktext: ["01", "02", '03', '04', '05', '06', '07'],
                 },
                 yaxis: {
                     title: "Rack",
@@ -1157,7 +1163,7 @@
                     mirror: 'ticks',
                     gridcolor: '#edeeef',
                     fixedrange: true,
-                    range: [0, 4.25],
+                    range: [-0.5, 3.75],
                     gridwidth: 0.5,
                     zerolinecolor: '#969696',
                     zerolinewidth: 4,
@@ -1170,7 +1176,7 @@
                     tickwidth: 1,
                     tickcolor: '#000',
                     tickmode: "array",
-                    tickvals: [0.25, 1, 1.75, 2.5, 3.25, 4],
+                    tickvals: [-0.25, 0.5, 1.25, 2, 2.75, 3.5],
                     ticktext: ["A", "B", 'C', 'D', 'E', 'F'],
                 },
 
@@ -1362,7 +1368,7 @@
         }
 
         function View_xyz() {
-            if (document.getElementById('2d').style.display === 'block' ||  document.getElementById('xyz1').style.display === 'block') {
+            if (document.getElementById('2d').style.display === 'block' || document.getElementById('xyz1').style.display === 'block') {
                 document.getElementById('xyz').style.display = 'block';
                 document.getElementById('2d').style.display = 'none';
                 document.getElementById('xyz1').style.display = 'none';
@@ -1374,7 +1380,7 @@
         }
 
         function overview() {
-            if (document.getElementById('2d').style.display === 'block' ||  document.getElementById('xyz').style.display === 'block') {
+            if (document.getElementById('2d').style.display === 'block' || document.getElementById('xyz').style.display === 'block') {
                 document.getElementById('xyz1').style.display = 'block';
                 document.getElementById('xyz').style.display = 'none';
                 document.getElementById('2d').style.display = 'none';
@@ -1384,8 +1390,9 @@
                 document.getElementById('xyz').style.display = 'none';
             }
         }
-        function Show_2D(){
-            if (document.getElementById('xyz1').style.display === 'block' ||  document.getElementById('xyz').style.display === 'block') {
+
+        function Show_2D() {
+            if (document.getElementById('xyz1').style.display === 'block' || document.getElementById('xyz').style.display === 'block') {
                 document.getElementById('xyz1').style.display = 'none';
                 document.getElementById('xyz').style.display = 'none';
                 document.getElementById('2d').style.display = 'block';
@@ -1445,6 +1452,7 @@
                 },
                 showlegend: false
             };
+            var sym = `D632`;
             var trace5 = {
                 name: "D632",
                 x: [],
@@ -1459,7 +1467,7 @@
                 textfont: {
                     color: '#1f77b4',
                 },
-                text: "D632",
+                text: sym
             };
             var trace6 = {
                 name: "54B6",
@@ -1722,92 +1730,92 @@
                         size: 20
                     },
                 },
-                 shapes: [
-                     {
-                         type: 'rect',
-                         xref: 'paper',
-                         yref: 'y',
-                         x0: 0,
-                         y0: 0,
-                         x1: 1,
-                         y1: -0.5,
-                         fillcolor: 'red',
-                         opacity: 0.2,
-                         line: {
-                             width: 0
-                         }
-                     },
-                     {
-                         type: 'rect',
-                         xref: 'paper',
-                         yref: 'y',
-                         x0: 0,
-                         y0: -0.5,
-                         x1: 1,
-                         y1: -1,
-                         fillcolor: 'orange',
-                         opacity: 0.2,
-                         line: {
-                             width: 0
-                         }
-                     },
-                     {
-                         type: 'rect',
-                         xref: 'paper',
-                         yref: 'y',
-                         x0: 0,
-                         y0: -1,
-                         x1: 1,
-                         y1: -1.5,
-                         fillcolor: 'yellow',
-                         opacity: 0.2,
-                         line: {
-                             width: 0
-                         }
-                     },
-                        {
-                         type: 'rect',
-                         xref: 'paper',
-                         yref: 'y',
-                         x0: 0,
-                         y0: -1.5,
-                         x1: 1,
-                         y1: -2,
-                         fillcolor: 'green',
-                         opacity: 0.2,
-                         line: {
-                             width: 0
-                         }
-                     },
-                        {
-                         type: 'rect',
-                         xref: 'paper',
-                         yref: 'y',
-                         x0: 0,
-                         y0: -2,
-                         x1: 1,
-                         y1: -2.5,
-                         fillcolor: 'blue',
-                         opacity: 0.2,
-                         line: {
-                             width: 0
-                         }
-                     },
-                     {
-                         type: 'rect',
-                         xref: 'paper',
-                         yref: 'y',
-                         x0: 0,
-                         y0: -2.5,
-                         x1: 1,
-                         y1: -3,
-                         fillcolor: 'purple',
-                         opacity: 0.2,
-                         line: {
-                             width: 0
-                         }
-                     },
-                 ],
+                shapes: [
+                    {
+                        type: 'rect',
+                        xref: 'paper',
+                        yref: 'y',
+                        x0: 0,
+                        y0: 0,
+                        x1: 1,
+                        y1: -0.5,
+                        fillcolor: 'red',
+                        opacity: 0.2,
+                        line: {
+                            width: 0
+                        }
+                    },
+                    {
+                        type: 'rect',
+                        xref: 'paper',
+                        yref: 'y',
+                        x0: 0,
+                        y0: -0.5,
+                        x1: 1,
+                        y1: -1,
+                        fillcolor: 'orange',
+                        opacity: 0.2,
+                        line: {
+                            width: 0
+                        }
+                    },
+                    {
+                        type: 'rect',
+                        xref: 'paper',
+                        yref: 'y',
+                        x0: 0,
+                        y0: -1,
+                        x1: 1,
+                        y1: -1.5,
+                        fillcolor: 'yellow',
+                        opacity: 0.2,
+                        line: {
+                            width: 0
+                        }
+                    },
+                    {
+                        type: 'rect',
+                        xref: 'paper',
+                        yref: 'y',
+                        x0: 0,
+                        y0: -1.5,
+                        x1: 1,
+                        y1: -2,
+                        fillcolor: 'green',
+                        opacity: 0.2,
+                        line: {
+                            width: 0
+                        }
+                    },
+                    {
+                        type: 'rect',
+                        xref: 'paper',
+                        yref: 'y',
+                        x0: 0,
+                        y0: -2,
+                        x1: 1,
+                        y1: -2.5,
+                        fillcolor: 'blue',
+                        opacity: 0.2,
+                        line: {
+                            width: 0
+                        }
+                    },
+                    {
+                        type: 'rect',
+                        xref: 'paper',
+                        yref: 'y',
+                        x0: 0,
+                        y0: -2.5,
+                        x1: 1,
+                        y1: -3,
+                        fillcolor: 'purple',
+                        opacity: 0.2,
+                        line: {
+                            width: 0
+                        }
+                    },
+                ],
                 xaxis: {
                     showticklabels: false,
                     zeroline: false,
@@ -1850,8 +1858,8 @@
                     tickwidth: 1,
                     tickcolor: '#000',
                     tickmode: "array",
-                    tickvals: [-0.25, -0.75, -1.25, -1.75, -2.25,-2.75],
-                    ticktext: ["L1", "L2", 'L3', 'L4', 'L5',"L6"],
+                    tickvals: [-0.25, -0.75, -1.25, -1.75, -2.25, -2.75],
+                    ticktext: ["L1", "L2", 'L3', 'L4', 'L5', "L6"],
                 },
 
             };
@@ -1918,19 +1926,54 @@
                 'marker.color': '#fe7701'
             };
             Plotly.restyle(myDiv, update, traceindex);
+            Plotly.restyle(myDivz, update, traceindex);
+        }
+
+        function changecolor_overview(traceindex) {
+            var update = {
+                'marker.color': '#fe7701'
+            };
+            Plotly.restyle(myDiv3, update, traceindex);
+            Plotly.restyle(myDiv4, update, traceindex);
         }
 
         function tracecolorchange() {
             var inputid = document.getElementById("searchinput").value
             console.log(inputid)
+            search_tag(inputid)
             if (inputid === "D632") {
                 changecolor(4)
+                changecolor_overview(0)
             } else if (inputid === "54B6") {
                 changecolor(5)
+                changecolor_overview(1)
             } else if (inputid === "D70B") {
                 changecolor(6)
+                changecolor_overview(2)
             }
         }
 
+        function search_tag(tag) {
+            $.ajax({
+                method: "POST",
+                url: "api/data/searchtag",
+                async: true,
+                data: {
+                    'csrfmiddlewaretoken': csrftoken,
+                    'tag': tag,
+                },
+                success: function (result, status, xhr) {
+                    console.log(result.position)
+                    if (document.getElementById('xyz1').style.display === 'block') {
+                        document.getElementById("status").textContent = result.position;
+                    }
+                },
+                error: function (error_data) {
+                    console.log("error")
+                    alert("error")
+                    console.log(error_data)
+                }
+            })
+        }
     </script>
 {% endblock javascripts %}
