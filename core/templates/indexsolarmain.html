@@ -35,7 +35,7 @@
 
 {% block content %}
     <div class="row gap-20 masonry pos-r">
-        <div class="masonry-item col-md-12">
+        <!-- <div class="masonry-item col-md-12">
             <div class="bd p-10" style="background-color: #313131;">
                 <div class="layers" style="align-items: start;">
                     <small style="color: #EC4a49">Inverter 5 Tripped</small>
@@ -45,7 +45,7 @@
                     <small style="color: #eed202">PR Low</small>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="masonry-sizer col-md-6"></div>
         <div class="masonry-item w-100">
             <div class="row gap-20">
@@ -555,8 +555,8 @@
                 </div>
             </div>
         </div>
-        <div class="masonry-item col-md-6">
-            <!-- #Monthly Stats ==================== -->
+        <!-- <div class="masonry-item col-md-6">
+
             <div class="bd" style="background-color: #313131;">
                 <div class="layers">
                     <div id="sankey" class="layer w-90 h-10">
@@ -571,7 +571,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
     </div>
 {% endblock content %}
@@ -659,7 +659,7 @@
             iconSize: [10, 10],
             popupAnchor: [-2, -2],
         });
-        //var marker = L.marker([18.446368,73.816035],{icon:myIcon}).addTo(mymap);
+        var marker = L.marker([18.446368,73.816035],{icon:redIcon}).addTo(mymap);
         const colors = [redIcon, blueIcon, yellowIcon, greenIcon]
         var bll = []
 

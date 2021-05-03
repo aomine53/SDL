@@ -216,3 +216,5 @@ Visit `http://localhost:8001` in your browser. The app should be up & running.
 
 ---
 [Django Dashboard Boilerplate](https://appseed.us/boilerplate-code/django-dashboard) - Provided by **AppSeed** [Web App Generator](https://appseed.us/app-generator).
+#   S D L  
+ 
